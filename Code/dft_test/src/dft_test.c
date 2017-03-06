@@ -13,10 +13,11 @@
  *   mathematical functions, it actually corresponds to the "msp430_math.h"
  *   library mentioned in the documentation
  *
- * - thanks to the redefinition of the standard function 'fputc', the
- *   function 'printf' can be used to send strings using the UART
+ * - thanks to the redefinition of standard functions 'fputc' and 'fputs',
+ *   the function 'printf' can be used to send strings using the UART
  *
- * -
+ * - this version is not complete yet, the input signal has been generated
+ *   but no DFT operation is performed
  *
  *******************************************************************************
  */
