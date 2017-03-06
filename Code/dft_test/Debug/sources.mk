@@ -113,5 +113,11 @@ PDE_DEPS__QUOTED :=
 SUBDIRS := \
 . \
 driverlib/MSP430FR5xx_6xx \
+dsplib/source/filter \
+dsplib/source/lea \
+dsplib/source/matrix \
+dsplib/source/transform \
+dsplib/source/utility \
+dsplib/source/vector \
 src \
 

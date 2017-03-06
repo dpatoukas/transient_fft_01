@@ -8,12 +8,7 @@ src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS
 src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/string.h
 src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/math.h
 src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/_defs.h
-src/dft_test.obj: /Applications/ti/msp/MSP430Ware_3_70_00_05/iqmathlib/include/QmathLib.h
-src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/limits.h
-src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/stdlib.h
-src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/inc/util.h
-src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/driverlib.h
-src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/inc/hw_memmap.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib.h
 src/dft_test.obj: /Applications/ti/ccsv7/ccs_base/msp430/include/msp430.h
 src/dft_test.obj: /Applications/ti/ccsv7/ccs_base/msp430/include/msp430fr5994.h
 src/dft_test.obj: /Applications/ti/ccsv7/ccs_base/msp430/include/in430.h
@@ -21,6 +16,17 @@ src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS
 src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/intrinsics_legacy_undefs.h
 src/dft_test.obj: /Applications/ti/ccsv7/ccs_base/msp430/include/legacy.h
 src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/stdbool.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_types.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_lea.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_support.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_vector.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_matrix.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_filter.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_transform.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_utility.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/inc/util.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/driverlib.h
+src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/inc/hw_memmap.h
 src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/adc12_b.h
 src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/aes256.h
 src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/comp_e.h
@@ -59,12 +65,7 @@ src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networ
 /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/string.h: 
 /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/math.h: 
 /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/_defs.h: 
-/Applications/ti/msp/MSP430Ware_3_70_00_05/iqmathlib/include/QmathLib.h: 
-/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/limits.h: 
-/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/stdlib.h: 
-/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/inc/util.h: 
-/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/driverlib.h: 
-/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/inc/hw_memmap.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib.h: 
 /Applications/ti/ccsv7/ccs_base/msp430/include/msp430.h: 
 /Applications/ti/ccsv7/ccs_base/msp430/include/msp430fr5994.h: 
 /Applications/ti/ccsv7/ccs_base/msp430/include/in430.h: 
@@ -72,6 +73,17 @@ src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networ
 /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/intrinsics_legacy_undefs.h: 
 /Applications/ti/ccsv7/ccs_base/msp430/include/legacy.h: 
 /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/stdbool.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_types.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_lea.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_support.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_vector.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_matrix.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_filter.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_transform.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib_utility.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/inc/util.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/driverlib.h: 
+/Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/inc/hw_memmap.h: 
 /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/adc12_b.h: 
 /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/aes256.h: 
 /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/driverlib/MSP430FR5xx_6xx/comp_e.h: 

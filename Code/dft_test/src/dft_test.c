@@ -29,7 +29,8 @@
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
-#include "QmathLib.h"
+//#include "QmathLib.h"
+#include "DSPLib.h"
 #include "util.h"
 
 
@@ -54,8 +55,12 @@ float x[N_SAMPLES];                     // discrete-time input signal
 float xRE[N_SAMPLES], xIM[N_SAMPLES];   // DFT of x (real and imaginary parts)
 float X[N_SAMPLES];                     // spectrum of x
 
-_q      q_t, q_sampl_period;
-_q10    q_a1, q_a2;
+DSPLIB_DATA(in,N_SAMPLES)
+_q15 in[N_SAMPLES];
+msp_status status;
+
+//_q      q_t, q_sampl_period;
+//_q10    q_a1, q_a2;
 float   testF;
 
 
@@ -79,9 +84,9 @@ void main(void)
 
     uint16_t n;
 
-    q_sampl_period = _Q((float) SAMPL_PERIOD);
-    q_t = _Q(0.0);
-
+    //q_sampl_period = _Q((float) SAMPL_PERIOD);
+    //q_t = _Q(0.0);
+    /*
     for (n=0 ; n<N_SAMPLES ; n++) {
         q_a1 = _Q10mpy(_Q10((float) P1), _QtoQ10(q_t));
         q_a2 = _Qmpy4(q_a1);
@@ -89,8 +94,15 @@ void main(void)
         printf("%f ", x[n]);        // remove when optimising
         q_t += q_sampl_period;
         testF = _QtoF(q_t);         // remove when optimising
-    }
+    }*/
     // VERY GOOD APPROXIMATION OF x
+
+    msp_sinusoid_q15_params sin_init;
+    sin_init.length = N_SAMPLES;
+    sin_init.amplitude = _Q15(0.5);
+    sin_init.cosOmega = _Q15(0.970031253);
+    sin_init.sinOmega = _Q15(0.242980179);
+    status = msp_sinusoid_q15(&sin_init, in);
 
     __no_operation();               // breakpoint here to check results
 
