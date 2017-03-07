@@ -1,4 +1,4 @@
-# Sunday march 5 2017
+# Sunday March 5th 2017
 DEADLINE Thursday march 9
    - Metrics (initial)
    - First implementation of DFT on MSP
@@ -9,7 +9,7 @@ DEADLINE Thursday march 9
 	- Record on ShareLateX
 	- Make sure it works (check with pc implementation)
 
-### Working points
+### Working points:
  - Organising (creating repo, making latex file, installing IDE, working with some code)
  - Getting to know the MSP430
  - Trying to convert DFT code to work on MSP430
@@ -23,3 +23,10 @@ DEADLINE Thursday march 9
         - Checking the input array through comparing it with an original C-program
     - 
  - Typing experiences in LaTeX
+ 
+ 
+ # Tuesday March 7th 2017
+ 
+ ### TO DO:
+ 
+ ### Working points:
