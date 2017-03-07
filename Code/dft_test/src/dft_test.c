@@ -1,6 +1,6 @@
 /*******************************************************************************
  *
- * DFT implementation
+ * DFT implementation (using DSPLib libraries)
  *
  * @author: Carlo Delle Donne       stud. number 4624718
  * @author: Dimitrios Patoukas      stud. number xxxxxxx
@@ -11,7 +11,7 @@
  *
  * - the standard library <math.h> contains optimised implementation of
  *   mathematical functions, it actually corresponds to the "msp430_math.h"
- *   library mentioned in the documentation
+ *   library mentioned x the documentation
  *
  * - thanks to the redefinition of standard functions 'fputc' and 'fputs',
  *   the function 'printf' can be used to send strings using the UART
@@ -22,46 +22,39 @@
  *******************************************************************************
  */
 
-#define GLOBAL_Q        15          // from -1 to 0.999970
-                                    // resolution 0.000030
-
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
-//#include "QmathLib.h"
 #include "DSPLib.h"
 #include "util.h"
 
 
-#ifndef M_2PI
-#define M_2PI           6.28318530717958647692
-#endif
-
-#define F1              1
-#define F2              4
-#define P1              6.28318530717958647692      // 2*PI*F1
-#define P2              25.13274122871834590768     // 2*PI*F2
-#define SAMPL_PERIOD    0.00390625                  // 1/SAMPL_FREQ
+#define F1              5
+#define F2              10
 #define SAMPL_FREQ      256                         // Simulation time:
 #define N_SAMPLES       256                         // N_SAMPLES/SAMPL_FREQ
+
+#define PI              3.1415926536
 
 
 int fputc(int _c, register FILE *_fp);
 int fputs(const char *_ptr, register FILE *_fp);
 
 
-float x[N_SAMPLES];                     // discrete-time input signal
-float xRE[N_SAMPLES], xIM[N_SAMPLES];   // DFT of x (real and imaginary parts)
-float X[N_SAMPLES];                     // spectrum of x
+DSPLIB_DATA(x1,N_SAMPLES)
+_q15 x1[N_SAMPLES];
 
-DSPLIB_DATA(in,N_SAMPLES)
-_q15 in[N_SAMPLES];
+DSPLIB_DATA(x2,N_SAMPLES)
+_q15 x2[N_SAMPLES];
+
+DSPLIB_DATA(x,N_SAMPLES)
+_q15 x[N_SAMPLES];                      // Input signal x = x1 + x2
+
 msp_status status;
 
-//_q      q_t, q_sampl_period;
-//_q10    q_a1, q_a2;
-float   testF;
+float X_RE[N_SAMPLES], X_IM[N_SAMPLES]; // DFT of x (real and imaginary parts)
+float X[N_SAMPLES];                     // spectrum of x
 
 
 void main(void)
@@ -82,27 +75,26 @@ void main(void)
 
     printf("All set up!\n\r");      // remove when optimising
 
-    uint16_t n;
+    // Generate two sine waves and store them into x1 and x2
+    // for cosOmega use the value of cos(2*pi*frequency/SAMPL_FREQ)
+    // for sinOmega use the value of sin(2*pi*frequency/SAMPL_FREQ)
 
-    //q_sampl_period = _Q((float) SAMPL_PERIOD);
-    //q_t = _Q(0.0);
-    /*
-    for (n=0 ; n<N_SAMPLES ; n++) {
-        q_a1 = _Q10mpy(_Q10((float) P1), _QtoQ10(q_t));
-        q_a2 = _Qmpy4(q_a1);
-        x[n] = sin(_Q10toF(q_a1)) + sin(_Q10toF(q_a2));
-        printf("%f ", x[n]);        // remove when optimising
-        q_t += q_sampl_period;
-        testF = _QtoF(q_t);         // remove when optimising
-    }*/
-    // VERY GOOD APPROXIMATION OF x
+    msp_sinusoid_q15_params sinParams;
+    sinParams.length = N_SAMPLES;
+    sinParams.amplitude = _Q15(0.5);
 
-    msp_sinusoid_q15_params sin_init;
-    sin_init.length = N_SAMPLES;
-    sin_init.amplitude = _Q15(0.5);
-    sin_init.cosOmega = _Q15(0.970031253);
-    sin_init.sinOmega = _Q15(0.242980179);
-    status = msp_sinusoid_q15(&sin_init, in);
+    sinParams.cosOmega = _Q15(cosf(2*PI*F1/SAMPL_FREQ));        // Frequency
+    sinParams.sinOmega = _Q15(sinf(2*PI*F1/SAMPL_FREQ));        // F1 = 5 Hz
+    status = msp_sinusoid_q15(&sinParams, x1);
+
+    sinParams.cosOmega = _Q15(cosf(2*PI*F2/SAMPL_FREQ));        // Frequency
+    sinParams.sinOmega = _Q15(sinf(2*PI*F2/SAMPL_FREQ));        // F2 = 10 Hz
+    status = msp_sinusoid_q15(&sinParams, x2);
+
+    // Input signal x is the sum of two sine waves
+    msp_add_q15_params addParams;
+    addParams.length = N_SAMPLES;
+    status = msp_add_q15(&addParams, x1, x2, x);
 
     __no_operation();               // breakpoint here to check results
 
@@ -127,7 +119,7 @@ void USCI_A0_ISR(void)
     {
     case USCI_NONE: break;
     case USCI_UART_UCRXIFG:
-        // do your stuff...
+        // do your stuff, e.g.
         // RXData = EUSCI_A_UART_receiveData(EUSCI_A0_BASE);
         break;
     case USCI_UART_UCTXIFG: break;
