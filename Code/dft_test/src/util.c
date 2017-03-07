@@ -30,6 +30,7 @@ void Clock_config()
     CSCTL3 |= DIVA__1;              // set '1' as ACLK divider
 
     // MCLK setting
+    // TODO: try to increase the MCLK frequency
     CSCTL2 |= SELM__DCOCLK;         // set DCO as source of MCLK
     CSCTL3 |= DIVM__1;              // set '1' as MCLK divider
 

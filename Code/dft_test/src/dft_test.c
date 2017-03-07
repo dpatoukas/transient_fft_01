@@ -16,8 +16,13 @@
  * - thanks to the redefinition of standard functions 'fputc' and 'fputs',
  *   the function 'printf' can be used to send strings using the UART
  *
- * - this version is not complete yet, the input signal has been generated
- *   but no DFT operation is performed
+ *
+ * TODOs (View -> Other -> General -> Tasks):
+ *
+ * - for optimisation, try to replace the cos/sin generation in the big
+ *   for-loop with the function msp_sinusoid_q15
+ *
+ * - for speed-up, try to increase the MCLK frequency
  *
  *******************************************************************************
  */
@@ -26,16 +31,16 @@
 #include <stdint.h>
 #include <string.h>
 #include <math.h>
-#include "DSPLib.h"
+#include "QmathLib.h"
+#include "DSPLib.h"     // include DSPLib.h after QmathLib.h
 #include "util.h"
 
 
 #define F1              2
 #define F2              4
-#define SAMPL_FREQ      32                         // Simulation time:
-#define N_SAMPLES       32                         // N_SAMPLES/SAMPL_FREQ
-//#define SAMPL_PER       0.00390625
-#define SAMPL_PER       0.03125
+#define SAMPL_FREQ      32              // Simulation time:
+#define N_SAMPLES       32              // N_SAMPLES/SAMPL_FREQ
+#define SCALE_FACTOR    1.0/N_SAMPLES
 
 #define PI              3.1415926536
 
@@ -53,22 +58,17 @@ _q15 x2[N_SAMPLES];
 DSPLIB_DATA(x,4)
 _q15 x[N_SAMPLES];                      // Input signal x = x1 + x2
 
-//DSPLIB_DATA(X_RE,4)
-//_q15 X_RE[N_SAMPLES];                   // Real part of X = DFT(x)
+DSPLIB_DATA(coeff,4)
+_iq31 coeff[2*N_SAMPLES];               // Complex DFT coefficients
 
-//DSPLIB_DATA(X_IM,4)
-//_q15 X_IM[N_SAMPLES];                   // Imaginary part of X = DFT(x)
+// DSPLIB_DATA(temp,4)
+// _q315 temp[2*N_SAMPLES];             // Not used anymore
 
-//DSPLIB_DATA(X,4)
-//_q15 X[N_SAMPLES];                      // Magnitude of X = DFT(x)
+// float X[N_SAMPLES];                  // Not used anymore
 
-DSPLIB_DATA(temp,4)
-_q15 temp[2*N_SAMPLES];
+// volatile uint32_t cycleCount;
 
 msp_status status;
-
-//float X_RE[N_SAMPLES], X_IM[N_SAMPLES]; // DFT of x (real and imaginary parts)
-//float X[N_SAMPLES];                     // spectrum of x
 
 
 void main(void)
@@ -111,10 +111,10 @@ void main(void)
     addParams.length = N_SAMPLES;
     status = msp_add_q15(&addParams, x1, x2, x);
 
-    // Scale down signal x
+    // Scale down signal x to have a normalised frequency response
     msp_scale_q15_params scaleParams;
     scaleParams.length = N_SAMPLES;
-    scaleParams.scale = _Q15(SAMPL_PER);
+    scaleParams.scale = _Q15(SCALE_FACTOR);
     scaleParams.shift = 0;
     status = msp_scale_q15(&scaleParams, x, x);
 
@@ -131,16 +131,22 @@ void main(void)
      */
 
     uint16_t k, n;
-    msp_mpy_q15_params mpyParams;
-    mpyParams.length = N_SAMPLES;
+    msp_mac_q15_params macParams;
+    macParams.length = N_SAMPLES;
 
     for (k=0; k<N_SAMPLES; k++) {
+
+        // TODO: try to replace the following for-loops with msp_sinusoid_q15
 
         for (n=0; n<N_SAMPLES; n++)                     // x1 will contain a
             x1[n] = _Q15(cosf(n*k*2*PI/N_SAMPLES));     // cos wave at f = k
 
         for (n=0; n<N_SAMPLES; n++)                     // x2 will contain a
             x2[n] = _Q15(-sinf(n*k*2*PI/N_SAMPLES));    // sin wave at f = k
+
+        /*
+         * The following snippet is replaced by the two msp_mac_q15 functions,
+         * the latter being twice as fast for a 32-samples input vector.
 
         status = msp_mpy_q15(&mpyParams, x, x1, x1);    // x1 = x * cos(...)
         status = msp_mpy_q15(&mpyParams, x, x2, x2);    // x2 = x * -sin(...)
@@ -150,14 +156,45 @@ void main(void)
             temp[k] += x1[n];                           // Real part
             temp[k+N_SAMPLES] += x2[n];                 // Imaginary part
         }
+
+         */
+
+        status = msp_mac_q15(&macParams, x, x1, &coeff[k]);
+        status = msp_mac_q15(&macParams, x, x2, &coeff[k+N_SAMPLES]);
     }
 
-    // Final result x = sqrt(x_RE * x_RE + x_IM * x_IM)
+    /*
+     * The following two lines are replaced by the code below with the
+     * introduction of msp_mac_q15 and _Q15mag functions.
+
     status = msp_mpy_q15(&mpyParams, &temp[0], &temp[0], x1);
     status = msp_mpy_q15(&mpyParams, &temp[N_SAMPLES], &temp[N_SAMPLES], x2);
-    status = msp_add_q15(&addParams, x1, x2, x);
+
+     */
+
+    // Final result x = sqrt(x_RE * x_RE + x_IM * x_IM)
+
+    msp_iq31_to_q15_params convParams;
+    convParams.length = N_SAMPLES;
+    status = msp_iq31_to_q15(&convParams, &coeff[0], x1);
+    status = msp_iq31_to_q15(&convParams, &coeff[N_SAMPLES], x2);
+
     for (k=0; k<N_SAMPLES; k++)
-        x[k] = sqrtf(x[k]);
+        x[k] = _Q15mag(x1[k], x2[k]);
+
+    /*
+     * The following lines are replaced by the _Q15mag function.
+
+    status = msp_mpy_q15(&mpyParams, x1, x1, x1);
+    status = msp_mpy_q15(&mpyParams, x2, x2, x2);
+
+    status = msp_add_q15(&addParams, x1, x2, x);
+    for (k=0; k<N_SAMPLES; k++) {
+        X[k] = _Q15toF(x[k]);
+        X[k] = sqrtf(X[k]);
+    }
+
+     */
 
     __no_operation();               // breakpoint here to check results
 

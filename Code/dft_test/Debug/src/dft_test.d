@@ -8,6 +8,9 @@ src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS
 src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/string.h
 src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/math.h
 src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/_defs.h
+src/dft_test.obj: /Applications/ti/msp/MSP430Ware_3_70_00_05/iqmathlib/include/QmathLib.h
+src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/limits.h
+src/dft_test.obj: /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/stdlib.h
 src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib.h
 src/dft_test.obj: /Applications/ti/ccsv7/ccs_base/msp430/include/msp430.h
 src/dft_test.obj: /Applications/ti/ccsv7/ccs_base/msp430/include/msp430fr5994.h
@@ -65,6 +68,9 @@ src/dft_test.obj: /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networ
 /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/string.h: 
 /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/math.h: 
 /Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/_defs.h: 
+/Applications/ti/msp/MSP430Ware_3_70_00_05/iqmathlib/include/QmathLib.h: 
+/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/limits.h: 
+/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include/stdlib.h: 
 /Users/Carlo/Documents/Uni/Delft/1st\ Year/Q3.Wireless\ Networking/Project/transient_fft_01/Code/dft_test/dsplib/include/DSPLib.h: 
 /Applications/ti/ccsv7/ccs_base/msp430/include/msp430.h: 
 /Applications/ti/ccsv7/ccs_base/msp430/include/msp430fr5994.h: 
