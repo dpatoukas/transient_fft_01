@@ -3,8 +3,8 @@
  * DFT implementation (using DSPLib libraries)
  *
  * @author: Carlo Delle Donne       stud. number 4624718
- * @author: Dimitrios Patoukas      stud. number xxxxxxx
- * @author: Thijmen Ketel           stud. number yyyyyyy
+ * @author: Dimitrios Patoukas      stud. number 4625943
+ * @author: Thijmen Ketel           stud. number 4623258
  *
  *
  * REMARKS:
