@@ -36,10 +36,10 @@
 #include "util.h"
 
 
-#define F1              2
-#define F2              4
-#define SAMPL_FREQ      32              // Simulation time:
-#define N_SAMPLES       32              // N_SAMPLES/SAMPL_FREQ
+#define F1              2               // must be less than SAMPL_FREQ/2
+#define F2              10              // must be less than SAMPL_FREQ/2
+#define N_SAMPLES       32
+#define SAMPL_FREQ      N_SAMPLES
 #define SCALE_FACTOR    1.0/N_SAMPLES
 
 #define PI              3.1415926536
@@ -111,7 +111,7 @@ void main(void)
     addParams.length = N_SAMPLES;
     status = msp_add_q15(&addParams, x1, x2, x);
 
-    // Scale down signal x to have a normalised frequency response
+    // Scale down signal x to avoid saturation/overflow
     msp_scale_q15_params scaleParams;
     scaleParams.length = N_SAMPLES;
     scaleParams.scale = _Q15(SCALE_FACTOR);

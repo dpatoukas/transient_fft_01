@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker Unix v16.9.1                   
 ******************************************************************************
->> Linked Wed Mar  8 00:51:42 2017
+>> Linked Wed Mar  8 01:06:44 2017
 
 OUTPUT FILE NAME:   <dft_test.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit_mpu"  address: 00004000
