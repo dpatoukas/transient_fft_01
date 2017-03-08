@@ -147,7 +147,7 @@ void main(void)
 
         /*
          * The following snippet is replaced by the two msp_mac_q15 functions,
-         * the latter being twice as fast for a 32-samples input vector.
+         * the latter being twice as fast for a 32-sample input vector.
 
         status = msp_mpy_q15(&mpyParams, x, x1, x1);    // x1 = x * cos(...)
         status = msp_mpy_q15(&mpyParams, x, x2, x2);    // x2 = x * -sin(...)
