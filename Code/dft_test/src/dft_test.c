@@ -32,12 +32,12 @@
 #include <string.h>
 #include <math.h>
 #include "QmathLib.h"
-#include "DSPLib.h"     // include DSPLib.h after QmathLib.h
+#include "DSPLib.h"                     // include DSPLib.h after QmathLib.h
 #include "util.h"
 
 
 #define F1              2               // must be less than SAMPL_FREQ/2
-#define F2              10              // must be less than SAMPL_FREQ/2
+#define F2              10              // otherwise Nyquist might get angry
 #define N_SAMPLES       32
 #define SAMPL_FREQ      N_SAMPLES
 #define SCALE_FACTOR    1.0/N_SAMPLES
@@ -90,7 +90,7 @@ void main(void)
 
     __enable_interrupt();
 
-    printf("All set up!\n\r");      // remove when optimising
+    printf("All set up!\n\r");      // TODO: remove when optimising
 
     // Generate two sine waves and store them into x1 and x2
 
@@ -137,6 +137,7 @@ void main(void)
     for (k=0; k<N_SAMPLES; k++) {
 
         // TODO: try to replace the following for-loops with msp_sinusoid_q15
+        // (but first compare execution cycles to check whether it is worth)
 
         for (n=0; n<N_SAMPLES; n++)                     // x1 will contain a
             x1[n] = _Q15(cosf(n*k*2*PI/N_SAMPLES));     // cos wave at f = k
