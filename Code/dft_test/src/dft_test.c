@@ -3,8 +3,8 @@
  * DFT implementation (using DSPLib libraries)
  *
  * @author: Carlo Delle Donne       stud. number 4624718
- * @author: Dimitrios Patoukas      stud. number xxxxxxx
- * @author: Thijmen Ketel           stud. number yyyyyyy
+ * @author: Dimitrios Patoukas      stud. number 4625943
+ * @author: Thijmen Ketel           stud. number 4623258
  *
  *
  * REMARKS:
@@ -134,16 +134,20 @@ void main(void)
     msp_mac_q15_params macParams;
     macParams.length = N_SAMPLES;
 
+    sinParams.amplitude = _Q15(1.0);
+
     for (k=0; k<N_SAMPLES; k++) {
 
         // TODO: try to replace the following for-loops with msp_sinusoid_q15
         // (but first compare execution cycles to check whether it is worth)
 
-        for (n=0; n<N_SAMPLES; n++)                     // x1 will contain a
-            x1[n] = _Q15(cosf(n*k*2*PI/N_SAMPLES));     // cos wave at f = k
+        for (n=0; n<N_SAMPLES; n++) {
+            x1[n] = _Q15(cosf(n*k*2*PI/N_SAMPLES));
+            x2[n] = _Q15(-sinf(n*k*2*PI/N_SAMPLES));
+        }
 
-        for (n=0; n<N_SAMPLES; n++)                     // x2 will contain a
-            x2[n] = _Q15(-sinf(n*k*2*PI/N_SAMPLES));    // sin wave at f = k
+        // sinParams.cosOmega = _Q15(cosf(2*PI*k/SAMPL_FREQ));
+        // sinParams.sinOmega = _Q15(sinf(2*PI*k/SAMPL_FREQ));
 
         /*
          * The following snippet is replaced by the two msp_mac_q15 functions,
