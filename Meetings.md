@@ -21,14 +21,29 @@ DEADLINE Thursday march 9
     - Converting the DFT program to QMATH compatible code
         - Creating the input array
         - Checking the input array through comparing it with an original C-program
-    - 
+    -
  - Typing experiences in LaTeX
- 
- 
- # Tuesday March 7th 2017
- 
- ### TO DO:
-  -
- 
- ### Working points:
-  -
+
+
+# Tuesday March 7th 2017
+This wasnt a real meeting due to time constraints. Carlo and Thijmen met to discuss some of the code Carlo wrote and the progress that was made.
+
+### TO DO:
+ - Continue report writing
+ - Getting synced with other members of the team
+
+### Working points:
+ - Finishing up first version of the report before Thursday
+ - Meeting on Wednesday to discuss course of action
+ - Brainstorm on ideas to implement a version of DINO
+ - Try to optimize the DFT implemented by Carlo
+
+# Wednesday March 8th 2017
+Meeting after lunch.
+
+### TO DO
+ - Discuss progress and timeline
+ - Small Brainstorm
+
+### Working points
+ - 
