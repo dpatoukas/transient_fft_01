@@ -17,12 +17,14 @@
  *   the function 'printf' can be used to send strings using the UART
  *
  *
- * TODOs (View -> Other -> General -> Tasks):
+ * TODO (View -> Other -> General -> Tasks):
  *
  * - for optimisation, try to replace the cos/sin generation in the big
  *   for-loop with the function msp_sinusoid_q15
  *
  * - for speed-up, try to increase the MCLK frequency
+ *
+ * - consider the possibility to use the DMA
  *
  *******************************************************************************
  */
