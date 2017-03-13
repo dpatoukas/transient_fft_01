@@ -43,6 +43,7 @@
 #define N_SAMPLES       32
 #define SAMPL_FREQ      N_SAMPLES
 #define SCALE_FACTOR    1.0/N_SAMPLES
+#define MAX_AMPLITUDE   0x7FFF          // sinusoid max amplitude
 
 #define PI              3.1415926536
 
@@ -71,6 +72,8 @@ _iq31 coeff[2*N_SAMPLES];               // Complex DFT coefficients
 // volatile uint32_t cycleCount;
 
 msp_status status;
+
+uint32_t p_count = 0;
 
 
 void main(void)
@@ -136,7 +139,9 @@ void main(void)
     msp_mac_q15_params macParams;
     macParams.length = N_SAMPLES;
 
-    sinParams.amplitude = _Q15(1.0);
+//    sinParams.amplitude = _Q15(1.0);
+//    sinParams.amplitude = _Q15(0.999970);
+    sinParams.amplitude = MAX_AMPLITUDE;
 
     for (k=0; k<N_SAMPLES; k++) {
 
