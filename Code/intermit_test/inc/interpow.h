@@ -16,7 +16,6 @@
 
 #include <stdint.h>
 
-
 /*
  *******************************************************************************
  *******************************************************************************
@@ -35,7 +34,7 @@
  *******************************************************************************
  *******************************************************************************
  *
- *  Basic structures definition
+ *  Basic structures definition, only for internal use!
  *
  *******************************************************************************
  *******************************************************************************
@@ -75,7 +74,7 @@ typedef struct program_state {
  *******************************************************************************
  *******************************************************************************
  *
- *  Functions' prototype, only for internal use
+ *  Function prototypes, only for internal use!
  *
  *******************************************************************************
  *******************************************************************************
@@ -100,15 +99,26 @@ void start_task(const task*, program_state*);
  *******************************************************************************
  */
 
-#define GetName(S, D, F)            __##S##D##F
+#define PersState                   prog_state
+
+#define PersField(S, D, F)          __##S##D##F
 
 #define GetField(S, D, F)           S##D##F
 
-#define GetCurrentTask              T2
-
+/**
+ * Create a new task.
+ *
+ * @param NAME  task's name
+ * @param FN    pointer to the function to execute
+ */
 #define NewTask(NAME, FN)                                                   \
         static const task NAME = { .task_function = FN };
 
+/**
+ * Define which task has to execute first on the first start of the system.
+ *
+ * @param TASK  name of the task
+ */
 #define InitialTask(TASK)                                                   \
         static program_state prog_state = {                                 \
                       .curr_task = &TASK                                    \
@@ -128,6 +138,15 @@ void start_task(const task*, program_state*);
                              .num_fields = 1                                \
         };
 
+/**
+ * Define a new field, conceptually belonging to the channel SRC->DST.
+ *
+ * @param SRC   channel's source task
+ * @param DST   channel's destination task
+ * @param NAME  field's name
+ * @param TYPE  field's TYPE, can be one of the field types defined above
+ * @param LEN   field's length (if LEN>1 the field is an array)
+ */
 #define NewField(SRC, DST, NAME, TYPE, LEN)                                 \
         TYPE __##SRC##DST##NAME[LEN] = {0};                                 \
         field SRC##DST##NAME = {                                            \
@@ -135,6 +154,14 @@ void start_task(const task*, program_state*);
                                  .base_addr = &__##SRC##DST##NAME           \
         };
 
+/**
+ * Define a new field, conceptually belonging to the self-channel TASK->TASK.
+ *
+ * @param TASK  channel's source and destination task
+ * @param NAME  field's name
+ * @param TYPE  field's TYPE, can be one of the field types defined above
+ * @param LEN   field's length (if LEN>1 the field is an array)
+ */
 #define NewSelfField(TASK, NAME, TYPE, LEN)                                 \
         TYPE __##SRC##DST##NAME##0[LEN] = {0};                              \
         TYPE __##SRC##DST##NAME##1[LEN] = {0};                              \
@@ -146,33 +173,80 @@ void start_task(const task*, program_state*);
                                   .swap = 0                                 \
         };
 
-// TODO: replace T2 with CURRENT_TASK
-#define ReadField_U16(SRC_TASK, FLD, DST)                                   \
-        read_field_u16(&GetField(SRC_TASK, T2, FLD), DST);
+/**
+ * Read field from channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to read
+ * @param DST       address to store the result at
+ */
+#define ReadField_U16(SRC_TASK, DST_TASK, FLD, DST)                         \
+        read_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), DST);
 
-// TODO: replace T1 with CURRENT_TASK
-#define WriteField_U16(DST_TASK, FLD, SRC)                                  \
-        write_field_u16(&GetField(T1, DST_TASK, FLD), SRC);
+/**
+ * Write field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ */
+#define WriteField_U16(SRC_TASK, DST_TASK, FLD, SRC)                        \
+        write_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC);
 
-// TODO: replace T1 with CURRENT_TASK
-#define WriteFieldElement_U16(DST_TASK, FLD, SRC, POS)                      \
-        write_field_element_u16(&GetField(T1, DST_TASK, FLD), SRC, POS);
+/**
+ * Write a single element of a field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ * @param POS       offset of the element to write
+ */
+#define WriteFieldElement_U16(SRC_TASK, DST_TASK, FLD, SRC, POS)            \
+        write_field_element_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS);
 
-// TODO: replace T1 with CURRENT_TASK
-#define WriteSelfField_U16(FLD, SRC)                                        \
-        write_field_u16(&GetField(T1, T1, FLD), SRC);                       \
-        (&GetField(T1, T1, FLD))->swap = 1;
+/**
+ * Write self-field in channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to write
+ * @param SRC   address of the variable to write into the field
+ */
+#define WriteSelfField_U16(TASK, FLD, SRC)                                  \
+        write_field_u16(&GetField(TASK, TASK, FLD), SRC);                   \
+        (&GetField(TASK, TASK, FLD))->swap = 1;
 
-// TODO: replace T1 with CURRENT_TASK
-// NOTE: cannot swap when updating only one element of the array,
-//       find a solution!
-#define WriteSelfFieldElement_U16(FLD, SRC, POS)                            \
-        write_field_element_u16(&GetField(T1, T1, FLD), SRC, POS);          \
-        (&GetField(T1, T1, FLD))->swap = 1;
+/**
+ * Write a single element of a self-field in channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to write
+ * @param SRC   address of the variable to write into the field
+ * @param POS   offset of the element to write
+ */
+// TODO: cannot swap when updating only one element of the array, find a solution!
+#define WriteSelfFieldElement_U16(TASK, FLD, SRC, POS)                      \
+        write_field_element_u16(&GetField(TASK, TASK, FLD), SRC, POS);      \
+        (&GetField(TASK, TASK, FLD))->swap = 1;
 
+/**
+ * Switch to another task.
+ *
+ * @param TASK  task to switch to
+ */
 #define StartTask(TASK)                                                     \
         start_task(&TASK, &prog_state);
 
+/**
+ * Resume program from last executing task, call at the beginning of the main.
+ */
 #define ResumeProgram()                                                     \
         (prog_state.curr_task)->task_function();
 

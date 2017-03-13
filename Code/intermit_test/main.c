@@ -10,17 +10,20 @@
 void task_1_function (void);
 void task_2_function (void);
 
-
+// Define all the tasks here
 NewTask(T1, task_1_function)
 NewTask(T2, task_2_function)
 
-#pragma PERSISTENT(prog_state)
+// Inform the program state about the task to execute on the first start of the
+// system, and declare it as persistent
+#pragma PERSISTENT(PersState)
 InitialTask(T1)
 
-#pragma PERSISTENT(GetName(T1, T2, f1))
-//NewChannel(T1, T2, f1, UINT, 32)
+// Define all fields here, declare each field as persistent
+#pragma PERSISTENT(PersField(T1, T2, f1))
 NewField(T1, T2, f1, UINT, 32)
 
+// Test-purpose variable
 uint16_t data[32];
 
 int main(void) {
@@ -33,11 +36,11 @@ int main(void) {
     __T1T2f1[i+1] = 10+1+i;
     __T1T2f1[0] = i+1;
 
-    ReadField_U16(T1, f1, data);
+    ReadField_U16(T1, T2, f1, data);
 
     data[5] = 127;
 
-    WriteFieldElement_U16(T2, f1, &data[5], 5);
+    WriteFieldElement_U16(T1, T2, f1, &data[5], 5);
 
     StartTask(T2);
 
