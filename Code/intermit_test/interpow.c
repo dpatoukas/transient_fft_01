@@ -22,14 +22,31 @@ void read_field_u16(field *f, uint16_t *dst)
 }
 
 
-void write_field_u16(field *f, uint16_t *src)
+void write_field_u16(void *f, uint16_t *src, uint8_t self)
 {
-    uint16_t i = f->length;
-    uint16_t offset = 0;
+    if (!self) {
+        field *t = (field*) f;
 
-    while (i--) {
-        *(((uint16_t*) f->base_addr) + offset) = *(src + offset);
-        offset++;
+        uint16_t i = t->length;
+        uint16_t offset = 0;
+
+        while (i--) {
+            *(((uint16_t*) t->base_addr) + offset) = *(src + offset);
+            offset++;
+        }
+    }
+    else {
+        self_field *t = (self_field*) f;
+
+        uint16_t i = t->length;
+        uint16_t offset = 0;
+        uint16_t *base;
+        (t->in) ? (base = t->base_addr_0) : (base = t->base_addr_1);
+
+        while (i--) {
+            *(((uint16_t*) base) + offset) = *(src + offset);
+            offset++;
+        }
     }
 }
 

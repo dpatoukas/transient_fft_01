@@ -23,6 +23,10 @@ InitialTask(T1)
 #pragma PERSISTENT(PersField(T1, T2, f1))
 NewField(T1, T2, f1, UINT, 32)
 
+#pragma PERSISTENT(__T1T1f1_0)
+#pragma PERSISTENT(__T1T1f1_1)
+NewSelfField(T1, f1, UINT, 4)
+
 // Test-purpose variable
 uint16_t data[32];
 
@@ -43,6 +47,8 @@ int main(void) {
     WriteFieldElement_U16(T1, T2, f1, &data[5], 5);
 
     StartTask(T2);
+
+    WriteSelfField_U16(T1, f1, data);
 
 	return 0;
 }
