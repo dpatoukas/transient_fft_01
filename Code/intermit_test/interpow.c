@@ -6,23 +6,41 @@
  */
 
 
+#include <string.h>
 #include "interpow.h"
 
 
 
-void read_field_u16(field *f, uint16_t *dst)
+void read_field_u16(void *f, uint16_t *dst, uint8_t self, program_state *ps)
 {
-    uint16_t i = f->length;
-    uint16_t offset = 0;
+    if (!self) {
+        field *t = (field*) f;
 
-    while (i--) {
-        *(dst + offset) = *(((uint16_t*) f->base_addr) + offset);
-        offset++;
+        uint16_t i = t->length;
+        uint16_t offset = 0;
+
+        while (i--) {
+            *(dst + offset) = *(((uint16_t*) t->base_addr) + offset);
+            offset++;
+        }
+    }
+    else {
+        self_field *t = (self_field*) f;
+
+        uint16_t i = t->length;
+        uint16_t offset = 0;
+        uint16_t *base;
+        (t->code & ps->curr_task->dirty_in) ? (base = t->base_addr_1) : (base = t->base_addr_0);
+
+        while (i--) {
+            *(dst + offset) = *(((uint16_t*) base) + offset);
+            offset++;
+        }
     }
 }
 
 
-void write_field_u16(void *f, uint16_t *src, uint8_t self)
+void write_field_u16(void *f, uint16_t *src, uint8_t self, program_state *ps)
 {
     if (!self) {
         field *t = (field*) f;
@@ -41,26 +59,60 @@ void write_field_u16(void *f, uint16_t *src, uint8_t self)
         uint16_t i = t->length;
         uint16_t offset = 0;
         uint16_t *base;
-        (t->in) ? (base = t->base_addr_0) : (base = t->base_addr_1);
+        (t->code & ps->curr_task->dirty_in) ? (base = t->base_addr_0) : (base = t->base_addr_1);
 
         while (i--) {
             *(((uint16_t*) base) + offset) = *(src + offset);
             offset++;
         }
+
+        uint16_t d = (t->code << 8) + t->code;
+        ps->curr_task->dirty_in ^= d;
     }
 }
 
 
-void write_field_element_u16(field *f, uint16_t *src, uint16_t pos)
+void write_field_element_u16(void *f, uint16_t *src, uint16_t pos, uint8_t self, program_state *ps)
 {
-    ((uint16_t*) f->base_addr)[pos] = *src;
+    // ((uint16_t*) f->base_addr)[pos] = *src;
+
+    if (!self) {
+        field *t = (field*) f;
+        ((uint16_t*) t->base_addr)[pos] = *src;
+    }
+    else {
+        self_field *t = (self_field*) f;
+
+        uint16_t *base;
+        (t->code & ps->curr_task->dirty_in) ? (base = t->base_addr_0) : (base = t->base_addr_1);
+
+        ((uint16_t*) base)[pos] = *src;
+
+        // TODO: cannot swap when updating only one element of the array, find a solution!
+        uint16_t d = (t->code << 8) + t->code;
+        ps->curr_task->dirty_in ^= d;
+    }
 }
 
 
-void start_task(const task *t, program_state *ps)
+void start_task(task *t, program_state *ps)
 {
-    // perform all necessary operations like state update, self-field swap etc.
+    // TODO: make the following two instructions atomic
+    ps->curr_task = t;
+    ps->curr_task->dirty_in &= 0xFF; // clear "dirty" of current task
 
-    ps->curr_task = t; // this has to be the last instruction before task_function()
-    t->task_function();
+    t->task_function(); // call the task function
+}
+
+
+void resume_program(program_state *ps)
+{
+    // swap-and-clear, atomically executed in the last instruction of the if-body
+    if (ps->curr_task->has_self_channel) {
+        uint16_t d_h = (ps->curr_task->dirty_in >> 8);
+        uint16_t d = (d_h << 8) + d_h;
+        ps->curr_task->dirty_in ^= d;
+    }
+
+    ps->curr_task->task_function();
 }

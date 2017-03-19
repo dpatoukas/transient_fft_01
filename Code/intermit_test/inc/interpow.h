@@ -5,9 +5,14 @@
  *
  * TODO:
  *
+ * - Implement Read/Write operations for 16-bit signed integers, 8-bit
+ *   signed/unsigned integers and 32-bit signed/unsigned integers
+ *
+ * - Structure identifiers should be preceded by a double underscore
+ *
  * - Implement support for Memory Protection Unit
  *
- * - Consider Low-Power advices
+ * - Consider Low-Power Advice
  *
  */
 
@@ -21,6 +26,22 @@
 #define MAX_SELF_FIELDS_SWAP        4
 
 #endif /* MAX_SELF_FIELDS_SWAP */
+
+#ifndef TASK_NAME_LENGTH
+
+#define TASK_NAME_LENGTH            10
+
+#endif /* TASK_NAME_LENGTH */
+
+// Self-fields codes
+#define SELF_FIELD_CODE_1           0x01
+#define SELF_FIELD_CODE_2           0x02
+#define SELF_FIELD_CODE_3           0x04
+#define SELF_FIELD_CODE_4           0x08
+#define SELF_FIELD_CODE_5           0x10
+#define SELF_FIELD_CODE_6           0x20
+#define SELF_FIELD_CODE_7           0x40
+#define SELF_FIELD_CODE_8           0x80
 
 /*
  *******************************************************************************
@@ -52,15 +73,18 @@ typedef struct field {
 } field;
 
 typedef struct self_field {
+    uint8_t     code;
     void        *base_addr_0;
     void        *base_addr_1;
     uint16_t    length;
-    uint8_t     in;
-    uint8_t     swap;
 } self_field;
 
 typedef struct task {
-    void (*task_function) (void);
+    char        name[TASK_NAME_LENGTH];
+    void        (*task_function) (void);
+    uint8_t     has_self_channel;
+    uint16_t    dirty_in;
+    uint8_t     num_of_self_fields;
 } task;
 
 // probably channel is not needed
@@ -71,10 +95,19 @@ typedef struct channel {
     uint8_t     num_fields;
 } channel;
 
+// probably self-channel is not needed
+typedef struct self_channel {
+    task        *src;
+    field       *flds;
+    uint8_t     num_fields;
+    uint16_t    dirty_in;
+} self_channel;
+
 typedef struct program_state {
-    const task  *curr_task;
-    self_field  *to_swap[MAX_SELF_FIELDS_SWAP];
-    uint8_t     num_to_swap;
+    task      *curr_task;
+//    self_field  *to_swap[MAX_SELF_FIELDS_SWAP];
+//    uint8_t     num_to_swap;
+    self_channel    *to_clear;
 } program_state;
 
 
@@ -88,13 +121,15 @@ typedef struct program_state {
  *******************************************************************************
  */
 
-void read_field_u16(field*, uint16_t*);
+void read_field_u16(void*, uint16_t*, uint8_t, program_state*);
 
-void write_field_u16(void*, uint16_t*, uint8_t);
+void write_field_u16(void*, uint16_t*, uint8_t, program_state*);
 
-void write_field_element_u16(field*, uint16_t*, uint16_t);
+void write_field_element_u16(void*, uint16_t*, uint16_t, uint8_t, program_state*);
 
-void start_task(const task*, program_state*);
+void start_task(task*, program_state*);
+
+void resume_program(program_state*);
 
 
 /*
@@ -113,14 +148,22 @@ void start_task(const task*, program_state*);
 
 #define GetField(S, D, F)           S##D##F
 
+
 /**
  * Create a new task.
  *
- * @param NAME  task's name
- * @param FN    pointer to the function to execute
+ * @param NAME              task's name
+ * @param FN                pointer to the function to execute
+ * @param HAS_SELF_CHANNEL  1->yes, 0->no
  */
-#define NewTask(NAME, FN)                                                   \
-        static const task NAME = { .task_function = FN };
+#define NewTask(NAME, FN, HAS_SELF_CHANNEL)                                 \
+        task NAME = {                                                       \
+            .task_function = FN,                                            \
+            .has_self_channel = HAS_SELF_CHANNEL,                           \
+            .dirty_in = 0,                                                  \
+            .num_of_self_fields = 0                                         \
+        };
+
 
 /**
  * Define which task has to execute first on the first start of the system.
@@ -129,8 +172,7 @@ void start_task(const task*, program_state*);
  */
 #define InitialTask(TASK)                                                   \
         static program_state prog_state = {                                 \
-                                            .curr_task = &TASK,             \
-                                            .num_to_swap = 0,               \
+            .curr_task = &TASK,                                             \
         };
 
 // probably not needed, just use its concept
@@ -147,6 +189,14 @@ void start_task(const task*, program_state*);
                              .num_fields = 1                                \
         };
 
+// probably not needed, just use its concept
+#define NewSelfChannel(TASK)                                                \
+        self_channel TASK##TASK = {                                         \
+            .src = &TASK,                                                   \
+            .num_fields = 0,                                                \
+            .dirty_in = 0                                                   \
+        };
+
 /**
  * Define a new field, conceptually belonging to the channel SRC->DST.
  *
@@ -159,8 +209,8 @@ void start_task(const task*, program_state*);
 #define NewField(SRC, DST, NAME, TYPE, LEN)                                 \
         TYPE __##SRC##DST##NAME[LEN] = {0};                                 \
         field SRC##DST##NAME = {                                            \
-                                 .length = LEN,                             \
-                                 .base_addr = &__##SRC##DST##NAME           \
+            .length = LEN,                                                  \
+            .base_addr = &__##SRC##DST##NAME                                \
         };
 
 /**
@@ -170,16 +220,19 @@ void start_task(const task*, program_state*);
  * @param NAME  field's name
  * @param TYPE  field's TYPE, can be one of the field types defined above
  * @param LEN   field's length (if LEN>1 the field is an array)
+ * @param CODE  field's code, this parameter must be SELF_FIELD_CODE_x
+ *                  where x = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
+ *                  representing the x-th self-field declared for the
+ *                  self-channel TASK->TASK
  */
-#define NewSelfField(TASK, NAME, TYPE, LEN)                                 \
+#define NewSelfField(TASK, NAME, TYPE, LEN, CODE)                           \
         TYPE __##TASK##TASK##NAME##_0[LEN] = {0};                           \
         TYPE __##TASK##TASK##NAME##_1[LEN] = {0};                           \
         self_field TASK##TASK##NAME = {                                     \
-                                  .length = LEN,                            \
-                                  .base_addr_0 = &__##TASK##TASK##NAME##_0, \
-                                  .base_addr_1 = &__##TASK##TASK##NAME##_1, \
-                                  .in = 0,                                  \
-                                  .swap = 0                                 \
+            .length = LEN,                                                  \
+            .base_addr_0 = &__##TASK##TASK##NAME##_0,                       \
+            .base_addr_1 = &__##TASK##TASK##NAME##_1,                       \
+            .code = CODE                                                    \
         };
 
 /**
@@ -192,7 +245,18 @@ void start_task(const task*, program_state*);
  * @param DST       address to store the result at
  */
 #define ReadField_U16(SRC_TASK, DST_TASK, FLD, DST)                         \
-        read_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), DST);
+        read_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), DST, 0, &prog_state);
+
+/**
+ * Read self-field from channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to read
+ * @param DST   address to store the result at
+ */
+#define ReadSelfField_U16(TASK, FLD, DST)                                   \
+        read_field_u16(&GetField(TASK, TASK, FLD), DST, 1, &prog_state);
 
 /**
  * Write field in channel SRC_TASK->DST_TASK.
@@ -204,7 +268,7 @@ void start_task(const task*, program_state*);
  * @param SRC       address of the variable to write into the field
  */
 #define WriteField_U16(SRC_TASK, DST_TASK, FLD, SRC)                        \
-        write_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC);
+        write_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, 0, &prog_state);
 
 /**
  * Write a single element of a field in channel SRC_TASK->DST_TASK.
@@ -217,7 +281,7 @@ void start_task(const task*, program_state*);
  * @param POS       offset of the element to write
  */
 #define WriteFieldElement_U16(SRC_TASK, DST_TASK, FLD, SRC, POS)            \
-        write_field_element_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS);
+        write_field_element_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS, 0, &prog_state);
 
 /**
  * Write self-field in channel TASK->TASK.
@@ -228,10 +292,9 @@ void start_task(const task*, program_state*);
  * @param SRC   address of the variable to write into the field
  */
 #define WriteSelfField_U16(TASK, FLD, SRC)                                  \
-        write_field_u16(&GetField(TASK, TASK, FLD), SRC, 1);                \
-        (&GetField(TASK, TASK, FLD))->swap = 1;                             \
-        prog_state.to_swap[prog_state.num_to_swap] = &GetField(TASK, TASK, FLD); \
-        prog_state.num_to_swap++;                                           \
+        write_field_u16(&GetField(TASK, TASK, FLD), SRC, 1, &prog_state);
+//        prog_state.to_swap[prog_state.num_to_swap] = &GetField(TASK, TASK, FLD); \
+//        prog_state.num_to_swap++;
 
 /**
  * Write a single element of a self-field in channel TASK->TASK.
@@ -242,10 +305,8 @@ void start_task(const task*, program_state*);
  * @param SRC   address of the variable to write into the field
  * @param POS   offset of the element to write
  */
-// TODO: cannot swap when updating only one element of the array, find a solution!
 #define WriteSelfFieldElement_U16(TASK, FLD, SRC, POS)                      \
-        write_field_element_u16(&GetField(TASK, TASK, FLD), SRC, POS);      \
-        (&GetField(TASK, TASK, FLD))->swap = 1;
+        write_field_element_u16(&GetField(TASK, TASK, FLD), SRC, POS, 1, &prog_state);
 
 /**
  * Switch to another task.
@@ -258,9 +319,8 @@ void start_task(const task*, program_state*);
 /**
  * Resume program from last executing task, call at the beginning of the main.
  */
-// TODO: include also other operations like reset of num_to_swap etc.
-#define ResumeProgram()                                                     \
-        (prog_state.curr_task)->task_function();
+#define Resume()                                                             \
+        resume_program(&prog_state);
 
 
 #endif /* INC_INTERPOW_H_ */
