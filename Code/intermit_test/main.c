@@ -127,17 +127,21 @@ void task_3_function ()
     uint16_t internal_data[32];
     ReadField_U16(T2, T3, end_field, internal_data);
 
-    uint8_t is_error = 0;
+    uint8_t errors = 0;
     uint8_t i;
     for (i=0; i<32; i++)
         if (internal_data[i] != 1024)
-            is_error++;
+            errors++;
 
-    if (!is_error) {
+    if (!errors) {
         PM5CTL0 &= ~LOCKLPM5;
         P1DIR |= 0x01;
-        P1OUT |= 0x01;
-        __no_operation();
+        volatile uint16_t count;
+        while (1) {
+            count = 10000;
+            while (--count);
+            P1OUT ^= 0x01;
+        }
     }
 
     StartTask(T3);
