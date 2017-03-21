@@ -164,6 +164,9 @@ void resume_program(program_state*);
 
 #define PersField(S, D, F)          __##S##D##F
 
+#define PersSField0(T, F)           __##T##T##F##_0
+#define PersSField1(T, F)           __##T##T##F##_1
+
 #define GetField(S, D, F)           S##D##F
 
 

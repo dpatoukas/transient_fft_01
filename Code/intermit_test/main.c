@@ -17,38 +17,55 @@ void task_3_function (void);
 /******************************************************************************/
 // Define all the tasks here, preceded by the PERSISTENT declaration
 
-#pragma PERSISTENT(T1)              // argument: task name
+// #pragma argument: task name
+#pragma PERSISTENT(T1)
 NewTask(T1, task_1_function, 1)
 
-#pragma PERSISTENT(T2)              // argument: task name
+// #pragma argument: task name
+#pragma PERSISTENT(T2)
 NewTask(T2, task_2_function, 0)
 
-#pragma PERSISTENT(T3)              // argument: task name
+// #pragma argument: task name
+#pragma PERSISTENT(T3)
 NewTask(T3, task_3_function, 0)
 
 /******************************************************************************/
 // Inform the program about the task to execute on the first start of the
 // system, preceded by the PERSISTENT declaration
 
-#pragma PERSISTENT(PersState)       // argument: PersState (FIXED)
+// #pragma argument: PersState (FIXED)
+#pragma PERSISTENT(PersState)
 InitialTask(T1)
 
 /******************************************************************************/
 // Define all fields here, preceded by the PERSISTENT declaration
 
+// #pragma argument: PersField(SRC_TASK, DST_TASK, NAME)
 #pragma PERSISTENT(PersField(T1, T2, int_field))
 NewField(T1, T2, int_field, UINT16, 32)
 
+// #pragma argument: PersField(SRC_TASK, DST_TASK, NAME)
 #pragma PERSISTENT(PersField(T2, T3, end_field))
 NewField(T2, T3, end_field, UINT16, 32)
 
-#pragma PERSISTENT(__T1T1self_field_data_short_0)
-#pragma PERSISTENT(__T1T1self_field_data_short_1)
+// 2 pragmas needed for self-fields:
+// first #pragma argument: PersSField0(TASK, NAME)
+// second #pragma argument: PersSField1(TASK, NAME)
+#pragma PERSISTENT(PersSField0(T1, self_field_data_short))
+#pragma PERSISTENT(PersSField1(T1, self_field_data_short))
 NewSelfField(T1, self_field_data_short, UINT16, 4, SELF_FIELD_CODE_1)
 
-#pragma PERSISTENT(__T1T1self_field_data_long_0)
-#pragma PERSISTENT(__T1T1self_field_data_long_1)
+// 2 pragmas needed for self-fields:
+// first #pragma argument: PersSField0(TASK, NAME)
+// second #pragma argument: PersSField1(TASK, NAME)
+#pragma PERSISTENT(PersSField0(T1, self_field_data_long))
+#pragma PERSISTENT(PersSField1(T1, self_field_data_long))
 NewSelfField(T1, self_field_data_long, UINT16, 32, SELF_FIELD_CODE_2)
+
+// NOTE: self-fields belonging to the same self-channel must have progressive
+//       self-field codes, e.g.
+//       - first self-field: SELF_FIELD_CODE_1
+//       - second self-field: SELF_FIELD_CODE_2
 
 /******************************************************************************/
 
