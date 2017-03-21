@@ -37,22 +37,21 @@ InitialTask(T1)
 // Define all fields here, preceded by the PERSISTENT declaration
 
 #pragma PERSISTENT(PersField(T1, T2, int_field))
-NewField(T1, T2, int_field, UINT, 32)
+NewField(T1, T2, int_field, UINT16, 32)
 
 #pragma PERSISTENT(PersField(T2, T3, end_field))
-NewField(T2, T3, end_field, UINT, 32)
+NewField(T2, T3, end_field, UINT16, 32)
 
 #pragma PERSISTENT(__T1T1self_field_data_short_0)
 #pragma PERSISTENT(__T1T1self_field_data_short_1)
-NewSelfField(T1, self_field_data_short, UINT, 4, SELF_FIELD_CODE_1)
+NewSelfField(T1, self_field_data_short, UINT16, 4, SELF_FIELD_CODE_1)
 
 #pragma PERSISTENT(__T1T1self_field_data_long_0)
 #pragma PERSISTENT(__T1T1self_field_data_long_1)
-NewSelfField(T1, self_field_data_long, UINT, 32, SELF_FIELD_CODE_2)
+NewSelfField(T1, self_field_data_long, UINT16, 32, SELF_FIELD_CODE_2)
 
 /******************************************************************************/
-// Test-purpose variable
-uint16_t data[32];
+
 
 int main(void) {
 
@@ -122,8 +121,6 @@ void task_2_function ()
 
 void task_3_function ()
 {
-    // read field and include next 3 operation inside if
-
     uint16_t internal_data[32];
     ReadField_U16(T2, T3, end_field, internal_data);
 
