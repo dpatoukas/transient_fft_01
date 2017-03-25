@@ -57,14 +57,6 @@
 #define INT32                       int16_t
 #define UINT32                      uint16_t
 
-// Field-type codes for Read/Write operations
-#define INT8_CODE                   1
-#define UINT8_CODE                  2
-#define INT16_CODE                  3
-#define UINT16_CODE                 4
-#define INT32_CODE                  5
-#define UINT32_CODE                 6
-
 
 /*
  *******************************************************************************
