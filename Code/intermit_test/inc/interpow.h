@@ -7,7 +7,7 @@
  *
  * - [L] Take care of write_field_element
  *
- * - [L] Free the user from the explicit declaration of #pragma (try with 
+ * - [M] Free the user from the explicit declaration of #pragma (try with 
  *       _Pragma inside macros like NewTask, NewField...)
  *
  * - [L] Return error codes for Read/Write operations?
