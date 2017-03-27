@@ -7,6 +7,9 @@
  *
  * - [L] Take care of write_field_element
  *
+ * - [L] Free the user from the explicit declaration of #pragma (try with 
+ *       _Pragma inside macros like NewTask, NewField...)
+ *
  * - [L] Return error codes for Read/Write operations?
  *
  * - [L] Implement support for Memory Protection Unit
@@ -19,12 +22,6 @@
 #define INC_INTERPOW_H_
 
 #include <stdint.h>
-
-#ifndef MAX_SELF_FIELDS_SWAP
-
-#define MAX_SELF_FIELDS_SWAP        4
-
-#endif /* MAX_SELF_FIELDS_SWAP */
 
 
 /*
