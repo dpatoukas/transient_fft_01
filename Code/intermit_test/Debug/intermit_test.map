@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker Unix v16.9.1                   
 ******************************************************************************
->> Linked Tue Mar 21 19:10:51 2017
+>> Linked Mon Mar 27 19:09:46 2017
 
 OUTPUT FILE NAME:   <intermit_test.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit_mpu"  address: 00004400
@@ -80,7 +80,7 @@ MEMORY CONFIGURATION
   INT53                 0000fffa   00000002  00000002  00000000  RWIX
   INT54                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FRAM2                 00010000   00034000  000004ce  00033b32  RWIX
+  FRAM2                 00010000   00034000  000004cc  00033b34  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -99,7 +99,7 @@ section   page    origin      length       input sections
                   00004110    00000008     main.obj (.TI.persistent:T3)
                   00004118    00000008     main.obj (.TI.persistent:__T1T1self_field_data_short_0)
                   00004120    00000008     main.obj (.TI.persistent:__T1T1self_field_data_short_1)
-                  00004128    00000004     main.obj (.TI.persistent:prog_state)
+                  00004128    00000004     main.obj (.TI.persistent:__prog_state)
 
 .binit     0    00004000    00000000     
 
@@ -132,10 +132,10 @@ section   page    origin      length       input sections
                   0000441e    00000008                            : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
 
 .data      0    00001c00    00000024     UNINITIALIZED
-                  00001c00    0000000c     main.obj (.data:T1T1self_field_data_long)
-                  00001c0c    0000000c     main.obj (.data:T1T1self_field_data_short)
-                  00001c18    00000006     main.obj (.data:T1T2int_field)
-                  00001c1e    00000006     main.obj (.data:T2T3end_field)
+                  00001c00    0000000c     main.obj (.data:__T1T1self_field_data_long__)
+                  00001c0c    0000000c     main.obj (.data:__T1T1self_field_data_short__)
+                  00001c18    00000006     main.obj (.data:__T1T2int_field__)
+                  00001c1e    00000006     main.obj (.data:__T2T3end_field__)
 
 .stack     0    00002b60    000000a0     UNINITIALIZED
                   00002b60    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
@@ -276,7 +276,7 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    000004ce     
+.text      0    00010000    000004cc     
                   00010000    000000f4     main.obj (.text:task_1_function)
                   000100f4    00000082     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
                   00010176    0000007e     interpow.obj (.text:write_field_u16)
@@ -291,11 +291,11 @@ SYSNMI     0    0000fffc    00000002
                   00010470    00000014                            : memcpy.obj (.text:memcpy)
                   00010484    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
                   00010496    00000012     main.obj (.text:main)
-                  000104a8    00000010     interpow.obj (.text:start_task)
-                  000104b8    0000000a     rts430x_lc_rd_eabi.lib : lsr16.obj (.text)
-                  000104c2    00000006                            : exit.obj (.text:abort)
-                  000104c8    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  000104cc    00000002                            : startup.obj (.text:_system_post_cinit)
+                  000104a8    0000000e     interpow.obj (.text:start_task)
+                  000104b6    0000000a     rts430x_lc_rd_eabi.lib : lsr16.obj (.text)
+                  000104c0    00000006                            : exit.obj (.text:abort)
+                  000104c6    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  000104ca    00000002                            : startup.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
@@ -303,9 +303,9 @@ MODULE SUMMARY
        ------                     ----   -------   -------
     ./
        main.obj                   462    0         336    
-       interpow.obj               292    0         0      
+       interpow.obj               290    0         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     754    0         336    
+       Total:                     752    0         336    
                                                           
     /Applications/ti/ccsv7/ccs_base/msp430/lib/FR59xx/MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib
        mpu_init.o                 40     0         0      
@@ -369,7 +369,7 @@ MODULE SUMMARY
        Stack:                     0      0         160    
        Linker Generated:          0      48        0      
     +--+--------------------------+------+---------+---------+
-       Grand Total:               1268   124       496    
+       Grand Total:               1266   124       496    
 
 
 LINKER GENERATED COPY TABLES
@@ -650,7 +650,7 @@ address   name
 000004bc  BIN2BCD                      
 000004bd  BIN2BCD_H                    
 000004bc  BIN2BCD_L                    
-000104c2  C$$EXIT                      
+000104c0  C$$EXIT                      
 0000043e  CAPTIO0CTL                   
 0000043f  CAPTIO0CTL_H                 
 0000043e  CAPTIO0CTL_L                 
@@ -1347,11 +1347,7 @@ address   name
 0000019b  SYSUNIV_H                    
 0000019a  SYSUNIV_L                    
 00004100  T1                           
-00001c00  T1T1self_field_data_long     
-00001c0c  T1T1self_field_data_short    
-00001c18  T1T2int_field                
 00004108  T2                           
-00001c1e  T2T3end_field                
 00004110  T3                           
 00000352  TA0CCR0                      
 00000353  TA0CCR0_H                    
@@ -1900,10 +1896,14 @@ address   name
 000000a0  __STACK_SIZE                 
 00004000  __T1T1self_field_data_long_0 
 00004040  __T1T1self_field_data_long_1 
+00001c00  __T1T1self_field_data_long__ 
 00004118  __T1T1self_field_data_short_0
 00004120  __T1T1self_field_data_short_1
+00001c0c  __T1T1self_field_data_short__
 00004080  __T1T2int_field              
+00001c18  __T1T2int_field__            
 000040c0  __T2T3end_field              
+00001c1e  __T2T3end_field__            
 UNDEFED   __TI_BINIT_Base              
 UNDEFED   __TI_BINIT_Limit             
 0000444e  __TI_CINIT_Base              
@@ -1959,14 +1959,14 @@ ffffffff  __c_args__
 00000001  __mpu_enable                 
 0001040c  __mpu_init                   
 00010458  __mspabi_mpyi_f5hw           
-000104b8  __mspabi_srli                
+000104b6  __mspabi_srli                
 000100f4  _auto_init_hold_wdt          
 00004400  _c_int00_noargs_noexit_mpu   
 0000fffe  _reset_vector                
 00002b60  _stack                       
-000104cc  _system_post_cinit           
-000104c8  _system_pre_init             
-000104c2  abort                        
+000104ca  _system_post_cinit           
+000104c6  _system_pre_init             
+000104c0  abort                        
 0001034e  copy_in                      
 00004400  fram_ipe_end                 
 00004400  fram_ipe_start               
@@ -3495,10 +3495,10 @@ address   name
 00000afc  LEAIVL                       
 00000afe  LEAIVH                       
 00001513  mpu_sam_value                
-00001c00  T1T1self_field_data_long     
-00001c0c  T1T1self_field_data_short    
-00001c18  T1T2int_field                
-00001c1e  T2T3end_field                
+00001c00  __T1T1self_field_data_long__ 
+00001c0c  __T1T1self_field_data_short__
+00001c18  __T1T2int_field__            
+00001c1e  __T2T3end_field__            
 00002b60  _stack                       
 00002c00  __STACK_END                  
 00004000  __T1T1self_field_data_long_0 
@@ -3574,11 +3574,11 @@ address   name
 00010484  __TI_decompress_none         
 00010496  main                         
 000104a8  start_task                   
-000104b8  __mspabi_srli                
-000104c2  C$$EXIT                      
-000104c2  abort                        
-000104c8  _system_pre_init             
-000104cc  _system_post_cinit           
+000104b6  __mspabi_srli                
+000104c0  C$$EXIT                      
+000104c0  abort                        
+000104c6  _system_pre_init             
+000104ca  _system_post_cinit           
 ffffffff  __TI_pprof_out_hndl          
 ffffffff  __TI_prof_data_size          
 ffffffff  __TI_prof_data_start         

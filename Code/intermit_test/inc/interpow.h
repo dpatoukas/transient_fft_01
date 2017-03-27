@@ -5,15 +5,13 @@
  *
  * TODO:
  *
- * - Implement Read/Write operations for 16-bit signed integers, 8-bit
- *   signed/unsigned integers and 32-bit signed/unsigned integers
+ * - [L] Take care of write_field_element
  *
- * - Structure identifiers should be preceded by a double underscore to avoid
- *   name collisions with user-defined variables
+ * - [L] Return error codes for Read/Write operations?
  *
- * - Implement support for Memory Protection Unit
+ * - [L] Implement support for Memory Protection Unit
  *
- * - Consider Low-Power Advice
+ * - [L] Consider Low-Power Advice
  *
  */
 
@@ -68,30 +66,30 @@
  *******************************************************************************
  */
 
-typedef struct field {
+typedef struct __field {
     void            *base_addr;
     uint16_t        length;
-} field;
+} __field;
 
-typedef struct self_field {
+typedef struct __self_field {
     uint8_t         code;
     void            *base_addr_0;
     void            *base_addr_1;
     uint16_t        length;
-} self_field;
+} __self_field;
 
-typedef struct task {
+typedef struct __task {
     void            (*task_function) (void);
     uint8_t         has_self_channel;
     uint16_t        dirty_in;
-} task;
+} __task;
 
 // probably channel is not needed
 /*
 typedef struct channel {
-    task            *src;
-    task            *dst;
-    field           *flds;
+    __task            *src;
+    __task            *dst;
+    __field           *flds;
     uint8_t         num_fields;
 } channel;
 */
@@ -99,16 +97,16 @@ typedef struct channel {
 // probably self-channel is not needed
 /*
 typedef struct self_channel {
-    task            *src;
-    field           *flds;
+    __task            *src;
+    __field           *flds;
     uint8_t         num_fields;
     uint16_t        dirty_in;
 } self_channel;
 */
 
-typedef struct program_state {
-    task            *curr_task;
-} program_state;
+typedef struct __program_state {
+    __task          *curr_task;
+} __program_state;
 
 
 /*
@@ -121,25 +119,35 @@ typedef struct program_state {
  *******************************************************************************
  */
 
-void read_field_8(void*, int8_t*, uint8_t, program_state*); // not implemented yet
+void read_field_8(void*, int8_t*, uint8_t, __program_state*);
 
-void read_field_u8(void*, uint8_t*, uint8_t, program_state*); // not implemented yet
+void read_field_u8(void*, uint8_t*, uint8_t, __program_state*);
 
-void read_field_16(void*, int16_t*, uint8_t, program_state*); // not implemented yet
+void read_field_16(void*, int16_t*, uint8_t, __program_state*);
 
-void read_field_u16(void*, uint16_t*, uint8_t, program_state*);
+void read_field_u16(void*, uint16_t*, uint8_t, __program_state*);
 
-void read_field_32(void*, int32_t*, uint8_t, program_state*); // not implemented yet
+void read_field_32(void*, int32_t*, uint8_t, __program_state*);
 
-void read_field_u32(void*, uint32_t*, uint8_t, program_state*); // not implemented yet
+void read_field_u32(void*, uint32_t*, uint8_t, __program_state*);
 
-void write_field_u16(void*, uint16_t*, uint8_t, program_state*);
+void write_field_8(void*, int8_t*, uint8_t, __program_state*);
 
-void write_field_element_u16(void*, uint16_t*, uint16_t, uint8_t, program_state*);
+void write_field_u8(void*, uint8_t*, uint8_t, __program_state*);
 
-void start_task(task*, program_state*);
+void write_field_16(void*, int16_t*, uint8_t, __program_state*);
 
-void resume_program(program_state*);
+void write_field_u16(void*, uint16_t*, uint8_t, __program_state*);
+
+void write_field_32(void*, int32_t*, uint8_t, __program_state*);
+
+void write_field_u32(void*, uint32_t*, uint8_t, __program_state*);
+
+void write_field_element_u16(void*, uint16_t*, uint16_t, uint8_t, __program_state*);
+
+void start_task(__task*, __program_state*);
+
+void resume_program(__program_state*);
 
 
 /*
@@ -152,14 +160,14 @@ void resume_program(program_state*);
  *******************************************************************************
  */
 
-#define PersState                   prog_state
+#define PersState                   __prog_state
 
 #define PersField(S, D, F)          __##S##D##F
 
 #define PersSField0(T, F)           __##T##T##F##_0
 #define PersSField1(T, F)           __##T##T##F##_1
 
-#define GetField(S, D, F)           S##D##F
+#define GetField(S, D, F)           __##S##D##F##__
 
 
 /**
@@ -170,7 +178,7 @@ void resume_program(program_state*);
  * @param HAS_SELF_CHANNEL  1->yes, 0->no
  */
 #define NewTask(NAME, FN, HAS_SELF_CHANNEL)                                     \
-        task NAME = {                                                           \
+        __task NAME = {                                                         \
             .task_function = FN,                                                \
             .has_self_channel = HAS_SELF_CHANNEL,                               \
             .dirty_in = 0                                                       \
@@ -183,7 +191,7 @@ void resume_program(program_state*);
  * @param TASK  name of the task
  */
 #define InitialTask(TASK)                                                       \
-        static program_state prog_state = {                                     \
+        static __program_state __prog_state = {                                 \
             .curr_task = &TASK,                                                 \
         };
 
@@ -192,7 +200,7 @@ void resume_program(program_state*);
 /*
 #define NewChannel(SRC, DST, NAME, TYPE, LEN)                                   \
         TYPE __##SRC##DST##NAME[LEN] = {0};                                     \
-        field SRC##DST##NAME = {                                                \
+        __field SRC##DST##NAME = {                                              \
                                  .length = LEN,                                 \
                                  .base_addr = &__##SRC##DST##NAME               \
         };                                                                      \
@@ -226,7 +234,7 @@ void resume_program(program_state*);
  */
 #define NewField(SRC, DST, NAME, TYPE, LEN)                                     \
         TYPE __##SRC##DST##NAME[LEN] = {0};                                     \
-        field SRC##DST##NAME = {                                                \
+        __field __##SRC##DST##NAME##__ = {                                      \
             .length = LEN,                                                      \
             .base_addr = &__##SRC##DST##NAME                                    \
         };
@@ -247,12 +255,75 @@ void resume_program(program_state*);
 #define NewSelfField(TASK, NAME, TYPE, LEN, CODE)                               \
         TYPE __##TASK##TASK##NAME##_0[LEN] = {0};                               \
         TYPE __##TASK##TASK##NAME##_1[LEN] = {0};                               \
-        self_field TASK##TASK##NAME = {                                         \
+        __self_field __##TASK##TASK##NAME##__ = {                               \
             .length = LEN,                                                      \
             .base_addr_0 = &__##TASK##TASK##NAME##_0,                           \
             .base_addr_1 = &__##TASK##TASK##NAME##_1,                           \
             .code = CODE                                                        \
         };
+
+
+/**
+ * Read 8-bit signed integer field from channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to read
+ * @param DST       address to store the result at
+ */
+#define ReadField_8(SRC_TASK, DST_TASK, FLD, DST)                               \
+        read_field_8(&GetField(SRC_TASK, DST_TASK, FLD), DST, 0, &__prog_state);
+
+
+/**
+ * Read 8-bit unsigned integer field from channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to read
+ * @param DST       address to store the result at
+ */
+#define ReadField_U8(SRC_TASK, DST_TASK, FLD, DST)                              \
+        read_field_u8(&GetField(SRC_TASK, DST_TASK, FLD), DST, 0, &__prog_state);
+
+
+/**
+ * Read 8-bit signed integer self-field from channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to read
+ * @param DST   address to store the result at
+ */
+#define ReadSelfField_8(TASK, FLD, DST)                                         \
+        read_field_8(&GetField(TASK, TASK, FLD), DST, 1, &__prog_state);
+
+
+/**
+ * Read 8-bit unsigned integer self-field from channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to read
+ * @param DST   address to store the result at
+ */
+#define ReadSelfField_U8(TASK, FLD, DST)                                        \
+        read_field_u8(&GetField(TASK, TASK, FLD), DST, 1, &__prog_state);
+
+
+/**
+ * Read 16-bit signed integer field from channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to read
+ * @param DST       address to store the result at
+ */
+#define ReadField_16(SRC_TASK, DST_TASK, FLD, DST)                              \
+        read_field_16(&GetField(SRC_TASK, DST_TASK, FLD), DST, 0, &__prog_state);
 
 
 /**
@@ -265,11 +336,23 @@ void resume_program(program_state*);
  * @param DST       address to store the result at
  */
 #define ReadField_U16(SRC_TASK, DST_TASK, FLD, DST)                             \
-        read_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), DST, 0, &prog_state);
+        read_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), DST, 0, &__prog_state);
 
 
 /**
- * Read self-field from channel TASK->TASK.
+ * Read 16-bit signed integer self-field from channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to read
+ * @param DST   address to store the result at
+ */
+#define ReadSelfField_16(TASK, FLD, DST)                                        \
+        read_field_16(&GetField(TASK, TASK, FLD), DST, 1, &__prog_state);
+
+
+/**
+ * Read 16-bit unsigned integer self-field from channel TASK->TASK.
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -277,11 +360,124 @@ void resume_program(program_state*);
  * @param DST   address to store the result at
  */
 #define ReadSelfField_U16(TASK, FLD, DST)                                       \
-        read_field_u16(&GetField(TASK, TASK, FLD), DST, 1, &prog_state);
+        read_field_u16(&GetField(TASK, TASK, FLD), DST, 1, &__prog_state);
 
 
 /**
- * Write field in channel SRC_TASK->DST_TASK.
+ * Read 32-bit signed integer field from channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to read
+ * @param DST       address to store the result at
+ */
+#define ReadField_32(SRC_TASK, DST_TASK, FLD, DST)                              \
+        read_field_32(&GetField(SRC_TASK, DST_TASK, FLD), DST, 0, &__prog_state);
+
+
+/**
+ * Read 32-bit unsigned integer field from channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to read
+ * @param DST       address to store the result at
+ */
+#define ReadField_U32(SRC_TASK, DST_TASK, FLD, DST)                             \
+        read_field_u32(&GetField(SRC_TASK, DST_TASK, FLD), DST, 0, &__prog_state);
+
+
+/**
+ * Read 32-bit signed integer self-field from channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to read
+ * @param DST   address to store the result at
+ */
+#define ReadSelfField_32(TASK, FLD, DST)                                        \
+        read_field_32(&GetField(TASK, TASK, FLD), DST, 1, &__prog_state);
+
+
+/**
+ * Read 32-bit unsigned integer self-field from channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to read
+ * @param DST   address to store the result at
+ */
+#define ReadSelfField_U32(TASK, FLD, DST)                                       \
+        read_field_u32(&GetField(TASK, TASK, FLD), DST, 1, &__prog_state);
+
+
+/**
+ * Write 8-bit signed integer field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ */
+#define WriteField_8(SRC_TASK, DST_TASK, FLD, SRC)                              \
+        write_field_8(&GetField(SRC_TASK, DST_TASK, FLD), SRC, 0, &__prog_state);
+
+
+/**
+ * Write 8-bit unsigned integer field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ */
+#define WriteField_U8(SRC_TASK, DST_TASK, FLD, SRC)                             \
+        write_field_u8(&GetField(SRC_TASK, DST_TASK, FLD), SRC, 0, &__prog_state);
+
+
+/**
+ * Write 8-bit signed integer self-field in channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to write
+ * @param SRC   address of the variable to write into the field
+ */
+#define WriteSelfField_8(TASK, FLD, SRC)                                        \
+        write_field_8(&GetField(TASK, TASK, FLD), SRC, 1, &__prog_state);
+
+
+/**
+ * Write 8-bit unsigned integer self-field in channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to write
+ * @param SRC   address of the variable to write into the field
+ */
+#define WriteSelfField_U8(TASK, FLD, SRC)                                       \
+        write_field_u8(&GetField(TASK, TASK, FLD), SRC, 1, &__prog_state);
+
+
+/**
+ * Write 16-bit signed integer field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ */
+#define WriteField_16(SRC_TASK, DST_TASK, FLD, SRC)                             \
+        write_field_16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, 0, &__prog_state);
+
+
+/**
+ * Write 16-bit unsigned integer field in channel SRC_TASK->DST_TASK.
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -290,10 +486,85 @@ void resume_program(program_state*);
  * @param SRC       address of the variable to write into the field
  */
 #define WriteField_U16(SRC_TASK, DST_TASK, FLD, SRC)                            \
-        write_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, 0, &prog_state);
+        write_field_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, 0, &__prog_state);
 
 
 /**
+ * Write 16-bit signed integer self-field in channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to write
+ * @param SRC   address of the variable to write into the field
+ */
+#define WriteSelfField_16(TASK, FLD, SRC)                                       \
+        write_field_16(&GetField(TASK, TASK, FLD), SRC, 1, &__prog_state);
+
+
+/**
+ * Write 16-bit unsigned integer self-field in channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to write
+ * @param SRC   address of the variable to write into the field
+ */
+#define WriteSelfField_U16(TASK, FLD, SRC)                                      \
+        write_field_u16(&GetField(TASK, TASK, FLD), SRC, 1, &__prog_state);
+
+
+/**
+ * Write 32-bit signed integer field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ */
+#define WriteField_32(SRC_TASK, DST_TASK, FLD, SRC)                             \
+        write_field_32(&GetField(SRC_TASK, DST_TASK, FLD), SRC, 0, &__prog_state);
+
+
+/**
+ * Write 32-bit unsigned integer field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ */
+#define WriteField_U32(SRC_TASK, DST_TASK, FLD, SRC)                            \
+        write_field_u32(&GetField(SRC_TASK, DST_TASK, FLD), SRC, 0, &__prog_state);
+
+
+/**
+ * Write 32-bit signed integer self-field in channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to write
+ * @param SRC   address of the variable to write into the field
+ */
+#define WriteSelfField_32(TASK, FLD, SRC)                                       \
+        write_field_32(&GetField(TASK, TASK, FLD), SRC, 1, &__prog_state);
+
+
+/**
+ * Write 32-bit unsigned integer self-field in channel TASK->TASK.
+ * For the time being, TASK is needed as input param.
+ *
+ * @param TASK  channel's source and destination task
+ * @param FLD   field to write
+ * @param SRC   address of the variable to write into the field
+ */
+#define WriteSelfField_U32(TASK, FLD, SRC)                                      \
+        write_field_u32(&GetField(TASK, TASK, FLD), SRC, 1, &__prog_state);
+
+
+/**
+ * ********** CURRENTLY NOT USABLE! **********
  * Write a single element of a field in channel SRC_TASK->DST_TASK.
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
@@ -304,19 +575,7 @@ void resume_program(program_state*);
  * @param POS       offset of the element to write
  */
 #define WriteFieldElement_U16(SRC_TASK, DST_TASK, FLD, SRC, POS)                \
-        write_field_element_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS, 0, &prog_state);
-
-
-/**
- * Write self-field in channel TASK->TASK.
- * For the time being, TASK is needed as input param.
- *
- * @param TASK  channel's source and destination task
- * @param FLD   field to write
- * @param SRC   address of the variable to write into the field
- */
-#define WriteSelfField_U16(TASK, FLD, SRC)                                      \
-        write_field_u16(&GetField(TASK, TASK, FLD), SRC, 1, &prog_state);
+        write_field_element_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS, 0, &__prog_state);
 
 
 /**
@@ -330,7 +589,7 @@ void resume_program(program_state*);
  * @param POS   offset of the element to write
  */
 #define WriteSelfFieldElement_U16(TASK, FLD, SRC, POS)                          \
-        write_field_element_u16(&GetField(TASK, TASK, FLD), SRC, POS, 1, &prog_state);
+        write_field_element_u16(&GetField(TASK, TASK, FLD), SRC, POS, 1, &__prog_state);
 
 
 /**
@@ -339,14 +598,14 @@ void resume_program(program_state*);
  * @param TASK  task to switch to
  */
 #define StartTask(TASK)                                                         \
-        start_task(&TASK, &prog_state);
+        start_task(&TASK, &__prog_state);
 
 
 /**
  * Resume program from last executing task, call at the beginning of the main.
  */
 #define Resume()                                                                \
-        resume_program(&prog_state);
+        resume_program(&__prog_state);
 
 
 #endif /* INC_INTERPOW_H_ */
