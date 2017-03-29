@@ -59,7 +59,8 @@
 
 Task Tasks[NUMTASKS];           /* Lower indices: lower priorities           */
 volatile int8_t BusyPrio;       /* Current priority being served             */
-uint8_t Pending = 0;            /* Indicates if there is a pending task      */ 
+uint8_t Pending = 0;            /* Indicates if there is a pending task      */
+int8_t HPrioPendingTask = -1; 
 
 void HandleTasks (void);
 
@@ -74,10 +75,13 @@ uint16_t IntDisable (void)
 
 void RestoreSW (uint16_t sw)
 {
-    if (Pending && (sw & INTRPT_BIT)) HandleTasks();
+    if ((HPrioPendingTask>=0) && 
+            !(CurrentTask()->Flags & FPDS) && 
+            (sw & INTRPT_BIT))
+        HandleTasks();
     // r2 = sw
     asm volatile ("mov.w %0, r2\n\t" :: "r"(sw));
-}  
+}
 
 Taskp Prio2Taskp (uint8_t Prio) __attribute__  ( (noinline) ); 
 Taskp Prio2Taskp (uint8_t Prio)
@@ -92,7 +96,7 @@ Taskp Prio2Taskp (uint8_t Prio)
  */
 
 void InitTasks (void)
-{			
+{           
     uint8_t i=NUMTASKS-1; 
     do {
         Taskp t = &Tasks[i];
@@ -148,12 +152,14 @@ void HandleTasks (void)
 {
     int8_t oldBP = BusyPrio;    // Save BusyPrio = current task handling level
 
-    Pending = 0;                // This instance will handle all new
+    //Pending = 0;                // This instance will handle all new
                                 // pending tasks.
-    BusyPrio = NUMTASKS-1;      // Start at highest priority
+    BusyPrio = HPrioPendingTask;      // Start at highest pending priority
+    HPrioPendingTask = -1;
     while (BusyPrio != oldBP) { 
         Taskp CurTask = CurrentTask();
-        while (CurTask->Activated != CurTask->Invoked) {
+        while ((CurTask->Activated != CurTask->Invoked) &&
+                (BusyPrio>=HPrioPendingTask)) {
             CurTask->Invoked++;
             if (CurTask->Flags & TRIGGERED) {
                 _EINT(); CurTask->Taskf(); _DINT();
@@ -166,7 +172,7 @@ void HandleTasks (void)
 
 interrupt (TIMERA0_VECTOR) TimerIntrpt (void)
 {
-    uint8_t i = NUMTASKS-1; 
+    uint8_t i = NUMTASKS-1;
     do {
         Taskp t = &Tasks[i];
         if (t->Flags & TT) // countdown
@@ -177,11 +183,14 @@ interrupt (TIMERA0_VECTOR) TimerIntrpt (void)
                 if (t->Flags & DIRECT) {
                     t->Invoked++; t->Taskf();
                 }
-                else Pending |= i>BusyPrio;
+                else if (i>HPrioPendingTask)
+                    HPrioPendingTask = i;
+                    //Pending |= i>BusyPrio;
             }
     } while (i--);
-    if (Pending) HandleTasks ();    /* stay in interrupt context *
-                                     * interrupts disabled       */
+    if ((HPrioPendingTask>=0) && !(CurrentTask()->Flags & FPDS))
+        HandleTasks(); /* stay in interrupt context *
+                        * interrupts disabled       */
 }
 
 #endif
