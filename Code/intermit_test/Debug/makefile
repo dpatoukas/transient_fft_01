@@ -10,9 +10,116 @@ GEN_CMDS__FLAG :=
 ORDERED_OBJS += \
 "./interpow.obj" \
 "./main.obj" \
+"./dsplib/source/filter/msp_biquad_cascade_df1_q15.obj" \
+"./dsplib/source/filter/msp_biquad_cascade_df2_ext_q15.obj" \
+"./dsplib/source/filter/msp_biquad_cascade_df2_q15.obj" \
+"./dsplib/source/filter/msp_biquad_df1_q15.obj" \
+"./dsplib/source/filter/msp_biquad_df2_ext_q15.obj" \
+"./dsplib/source/filter/msp_biquad_df2_q15.obj" \
+"./dsplib/source/filter/msp_cmplx_fir_iq31.obj" \
+"./dsplib/source/filter/msp_cmplx_fir_q15.obj" \
+"./dsplib/source/filter/msp_fir_iq31.obj" \
+"./dsplib/source/filter/msp_fir_q15.obj" \
+"./dsplib/source/lea/msp_lea_flags.obj" \
+"./dsplib/source/lea/msp_lea_init.obj" \
+"./dsplib/source/lea/msp_lea_isr.obj" \
+"./dsplib/source/lea/msp_lea_patch.obj" \
+"./dsplib/source/matrix/msp_matrix_abs_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_abs_q15.obj" \
+"./dsplib/source/matrix/msp_matrix_add_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_add_q15.obj" \
+"./dsplib/source/matrix/msp_matrix_mpy_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_mpy_q15.obj" \
+"./dsplib/source/matrix/msp_matrix_neg_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_neg_q15.obj" \
+"./dsplib/source/matrix/msp_matrix_offset_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_offset_q15.obj" \
+"./dsplib/source/matrix/msp_matrix_scale_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_scale_q15.obj" \
+"./dsplib/source/matrix/msp_matrix_shift_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_shift_q15.obj" \
+"./dsplib/source/matrix/msp_matrix_sub_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_sub_q15.obj" \
+"./dsplib/source/matrix/msp_matrix_trans_iq31.obj" \
+"./dsplib/source/matrix/msp_matrix_trans_q15.obj" \
+"./dsplib/source/transform/msp_cmplx_bitrev_iq31.obj" \
+"./dsplib/source/transform/msp_cmplx_bitrev_q15.obj" \
+"./dsplib/source/transform/msp_cmplx_fft_auto_q15.obj" \
+"./dsplib/source/transform/msp_cmplx_fft_fixed_q15.obj" \
+"./dsplib/source/transform/msp_cmplx_fft_iq31.obj" \
+"./dsplib/source/transform/msp_cmplx_ifft_auto_q15.obj" \
+"./dsplib/source/transform/msp_cmplx_ifft_fixed_q15.obj" \
+"./dsplib/source/transform/msp_cmplx_ifft_iq31.obj" \
+"./dsplib/source/transform/msp_fft_auto_q15.obj" \
+"./dsplib/source/transform/msp_fft_fixed_q15.obj" \
+"./dsplib/source/transform/msp_fft_iq31.obj" \
+"./dsplib/source/transform/msp_ifft_auto_q15.obj" \
+"./dsplib/source/transform/msp_ifft_fixed_q15.obj" \
+"./dsplib/source/transform/msp_ifft_iq31.obj" \
+"./dsplib/source/transform/msp_split_iq31.obj" \
+"./dsplib/source/transform/msp_split_q15.obj" \
+"./dsplib/source/transform/msp_transform_tables.obj" \
+"./dsplib/source/utility/msp_cmplx_fill_iq31.obj" \
+"./dsplib/source/utility/msp_cmplx_fill_q15.obj" \
+"./dsplib/source/utility/msp_cmplx_iq31.obj" \
+"./dsplib/source/utility/msp_cmplx_q15.obj" \
+"./dsplib/source/utility/msp_copy_iq31.obj" \
+"./dsplib/source/utility/msp_copy_q15.obj" \
+"./dsplib/source/utility/msp_deinterleave_iq31.obj" \
+"./dsplib/source/utility/msp_deinterleave_q15.obj" \
+"./dsplib/source/utility/msp_fill_iq31.obj" \
+"./dsplib/source/utility/msp_fill_q15.obj" \
+"./dsplib/source/utility/msp_interleave_iq31.obj" \
+"./dsplib/source/utility/msp_interleave_q15.obj" \
+"./dsplib/source/utility/msp_iq31_to_q15.obj" \
+"./dsplib/source/utility/msp_q15_to_iq31.obj" \
+"./dsplib/source/utility/msp_sinusoid_q15.obj" \
+"./dsplib/source/vector/msp_abs_iq31.obj" \
+"./dsplib/source/vector/msp_abs_q15.obj" \
+"./dsplib/source/vector/msp_add_iq31.obj" \
+"./dsplib/source/vector/msp_add_q15.obj" \
+"./dsplib/source/vector/msp_cmplx_add_iq31.obj" \
+"./dsplib/source/vector/msp_cmplx_add_q15.obj" \
+"./dsplib/source/vector/msp_cmplx_conj_iq31.obj" \
+"./dsplib/source/vector/msp_cmplx_conj_q15.obj" \
+"./dsplib/source/vector/msp_cmplx_mac_iq31.obj" \
+"./dsplib/source/vector/msp_cmplx_mac_q15.obj" \
+"./dsplib/source/vector/msp_cmplx_mpy_iq31.obj" \
+"./dsplib/source/vector/msp_cmplx_mpy_q15.obj" \
+"./dsplib/source/vector/msp_cmplx_mpy_real_iq31.obj" \
+"./dsplib/source/vector/msp_cmplx_mpy_real_q15.obj" \
+"./dsplib/source/vector/msp_cmplx_scale_iq31.obj" \
+"./dsplib/source/vector/msp_cmplx_scale_q15.obj" \
+"./dsplib/source/vector/msp_cmplx_shift_iq31.obj" \
+"./dsplib/source/vector/msp_cmplx_shift_q15.obj" \
+"./dsplib/source/vector/msp_cmplx_sub_iq31.obj" \
+"./dsplib/source/vector/msp_cmplx_sub_q15.obj" \
+"./dsplib/source/vector/msp_mac_iq31.obj" \
+"./dsplib/source/vector/msp_mac_q15.obj" \
+"./dsplib/source/vector/msp_max_iq31.obj" \
+"./dsplib/source/vector/msp_max_q15.obj" \
+"./dsplib/source/vector/msp_max_uq15.obj" \
+"./dsplib/source/vector/msp_max_uq31.obj" \
+"./dsplib/source/vector/msp_min_iq31.obj" \
+"./dsplib/source/vector/msp_min_q15.obj" \
+"./dsplib/source/vector/msp_min_uq15.obj" \
+"./dsplib/source/vector/msp_min_uq31.obj" \
+"./dsplib/source/vector/msp_mpy_iq31.obj" \
+"./dsplib/source/vector/msp_mpy_q15.obj" \
+"./dsplib/source/vector/msp_neg_iq31.obj" \
+"./dsplib/source/vector/msp_neg_q15.obj" \
+"./dsplib/source/vector/msp_offset_iq31.obj" \
+"./dsplib/source/vector/msp_offset_q15.obj" \
+"./dsplib/source/vector/msp_scale_iq31.obj" \
+"./dsplib/source/vector/msp_scale_q15.obj" \
+"./dsplib/source/vector/msp_shift_iq31.obj" \
+"./dsplib/source/vector/msp_shift_q15.obj" \
+"./dsplib/source/vector/msp_sub_iq31.obj" \
+"./dsplib/source/vector/msp_sub_q15.obj" \
 "../lnk_msp430fr5994.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibmpu_init.a \
+-l"/Applications/ti/msp/MSP430Ware_3_70_00_05/iqmathlib/libraries/CCS/MPY32/5xx_6xx/QmathLib.a" \
 -llibmath.a \
 -llibc.a \
 
@@ -24,7 +131,19 @@ RMDIR := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir_vars.mk
+-include dsplib/source/filter/subdir_vars.mk
+-include dsplib/source/lea/subdir_vars.mk
+-include dsplib/source/matrix/subdir_vars.mk
+-include dsplib/source/transform/subdir_vars.mk
+-include dsplib/source/utility/subdir_vars.mk
+-include dsplib/source/vector/subdir_vars.mk
 -include subdir_rules.mk
+-include dsplib/source/filter/subdir_rules.mk
+-include dsplib/source/lea/subdir_rules.mk
+-include dsplib/source/matrix/subdir_rules.mk
+-include dsplib/source/transform/subdir_rules.mk
+-include dsplib/source/utility/subdir_rules.mk
+-include dsplib/source/vector/subdir_rules.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -141,7 +260,7 @@ all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 intermit_test.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP430 Linker'
-	"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/bin/cl430" -vmspx --data_model=restricted --use_hw_mpy=F5 --advice:power=all --advice:hw_config=all --define=__MSP430FR5994__ --define=_MPU_ENABLE -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"intermit_test.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/Applications/ti/ccsv7/ccs_base/msp430/include" -i"/Applications/ti/ccsv7/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"/Applications/ti/ccsv7/ccs_base/msp430/lib/FR59xx" -i"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/lib" -i"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include" --priority --reread_libs --define=_MPU_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="intermit_test_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "intermit_test.out" $(ORDERED_OBJS)
+	"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/bin/cl430" -vmspx --data_model=restricted --use_hw_mpy=F5 --advice:power="all" --advice:hw_config=all --define=__MSP430FR5994__ --define=_MPU_ENABLE -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"intermit_test.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/Applications/ti/ccsv7/ccs_base/msp430/include" -i"/Applications/ti/ccsv7/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"/Applications/ti/ccsv7/ccs_base/msp430/lib/FR59xx" -i"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/lib" -i"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include" --priority --reread_libs --define=_MPU_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="intermit_test_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "intermit_test.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -154,8 +273,16 @@ intermit_test.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "interpow.obj" "main.obj" 
-	-$(RM) "interpow.d" "main.d" 
+	-$(RM) "interpow.obj" "main.obj" "dsplib/source/filter/msp_biquad_cascade_df1_q15.obj" "dsplib/source/filter/msp_biquad_cascade_df2_ext_q15.obj" "dsplib/source/filter/msp_biquad_cascade_df2_q15.obj" "dsplib/source/filter/msp_biquad_df1_q15.obj" "dsplib/source/filter/msp_biquad_df2_ext_q15.obj" "dsplib/source/filter/msp_biquad_df2_q15.obj" "dsplib/source/filter/msp_cmplx_fir_iq31.obj" "dsplib/source/filter/msp_cmplx_fir_q15.obj" "dsplib/source/filter/msp_fir_iq31.obj" "dsplib/source/filter/msp_fir_q15.obj" "dsplib/source/lea/msp_lea_flags.obj" "dsplib/source/lea/msp_lea_init.obj" "dsplib/source/lea/msp_lea_isr.obj" "dsplib/source/lea/msp_lea_patch.obj" "dsplib/source/matrix/msp_matrix_abs_iq31.obj" "dsplib/source/matrix/msp_matrix_abs_q15.obj" "dsplib/source/matrix/msp_matrix_add_iq31.obj" "dsplib/source/matrix/msp_matrix_add_q15.obj" "dsplib/source/matrix/msp_matrix_mpy_iq31.obj" "dsplib/source/matrix/msp_matrix_mpy_q15.obj" "dsplib/source/matrix/msp_matrix_neg_iq31.obj" "dsplib/source/matrix/msp_matrix_neg_q15.obj" 
+	-$(RM) "dsplib/source/matrix/msp_matrix_offset_iq31.obj" "dsplib/source/matrix/msp_matrix_offset_q15.obj" "dsplib/source/matrix/msp_matrix_scale_iq31.obj" "dsplib/source/matrix/msp_matrix_scale_q15.obj" "dsplib/source/matrix/msp_matrix_shift_iq31.obj" "dsplib/source/matrix/msp_matrix_shift_q15.obj" "dsplib/source/matrix/msp_matrix_sub_iq31.obj" "dsplib/source/matrix/msp_matrix_sub_q15.obj" "dsplib/source/matrix/msp_matrix_trans_iq31.obj" "dsplib/source/matrix/msp_matrix_trans_q15.obj" "dsplib/source/transform/msp_cmplx_bitrev_iq31.obj" "dsplib/source/transform/msp_cmplx_bitrev_q15.obj" "dsplib/source/transform/msp_cmplx_fft_auto_q15.obj" "dsplib/source/transform/msp_cmplx_fft_fixed_q15.obj" "dsplib/source/transform/msp_cmplx_fft_iq31.obj" "dsplib/source/transform/msp_cmplx_ifft_auto_q15.obj" "dsplib/source/transform/msp_cmplx_ifft_fixed_q15.obj" "dsplib/source/transform/msp_cmplx_ifft_iq31.obj" "dsplib/source/transform/msp_fft_auto_q15.obj" "dsplib/source/transform/msp_fft_fixed_q15.obj" "dsplib/source/transform/msp_fft_iq31.obj" 
+	-$(RM) "dsplib/source/transform/msp_ifft_auto_q15.obj" "dsplib/source/transform/msp_ifft_fixed_q15.obj" "dsplib/source/transform/msp_ifft_iq31.obj" "dsplib/source/transform/msp_split_iq31.obj" "dsplib/source/transform/msp_split_q15.obj" "dsplib/source/transform/msp_transform_tables.obj" "dsplib/source/utility/msp_cmplx_fill_iq31.obj" "dsplib/source/utility/msp_cmplx_fill_q15.obj" "dsplib/source/utility/msp_cmplx_iq31.obj" "dsplib/source/utility/msp_cmplx_q15.obj" "dsplib/source/utility/msp_copy_iq31.obj" "dsplib/source/utility/msp_copy_q15.obj" "dsplib/source/utility/msp_deinterleave_iq31.obj" "dsplib/source/utility/msp_deinterleave_q15.obj" "dsplib/source/utility/msp_fill_iq31.obj" "dsplib/source/utility/msp_fill_q15.obj" "dsplib/source/utility/msp_interleave_iq31.obj" "dsplib/source/utility/msp_interleave_q15.obj" "dsplib/source/utility/msp_iq31_to_q15.obj" "dsplib/source/utility/msp_q15_to_iq31.obj" "dsplib/source/utility/msp_sinusoid_q15.obj" "dsplib/source/vector/msp_abs_iq31.obj" "dsplib/source/vector/msp_abs_q15.obj" 
+	-$(RM) "dsplib/source/vector/msp_add_iq31.obj" "dsplib/source/vector/msp_add_q15.obj" "dsplib/source/vector/msp_cmplx_add_iq31.obj" "dsplib/source/vector/msp_cmplx_add_q15.obj" "dsplib/source/vector/msp_cmplx_conj_iq31.obj" "dsplib/source/vector/msp_cmplx_conj_q15.obj" "dsplib/source/vector/msp_cmplx_mac_iq31.obj" "dsplib/source/vector/msp_cmplx_mac_q15.obj" "dsplib/source/vector/msp_cmplx_mpy_iq31.obj" "dsplib/source/vector/msp_cmplx_mpy_q15.obj" "dsplib/source/vector/msp_cmplx_mpy_real_iq31.obj" "dsplib/source/vector/msp_cmplx_mpy_real_q15.obj" "dsplib/source/vector/msp_cmplx_scale_iq31.obj" "dsplib/source/vector/msp_cmplx_scale_q15.obj" "dsplib/source/vector/msp_cmplx_shift_iq31.obj" "dsplib/source/vector/msp_cmplx_shift_q15.obj" "dsplib/source/vector/msp_cmplx_sub_iq31.obj" "dsplib/source/vector/msp_cmplx_sub_q15.obj" "dsplib/source/vector/msp_mac_iq31.obj" "dsplib/source/vector/msp_mac_q15.obj" "dsplib/source/vector/msp_max_iq31.obj" "dsplib/source/vector/msp_max_q15.obj" "dsplib/source/vector/msp_max_uq15.obj" 
+	-$(RM) "dsplib/source/vector/msp_max_uq31.obj" "dsplib/source/vector/msp_min_iq31.obj" "dsplib/source/vector/msp_min_q15.obj" "dsplib/source/vector/msp_min_uq15.obj" "dsplib/source/vector/msp_min_uq31.obj" "dsplib/source/vector/msp_mpy_iq31.obj" "dsplib/source/vector/msp_mpy_q15.obj" "dsplib/source/vector/msp_neg_iq31.obj" "dsplib/source/vector/msp_neg_q15.obj" "dsplib/source/vector/msp_offset_iq31.obj" "dsplib/source/vector/msp_offset_q15.obj" "dsplib/source/vector/msp_scale_iq31.obj" "dsplib/source/vector/msp_scale_q15.obj" "dsplib/source/vector/msp_shift_iq31.obj" "dsplib/source/vector/msp_shift_q15.obj" "dsplib/source/vector/msp_sub_iq31.obj" "dsplib/source/vector/msp_sub_q15.obj" 
+	-$(RM) "interpow.d" "main.d" "dsplib/source/filter/msp_biquad_cascade_df1_q15.d" "dsplib/source/filter/msp_biquad_cascade_df2_ext_q15.d" "dsplib/source/filter/msp_biquad_cascade_df2_q15.d" "dsplib/source/filter/msp_biquad_df1_q15.d" "dsplib/source/filter/msp_biquad_df2_ext_q15.d" "dsplib/source/filter/msp_biquad_df2_q15.d" "dsplib/source/filter/msp_cmplx_fir_iq31.d" "dsplib/source/filter/msp_cmplx_fir_q15.d" "dsplib/source/filter/msp_fir_iq31.d" "dsplib/source/filter/msp_fir_q15.d" "dsplib/source/lea/msp_lea_flags.d" "dsplib/source/lea/msp_lea_init.d" "dsplib/source/lea/msp_lea_isr.d" "dsplib/source/lea/msp_lea_patch.d" "dsplib/source/matrix/msp_matrix_abs_iq31.d" "dsplib/source/matrix/msp_matrix_abs_q15.d" "dsplib/source/matrix/msp_matrix_add_iq31.d" "dsplib/source/matrix/msp_matrix_add_q15.d" "dsplib/source/matrix/msp_matrix_mpy_iq31.d" "dsplib/source/matrix/msp_matrix_mpy_q15.d" "dsplib/source/matrix/msp_matrix_neg_iq31.d" "dsplib/source/matrix/msp_matrix_neg_q15.d" "dsplib/source/matrix/msp_matrix_offset_iq31.d" 
+	-$(RM) "dsplib/source/matrix/msp_matrix_offset_q15.d" "dsplib/source/matrix/msp_matrix_scale_iq31.d" "dsplib/source/matrix/msp_matrix_scale_q15.d" "dsplib/source/matrix/msp_matrix_shift_iq31.d" "dsplib/source/matrix/msp_matrix_shift_q15.d" "dsplib/source/matrix/msp_matrix_sub_iq31.d" "dsplib/source/matrix/msp_matrix_sub_q15.d" "dsplib/source/matrix/msp_matrix_trans_iq31.d" "dsplib/source/matrix/msp_matrix_trans_q15.d" "dsplib/source/transform/msp_cmplx_bitrev_iq31.d" "dsplib/source/transform/msp_cmplx_bitrev_q15.d" "dsplib/source/transform/msp_cmplx_fft_auto_q15.d" "dsplib/source/transform/msp_cmplx_fft_fixed_q15.d" "dsplib/source/transform/msp_cmplx_fft_iq31.d" "dsplib/source/transform/msp_cmplx_ifft_auto_q15.d" "dsplib/source/transform/msp_cmplx_ifft_fixed_q15.d" "dsplib/source/transform/msp_cmplx_ifft_iq31.d" "dsplib/source/transform/msp_fft_auto_q15.d" "dsplib/source/transform/msp_fft_fixed_q15.d" "dsplib/source/transform/msp_fft_iq31.d" "dsplib/source/transform/msp_ifft_auto_q15.d" "dsplib/source/transform/msp_ifft_fixed_q15.d" 
+	-$(RM) "dsplib/source/transform/msp_ifft_iq31.d" "dsplib/source/transform/msp_split_iq31.d" "dsplib/source/transform/msp_split_q15.d" "dsplib/source/transform/msp_transform_tables.d" "dsplib/source/utility/msp_cmplx_fill_iq31.d" "dsplib/source/utility/msp_cmplx_fill_q15.d" "dsplib/source/utility/msp_cmplx_iq31.d" "dsplib/source/utility/msp_cmplx_q15.d" "dsplib/source/utility/msp_copy_iq31.d" "dsplib/source/utility/msp_copy_q15.d" "dsplib/source/utility/msp_deinterleave_iq31.d" "dsplib/source/utility/msp_deinterleave_q15.d" "dsplib/source/utility/msp_fill_iq31.d" "dsplib/source/utility/msp_fill_q15.d" "dsplib/source/utility/msp_interleave_iq31.d" "dsplib/source/utility/msp_interleave_q15.d" "dsplib/source/utility/msp_iq31_to_q15.d" "dsplib/source/utility/msp_q15_to_iq31.d" "dsplib/source/utility/msp_sinusoid_q15.d" "dsplib/source/vector/msp_abs_iq31.d" "dsplib/source/vector/msp_abs_q15.d" "dsplib/source/vector/msp_add_iq31.d" "dsplib/source/vector/msp_add_q15.d" "dsplib/source/vector/msp_cmplx_add_iq31.d" 
+	-$(RM) "dsplib/source/vector/msp_cmplx_add_q15.d" "dsplib/source/vector/msp_cmplx_conj_iq31.d" "dsplib/source/vector/msp_cmplx_conj_q15.d" "dsplib/source/vector/msp_cmplx_mac_iq31.d" "dsplib/source/vector/msp_cmplx_mac_q15.d" "dsplib/source/vector/msp_cmplx_mpy_iq31.d" "dsplib/source/vector/msp_cmplx_mpy_q15.d" "dsplib/source/vector/msp_cmplx_mpy_real_iq31.d" "dsplib/source/vector/msp_cmplx_mpy_real_q15.d" "dsplib/source/vector/msp_cmplx_scale_iq31.d" "dsplib/source/vector/msp_cmplx_scale_q15.d" "dsplib/source/vector/msp_cmplx_shift_iq31.d" "dsplib/source/vector/msp_cmplx_shift_q15.d" "dsplib/source/vector/msp_cmplx_sub_iq31.d" "dsplib/source/vector/msp_cmplx_sub_q15.d" "dsplib/source/vector/msp_mac_iq31.d" "dsplib/source/vector/msp_mac_q15.d" "dsplib/source/vector/msp_max_iq31.d" "dsplib/source/vector/msp_max_q15.d" "dsplib/source/vector/msp_max_uq15.d" "dsplib/source/vector/msp_max_uq31.d" "dsplib/source/vector/msp_min_iq31.d" "dsplib/source/vector/msp_min_q15.d" "dsplib/source/vector/msp_min_uq15.d" 
+	-$(RM) "dsplib/source/vector/msp_min_uq31.d" "dsplib/source/vector/msp_mpy_iq31.d" "dsplib/source/vector/msp_mpy_q15.d" "dsplib/source/vector/msp_neg_iq31.d" "dsplib/source/vector/msp_neg_q15.d" "dsplib/source/vector/msp_offset_iq31.d" "dsplib/source/vector/msp_offset_q15.d" "dsplib/source/vector/msp_scale_iq31.d" "dsplib/source/vector/msp_scale_q15.d" "dsplib/source/vector/msp_shift_iq31.d" "dsplib/source/vector/msp_shift_q15.d" "dsplib/source/vector/msp_sub_iq31.d" "dsplib/source/vector/msp_sub_q15.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 
