@@ -5,8 +5,6 @@
  *
  * TODO:
  *
- * - [L] Take care of write_field_element
- *
  * - [M] Free the user from the explicit declaration of #pragma (try with 
  *       _Pragma inside macros like NewTask, NewField...)
  *
@@ -21,6 +19,35 @@
 #ifndef INC_INTERPOW_H_
 #define INC_INTERPOW_H_
 
+/**
+ *
+ * \addtogroup interpow_api Intermittent Power
+ * @{
+ *
+ * Functions for usage of a transiently-powered device, including Task and Field
+ * declaration, program flow management and read/write operations.
+ *
+ * \author  Carlo Delle Donne
+ * \author  Dimitrios Patoukas
+ * \author  Thijmen Ketel
+ *
+ * \defgroup interpow_declaration Preliminary declarations
+ * Macros for preliminary Task and Field declarations.
+ *
+ * \par Channels
+ * Channels allow two tasks to communicate with each other, or a task to
+ * communicate with itself. A channel is defined by its \e source and
+ * \e destination tasks, and is referred to as (\e source, \e destination).
+ *
+ * \defgroup interpow_flow Program flow
+ * Macros for program flow management, i.e. resume program and switch task.
+ *
+ * \defgroup interpow_read_write Read and Write
+ * Macros for read/write operations, differentiated by field types.
+ *
+ * @}
+ */
+
 #include <stdint.h>
 
 
@@ -34,7 +61,12 @@
  *******************************************************************************
  */
 
-// Self-field codes for self-field declarations
+/**
+ * Self-field codes for self-field declarations
+ *
+ * \defgroup SELF_FIELD_CODES
+ * @{
+ */
 #define SELF_FIELD_CODE_1           0x01
 #define SELF_FIELD_CODE_2           0x02
 #define SELF_FIELD_CODE_3           0x04
@@ -43,14 +75,25 @@
 #define SELF_FIELD_CODE_6           0x20
 #define SELF_FIELD_CODE_7           0x40
 #define SELF_FIELD_CODE_8           0x80
+/**
+ * @}
+ */
 
-// Types for field/self-field declarations
+/**
+ * Types for field/self-field declarations
+ *
+ * \defgroup FIELD_TYPES
+ * @{
+ */
 #define INT8                        int16_t
 #define UINT8                       uint16_t
 #define INT16                       int16_t
 #define UINT16                      uint16_t
 #define INT32                       int16_t
 #define UINT32                      uint16_t
+/**
+ * @}
+ */
 
 
 /*
@@ -178,11 +221,15 @@ void resume_program(__program_state*);
 
 
 /**
- * Create a new task.
+ * \ingroup interpow_declaration
+ *
+ * \hideinitializer
+ *
+ * \brief Create a new task.
  *
  * @param NAME              task's name
  * @param FN                pointer to the function to execute
- * @param HAS_SELF_CHANNEL  1->yes, 0->no
+ * @param HAS_SELF_CHANNEL  1 if task has self-channel, 0 otherwise
  */
 #define NewTask(NAME, FN, HAS_SELF_CHANNEL)                                     \
         __task NAME = {                                                         \
@@ -193,7 +240,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Define which task has to execute first on the first start of the system.
+ * \ingroup interpow_declaration
+ *
+ * \hideinitializer
+ *
+ * \brief Define which task has to execute first on the very first start of 
+ *        the system. \e TASK has to be defined before using this macro.
  *
  * @param TASK  name of the task
  */
@@ -231,12 +283,17 @@ void resume_program(__program_state*);
 
 
 /**
- * Define a new field, conceptually belonging to the channel SRC->DST.
+ * \ingroup interpow_declaration
+ *
+ * \hideinitializer
+ *
+ * \brief Define a new field, conceptually belonging to the channel (\e SRC, 
+ *        \e DST ). \e SRC and \e DST have to be defined before using this macro.
  *
  * @param SRC   channel's source task
  * @param DST   channel's destination task
  * @param NAME  field's name
- * @param TYPE  field's TYPE, can be one of the field types defined above
+ * @param TYPE  field's TYPE, must be a value of \ref FIELD_TYPES
  * @param LEN   field's length (if LEN>1 the field is an array)
  */
 #define NewField(SRC, DST, NAME, TYPE, LEN)                                     \
@@ -248,16 +305,23 @@ void resume_program(__program_state*);
 
 
 /**
- * Define a new field, conceptually belonging to the self-channel TASK->TASK.
+ * \ingroup interpow_declaration
+ *
+ * \hideinitializer
+ *
+ * \brief Define a new self-field, conceptually belonging to the self-channel
+ *        (\e TASK, \e TASK ). \e TASK has to be defined before using this macro.
  *
  * @param TASK  channel's source and destination task
  * @param NAME  field's name
- * @param TYPE  field's TYPE, can be one of the field types defined above
+ * @param TYPE  field's TYPE, must be a value of \ref FIELD_TYPES
  * @param LEN   field's length (if LEN>1 the field is an array)
- * @param CODE  field's code, this parameter must be SELF_FIELD_CODE_x
- *                  where x = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8
- *                  representing the x-th self-field declared for the
- *                  self-channel TASK->TASK
+ * @param CODE  field's code, must be a value of \ref SELF_FIELD_CODES
+ *
+ * \par Self-field code
+ * A specific self-channel (\e T, \e T ) can have at most 8 self-fields.
+ * Self-fields belonging to the same self-channel <b>must have different 
+ * codes</b>, but they do not need to be sequential.
  */
 #define NewSelfField(TASK, NAME, TYPE, LEN, CODE)                               \
         TYPE __##TASK##TASK##NAME##_0[LEN] = {0};                               \
@@ -271,7 +335,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 8-bit signed integer field from channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 8-bit signed integer field from channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -284,7 +353,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 8-bit unsigned integer field from channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 8-bit unsigned integer field from channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -297,7 +371,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 8-bit signed integer self-field from channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 8-bit signed integer self-field from channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -309,7 +388,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 8-bit unsigned integer self-field from channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 8-bit unsigned integer self-field from channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -321,7 +405,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 16-bit signed integer field from channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 16-bit signed integer field from channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -334,7 +423,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 16-bit unsigned integer field from channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 16-bit unsigned integer field from channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -347,7 +441,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 16-bit signed integer self-field from channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 16-bit signed integer self-field from channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -359,7 +458,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 16-bit unsigned integer self-field from channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 16-bit unsigned integer self-field from channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -371,7 +475,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 32-bit signed integer field from channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 32-bit signed integer field from channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -384,7 +493,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 32-bit unsigned integer field from channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 32-bit unsigned integer field from channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -397,7 +511,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 32-bit signed integer self-field from channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 32-bit signed integer self-field from channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -409,7 +528,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Read 32-bit unsigned integer self-field from channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Read 32-bit unsigned integer self-field from channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -421,7 +545,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 8-bit signed integer field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 8-bit signed integer field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -434,7 +563,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 8-bit unsigned integer field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 8-bit unsigned integer field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -447,7 +581,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 8-bit signed integer self-field in channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 8-bit signed integer self-field in channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -459,7 +598,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 8-bit unsigned integer self-field in channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 8-bit unsigned integer self-field in channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -471,7 +615,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 16-bit signed integer field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 16-bit signed integer field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -484,7 +633,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 16-bit unsigned integer field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 16-bit unsigned integer field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -497,7 +651,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 16-bit signed integer self-field in channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 16-bit signed integer self-field in channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -509,7 +668,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 16-bit unsigned integer self-field in channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 16-bit unsigned integer self-field in channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -521,7 +685,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 32-bit signed integer field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 32-bit signed integer field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -534,7 +703,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 32-bit unsigned integer field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 32-bit unsigned integer field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -547,7 +721,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 32-bit signed integer self-field in channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 32-bit signed integer self-field in channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -559,7 +738,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write 32-bit unsigned integer self-field in channel TASK->TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write 32-bit unsigned integer self-field in channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -571,7 +755,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write a single element of a 8-bit signed field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write a single element of a 8-bit signed field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -585,7 +774,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write a single element of a 8-bit unsigned field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write a single element of a 8-bit unsigned field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -599,7 +793,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write a single element of a 16-bit signed field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write a single element of a 16-bit signed field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -613,7 +812,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write a single element of a 16-bit unsigned field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write a single element of a 16-bit unsigned field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -627,7 +831,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write a single element of a 32-bit signed field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write a single element of a 32-bit signed field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -641,7 +850,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Write a single element of a 32-bit unsigned field in channel SRC_TASK->DST_TASK.
+ * \ingroup interpow_read_write
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Write a single element of a 32-bit unsigned field in channel (\e SRC_TASK, \e DST_TASK ).
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -656,7 +870,7 @@ void resume_program(__program_state*);
 
 /**
  * ********** CURRENTLY NOT USABLE! **********
- * Write a single element of a self-field in channel TASK->TASK.
+ * Write a single element of a self-field in channel (\e TASK, \e TASK ).
  * For the time being, TASK is needed as input param.
  *
  * @param TASK  channel's source and destination task
@@ -669,6 +883,11 @@ void resume_program(__program_state*);
 
 
 /**
+ * \ingroup interpow_flow
+ *
+ * \hideinitializer
+ *
+ * \brief
  * Switch to another task.
  *
  * @param TASK  task to switch to
@@ -678,7 +897,12 @@ void resume_program(__program_state*);
 
 
 /**
- * Resume program from last executing task, call at the beginning of the main.
+ * \ingroup interpow_flow
+ *
+ * \hideinitializer
+ *
+ * \brief
+ * Resume program from last executing task. Call at the beginning of the \e main.
  */
 #define Resume()                                                                \
         resume_program(&__prog_state);
