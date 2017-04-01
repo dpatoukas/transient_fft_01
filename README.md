@@ -9,3 +9,6 @@ The team consists of three students from the master Embedded Systems at TU Delft
 
 ## Hardware
 The project is implemented on a MSP430FR5994 from Texas Instruments (information can be found [here](http://www.ti.com/tool/msp-exp430fr5994)).
+
+## Documentation
+An extensive documentation can be found at `html/index.html`
