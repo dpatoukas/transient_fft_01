@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['field_5ftypes',['FIELD_TYPES',['../group___f_i_e_l_d___t_y_p_e_s.html',1,'']]]
+  ['initialtask',['InitialTask',['../group__interpow__declaration.html#ga1156bffe7de2162c5889cf427dd30657',1,'interpow.h']]],
+  ['intermittent_20power',['Intermittent Power',['../group__interpow__api.html',1,'']]]
 ];

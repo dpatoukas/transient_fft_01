@@ -39,6 +39,14 @@
  * communicate with itself. A channel is defined by its \e source and
  * \e destination tasks, and is referred to as (\e source, \e destination).
  *
+ * \par Declarations
+ * Declarations of tasks, initial task, fields and self-fields must be in the
+ * global area outside the \e main, and have to follow this order:
+ *   \li tasks declarations, using `NewTask()`;
+ *   \li initial task declaration, using `InitialTask()`;
+ *   \li fields and self-fields declarations, using `NewField()` and
+ *       `NewSelfField()`.
+ *
  * \defgroup interpow_flow Program flow
  * Macros for program flow management, i.e. resume program and switch task.
  *
@@ -230,6 +238,16 @@ void resume_program(__program_state*);
  * @param NAME              task's name
  * @param FN                pointer to the function to execute
  * @param HAS_SELF_CHANNEL  1 if task has self-channel, 0 otherwise
+ *
+ * \par Non-volatility
+ * Tasks have to be non-volatile, and have to be initialised only at the first
+ * start of the program. In order to do so, before declaring a task \e myTask,
+ * a `#pragma` has to be used, i.e.
+ * \verbatim
+   #pragma PERSISTENT(myTask)
+   NewTask(myTask, myFunction, x)
+   \endverbatim
+ * where x = 0, 1.
  */
 #define NewTask(NAME, FN, HAS_SELF_CHANNEL)                                     \
         __task NAME = {                                                         \
@@ -248,6 +266,15 @@ void resume_program(__program_state*);
  *        the system. \e TASK has to be defined before using this macro.
  *
  * @param TASK  name of the task
+ *
+ * \par Non-volatility
+ * The library requires the user to use a `#pragma` before calling this macro,
+ * in order to save the program state to non-volatile memory, i.e.
+ * \verbatim
+   #pragma PERSISTENT(PersState)
+   InitialTask(myInitialTask)
+   \endverbatim
+ * Note that the argument of `PERSISTENT` is fixed.
  */
 #define InitialTask(TASK)                                                       \
         static __program_state __prog_state = {                                 \
@@ -295,6 +322,15 @@ void resume_program(__program_state*);
  * @param NAME  field's name
  * @param TYPE  field's TYPE, must be a value of \ref FIELD_TYPES
  * @param LEN   field's length (if LEN>1 the field is an array)
+ *
+ * \par Non-volatility
+ * Fields have to be non-volatile, and have to be initialised only at the first
+ * start of the program. In order to do so, before declaring a field \e myField,
+ * belonging to the channel (\e ST, \e DT ), a `#pragma` has to be used, i.e.
+ * \verbatim
+   #pragma PERSISTENT(PersField(ST, DT, myField))
+   NewField(ST, DT, myField, type, len)
+   \endverbatim
  */
 #define NewField(SRC, DST, NAME, TYPE, LEN)                                     \
         TYPE __##SRC##DST##NAME[LEN] = {0};                                     \
@@ -322,6 +358,16 @@ void resume_program(__program_state*);
  * A specific self-channel (\e T, \e T ) can have at most 8 self-fields.
  * Self-fields belonging to the same self-channel <b>must have different 
  * codes</b>, but they do not need to be sequential.
+ *
+ * \par Non-volatility
+ * Self-fields have to be non-volatile, and have to be initialised only at the first
+ * start of the program. In order to do so, before declaring a self-field \e myField,
+ * belonging to the self-channel (\e T, \e T ), two `#pragma` have to be used, i.e.
+ * \verbatim
+   #pragma PERSISTENT(PersSField0(T, myField))
+   #pragma PERSISTENT(PersSField1(T, myField))
+   NewSelfField(T, myField, type, len, code)
+   \endverbatim
  */
 #define NewSelfField(TASK, NAME, TYPE, LEN, CODE)                               \
         TYPE __##TASK##TASK##NAME##_0[LEN] = {0};                               \

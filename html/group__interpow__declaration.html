@@ -104,7 +104,13 @@ Macros</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Macros for preliminary Task and Field declarations.</p>
-<dl class="section user"><dt>Channels</dt><dd>Channels allow two tasks to communicate with each other, or a task to communicate with itself. A channel is defined by its <em>source</em> and <em>destination</em> tasks, and is referred to as (<em>source</em>, <em>destination</em>). </dd></dl>
+<dl class="section user"><dt>Channels</dt><dd>Channels allow two tasks to communicate with each other, or a task to communicate with itself. A channel is defined by its <em>source</em> and <em>destination</em> tasks, and is referred to as (<em>source</em>, <em>destination</em>).</dd></dl>
+<dl class="section user"><dt>Declarations</dt><dd>Declarations of tasks, initial task, fields and self-fields must be in the global area outside the <em>main</em>, and have to follow this order: <ul>
+<li>tasks declarations, using <code><a class="el" href="group__interpow__declaration.html#gaf3547b2fb7ca0e0fe642e6b5cbdbdaf2" title="Create a new task. ">NewTask()</a></code>; </li>
+<li>initial task declaration, using <code><a class="el" href="group__interpow__declaration.html#ga1156bffe7de2162c5889cf427dd30657" title="Define which task has to execute first on the very first start of the system. TASK has to be defined ...">InitialTask()</a></code>; </li>
+<li>fields and self-fields declarations, using <code><a class="el" href="group__interpow__declaration.html#gafcc1282442066a75e573d78ae3b6dac1" title="Define a new field, conceptually belonging to the channel (SRC, DST ). SRC and DST have to be defined...">NewField()</a></code> and <code><a class="el" href="group__interpow__declaration.html#ga224e55a4652c727d23a3301b314398bd" title="Define a new self-field, conceptually belonging to the self-channel (TASK, TASK ). TASK has to be defined before using this macro. ">NewSelfField()</a></code>. </li>
+</ul>
+</dd></dl>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="gaf3547b2fb7ca0e0fe642e6b5cbdbdaf2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaf3547b2fb7ca0e0fe642e6b5cbdbdaf2">&#9670;&nbsp;</a></span>NewTask</h2>
@@ -143,10 +149,13 @@ Macros</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">NAME</td><td>task's name </td></tr>
     <tr><td class="paramname">FN</td><td>pointer to the function to execute </td></tr>
-    <tr><td class="paramname">HAS_SELF_CHANNEL</td><td>1 if task has self-channel, 0 otherwise </td></tr>
+    <tr><td class="paramname">HAS_SELF_CHANNEL</td><td>1 if task has self-channel, 0 otherwise</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section user"><dt>Non-volatility</dt><dd>Tasks have to be non-volatile, and have to be initialised only at the first start of the program. In order to do so, before declaring a task <em>myTask</em>, a <code>#pragma</code> has to be used, i.e. <pre class="fragment">#pragma PERSISTENT(myTask)
+NewTask(myTask, myFunction, x)
+</pre> where x = 0, 1. </dd></dl>
 
 </div>
 </div>
@@ -169,10 +178,13 @@ Macros</h2></td></tr>
 <p>Define which task has to execute first on the very first start of the system. <em>TASK</em> has to be defined before using this macro. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">TASK</td><td>name of the task </td></tr>
+    <tr><td class="paramname">TASK</td><td>name of the task</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section user"><dt>Non-volatility</dt><dd>The library requires the user to use a <code>#pragma</code> before calling this macro, in order to save the program state to non-volatile memory, i.e. <pre class="fragment">#pragma PERSISTENT(PersState)
+InitialTask(myInitialTask)
+</pre> Note that the argument of <code>PERSISTENT</code> is fixed. </dd></dl>
 
 </div>
 </div>
@@ -227,10 +239,13 @@ Macros</h2></td></tr>
     <tr><td class="paramname">DST</td><td>channel's destination task </td></tr>
     <tr><td class="paramname">NAME</td><td>field's name </td></tr>
     <tr><td class="paramname">TYPE</td><td>field's TYPE, must be a value of <a class="el" href="group___f_i_e_l_d___t_y_p_e_s.html">FIELD_TYPES</a> </td></tr>
-    <tr><td class="paramname">LEN</td><td>field's length (if LEN&gt;1 the field is an array) </td></tr>
+    <tr><td class="paramname">LEN</td><td>field's length (if LEN&gt;1 the field is an array)</td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section user"><dt>Non-volatility</dt><dd>Fields have to be non-volatile, and have to be initialised only at the first start of the program. In order to do so, before declaring a field <em>myField</em>, belonging to the channel (<em>ST</em>, <em>DT</em> ), a <code>#pragma</code> has to be used, i.e. <pre class="fragment">#pragma PERSISTENT(PersField(ST, DT, myField))
+NewField(ST, DT, myField, type, len)
+</pre> </dd></dl>
 
 </div>
 </div>
@@ -289,7 +304,11 @@ Macros</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section user"><dt>Self-field code</dt><dd>A specific self-channel (<em>T</em>, <em>T</em> ) can have at most 8 self-fields. Self-fields belonging to the same self-channel <b>must have different codes</b>, but they do not need to be sequential. </dd></dl>
+<dl class="section user"><dt>Self-field code</dt><dd>A specific self-channel (<em>T</em>, <em>T</em> ) can have at most 8 self-fields. Self-fields belonging to the same self-channel <b>must have different codes</b>, but they do not need to be sequential.</dd></dl>
+<dl class="section user"><dt>Non-volatility</dt><dd>Self-fields have to be non-volatile, and have to be initialised only at the first start of the program. In order to do so, before declaring a self-field <em>myField</em>, belonging to the self-channel (<em>T</em>, <em>T</em> ), two <code>#pragma</code> have to be used, i.e. <pre class="fragment">#pragma PERSISTENT(PersSField0(T, myField))
+#pragma PERSISTENT(PersSField1(T, myField))
+NewSelfField(T, myField, type, len, code)
+</pre> </dd></dl>
 
 </div>
 </div>
