@@ -377,27 +377,39 @@ void write_field_u32(void *f, uint32_t *src, uint8_t self, __program_state *ps)
 }
 
 
-void write_field_element_u16(void *f, uint16_t *src, uint16_t pos, uint8_t self, __program_state *ps)
+void write_field_element_8(__field *f, int8_t *src, uint16_t pos)
 {
-    // ((uint16_t*) f->base_addr)[pos] = *src;
+    ((int8_t*) f->base_addr)[pos] = *src;
+}
 
-    if (!self) {
-        __field *t = (__field*) f;
-        ((uint16_t*) t->base_addr)[pos] = *src;
-    }
-    else {
-        __self_field *t = (__self_field*) f;
 
-        uint16_t *base;
-        (t->code & ps->curr_task->dirty_in) ? (base = t->base_addr_0) : (base = t->base_addr_1);
+void write_field_element_u8(__field *f, uint8_t *src, uint16_t pos)
+{
+    ((uint8_t*) f->base_addr)[pos] = *src;
+}
 
-        ((uint16_t*) base)[pos] = *src;
 
-        // TODO: [L] cannot swap when updating only one element of the array, find a solution!
-        // (or do not write self-field element)
-        uint16_t d = (t->code << 8) + t->code;
-        ps->curr_task->dirty_in ^= d;
-    }
+void write_field_element_16(__field *f, int16_t *src, uint16_t pos)
+{
+    ((int16_t*) f->base_addr)[pos] = *src;
+}
+
+
+void write_field_element_u16(__field *f, uint16_t *src, uint16_t pos)
+{
+    ((uint16_t*) f->base_addr)[pos] = *src;
+}
+
+
+void write_field_element_32(__field *f, int32_t *src, uint16_t pos)
+{
+    ((int32_t*) f->base_addr)[pos] = *src;
+}
+
+
+void write_field_element_u32(__field *f, uint32_t *src, uint16_t pos)
+{
+    ((uint32_t*) f->base_addr)[pos] = *src;
 }
 
 

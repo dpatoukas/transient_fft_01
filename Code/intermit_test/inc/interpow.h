@@ -140,7 +140,17 @@ void write_field_32(void*, int32_t*, uint8_t, __program_state*);
 
 void write_field_u32(void*, uint32_t*, uint8_t, __program_state*);
 
-void write_field_element_u16(void*, uint16_t*, uint16_t, uint8_t, __program_state*);
+void write_field_element_8(__field*, int8_t*, uint16_t);
+
+void write_field_element_u8(__field*, uint8_t*, uint16_t);
+
+void write_field_element_16(__field*, int16_t*, uint16_t);
+
+void write_field_element_u16(__field*, uint16_t*, uint16_t);
+
+void write_field_element_32(__field*, int32_t*, uint16_t);
+
+void write_field_element_u32(__field*, uint32_t*, uint16_t);
 
 void start_task(__task*, __program_state*);
 
@@ -561,8 +571,49 @@ void resume_program(__program_state*);
 
 
 /**
- * ********** CURRENTLY NOT USABLE! **********
- * Write a single element of a field in channel SRC_TASK->DST_TASK.
+ * Write a single element of a 8-bit signed field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ * @param POS       offset of the element to write
+ */
+#define WriteFieldElement_8(SRC_TASK, DST_TASK, FLD, SRC, POS)                  \
+        write_field_element_8(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS);
+
+
+/**
+ * Write a single element of a 8-bit unsigned field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ * @param POS       offset of the element to write
+ */
+#define WriteFieldElement_U8(SRC_TASK, DST_TASK, FLD, SRC, POS)                 \
+        write_field_element_u8(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS);
+
+
+/**
+ * Write a single element of a 16-bit signed field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ * @param POS       offset of the element to write
+ */
+#define WriteFieldElement_16(SRC_TASK, DST_TASK, FLD, SRC, POS)                 \
+        write_field_element_16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS);
+
+
+/**
+ * Write a single element of a 16-bit unsigned field in channel SRC_TASK->DST_TASK.
  * For the time being, both SRC_TASK and DST_TASK are needed as input params.
  *
  * @param SRC_TASK  channel's source task
@@ -572,7 +623,35 @@ void resume_program(__program_state*);
  * @param POS       offset of the element to write
  */
 #define WriteFieldElement_U16(SRC_TASK, DST_TASK, FLD, SRC, POS)                \
-        write_field_element_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS, 0, &__prog_state);
+        write_field_element_u16(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS);
+
+
+/**
+ * Write a single element of a 32-bit signed field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ * @param POS       offset of the element to write
+ */
+#define WriteFieldElement_32(SRC_TASK, DST_TASK, FLD, SRC, POS)                 \
+        write_field_element_32(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS);
+
+
+/**
+ * Write a single element of a 32-bit unsigned field in channel SRC_TASK->DST_TASK.
+ * For the time being, both SRC_TASK and DST_TASK are needed as input params.
+ *
+ * @param SRC_TASK  channel's source task
+ * @param DST_TASK  channel's destination task
+ * @param FLD       field to write
+ * @param SRC       address of the variable to write into the field
+ * @param POS       offset of the element to write
+ */
+#define WriteFieldElement_U32(SRC_TASK, DST_TASK, FLD, SRC, POS)                \
+        write_field_element_u32(&GetField(SRC_TASK, DST_TASK, FLD), SRC, POS);
 
 
 /**

@@ -169,15 +169,20 @@ int main(void)
 	PM5CTL0 &= ~LOCKLPM5;
 
 	P1DIR |= 0x01;
-    P1OUT = 0x00;
+	P1DIR |= 0x02;
+    // P1OUT = 0x00;
 
 	Resume();
-	return 0;
+
+	while(1);
 }
 
 
 void Task_initialize()
 {
+
+    P1OUT = 0x00;
+
     // Generate two sine waves and store them into x1 and x2
 
 	msp_sinusoid_q15_params sinParams;
@@ -308,8 +313,8 @@ void Task_mac()
  	WriteSelfField_U16(T_mag, inside_index, &k)
 
  	if ((k-1)==N_SAMPLES) {
- 	   P1OUT ^= 0x01;
- 	   StartTask(T_init)
+ 	   P1OUT |= 0x01;
+ 	   // StartTask(T_init)
  	}
  	else
  		StartTask(T_mag)

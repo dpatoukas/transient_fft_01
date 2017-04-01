@@ -82,6 +82,8 @@ void main(void)
 
     Clock_config();
 
+    ADC_config();
+
     if (UART_config() == STATUS_FAIL)
         return;
 
