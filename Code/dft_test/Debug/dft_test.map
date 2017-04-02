@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker Unix v16.9.1                   
 ******************************************************************************
->> Linked Thu Mar  9 20:34:48 2017
+>> Linked Fri Mar 31 22:31:58 2017
 
 OUTPUT FILE NAME:   <dft_test.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit_mpu"  address: 00004000
@@ -80,7 +80,7 @@ MEMORY CONFIGURATION
   INT53                 0000fffa   00000002  00000002  00000000  RWIX
   INT54                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FRAM2                 00010000   00034000  00004d6a  0002f296  RWIX
+  FRAM2                 00010000   00034000  00004d66  0002f29a  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -290,108 +290,109 @@ SYSNMI     0    0000fffc    00000002
                   00004258    00000010     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_tables.o (.const:msp430_sin_coeffs)
                   00004268    0000000e     dft_test.obj (.const:.string)
 
-.text      0    00010000    00004d6a     
+.text      0    00010000    00004d66     
                   00010000    00000478     rts430x_lc_rd_eabi.lib : frcdivd.obj (.text:__TI_frcdivd)
                   00010478    00000416     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_cos_sin.o (.text:msp430_cos_sin)
                   0001088e    0000034e     rts430x_lc_rd_eabi.lib : div64u.obj (.text:__mspabi_divull)
                   00010bdc    000002d8                            : addd.obj (.text:__mspabi_addd)
-                  00010eb4    000002ce     dft_test.obj (.text:main)
-                  00011182    00000286     rts430x_lc_rd_eabi.lib : frcmpyd.obj (.text:__TI_frcmpyd)
-                  00011408    00000282                            : mpyd.obj (.text:__mspabi_mpyd)
-                  0001168a    00000260                            : _printfi.obj (.text:_pproc_fgea)
-                  000118ea    0000025e                            : _printfi.obj (.text:_setfield)
-                  00011b48    00000252                            : frcaddd.obj (.text:__TI_frcaddd)
-                  00011d9a    0000023c                            : _printfi.obj (.text:__TI_printfi)
-                  00011fd6    00000224                            : _printfi.obj (.text:acvt)
-                  000121fa    00000222                            : divd.obj (.text:__mspabi_divd)
-                  0001241c    00000210                            : _printfi.obj (.text:ecvt)
-                  0001262c    00000202     msp_biquad_df1_q15.obj (.text:msp_biquad_df1_q15)
-                  0001282e    000001fe     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:fcvt)
-                  00012a2c    000001a4                            : _printfi.obj (.text:_pconv_e)
-                  00012bd0    000001a2     msp_add_q15.obj (.text:msp_add_q15)
-                  00012d72    000001a0     rts430x_lc_rd_eabi.lib : s_scalbn.obj (.text:scalbn)
-                  00012f12    00000194     msp_mac_q15.obj (.text:msp_mac_q15)
-                  000130a6    00000188     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_getarg_diouxp)
-                  0001322e    00000188     msp_deinterleave_q15.obj (.text:msp_deinterleave_q15)
-                  000133b6    00000170     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pconv_a)
-                  00013526    00000148                            : _printfi.obj (.text:_pproc_diouxp)
-                  0001366e    0000012a                            : _printfi.obj (.text:_ltostr)
-                  00013798    00000106     msp_sinusoid_q15.obj (.text:msp_sinusoid_q15)
-                  0001389e    000000fc     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pconv_g)
-                  0001399a    000000fa                            : _printfi.obj (.text:_pproc_fwp)
-                  00013a94    000000f6     QmathLib_CCS_MPY32_5xx_6xx_CPUX_large_code_restricted_data.lib : _QNsqrt.o (.text:_Qmag)
-                  00013b8a    000000d8     rts430x_lc_rd_eabi.lib : cmpd.obj (.text:__mspabi_cmpd)
-                  00013c62    000000b8                            : fs_mpy.obj (.text)
-                  00013d1a    000000b2                            : renormd.obj (.text:__TI_renormd)
-                  00013dcc    000000b2                            : s_frexp.obj (.text:frexp)
-                  00013e7e    000000a6                            : _printfi.obj (.text:_pproc_str)
-                  00013f24    0000009e                            : fltlid.obj (.text:__mspabi_fltlid)
-                  00013fc2    0000009a     eusci_a_uart.obj (.text:EUSCI_A_UART_init)
-                  0001405c    00000090     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_ecpy)
-                  000140ec    00000090                            : _printfi.obj (.text:_mcpy)
-                  0001417c    0000008c                            : cvtdf.obj (.text:__mspabi_cvtdf)
-                  00014208    00000082                            : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  0001428a    00000080                            : fltuld.obj (.text:__mspabi_fltuld)
-                  0001430a    00000080                            : ltoa.obj (.text:ltoa)
-                  0001438a    00000078                            : _printfi.obj (.text:_pconv_f)
-                  00014402    00000078                            : copy_decompress_lzss.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  0001447a    00000074     util.obj (.text:UART_config)
-                  000144ee    00000068     rts430x_lc_rd_eabi.lib : fs_toi.obj (.text)
-                  00014556    00000066                            : fixdli.obj (.text:__mspabi_fixdli)
-                  000145bc    00000066                            : cpy_tbl.obj (.text:copy_in)
-                  00014622    00000064     msp_scale_q15.obj (.text:msp_scale_q15)
-                  00014686    00000062     rts430x_lc_rd_eabi.lib : atoi.obj (.text:atoi)
-                  000146e8    00000058                            : div32u.obj (.text)
-                  00014740    00000052     util.obj (.text:Clock_config)
-                  00014792    0000004e     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_fcpy)
-                  000147e0    0000004e     msp_lea_init.obj (.text:msp_lea_init)
-                  0001482e    0000004a     rts430x_lc_rd_eabi.lib : printf.obj (.text:printf)
-                  00014878    00000044     msp_lea_patch.obj (.text:msp_lea_getRevision)
-                  000148bc    00000040     rts430x_lc_rd_eabi.lib : div32s.obj (.text)
-                  000148fc    0000003e                            : asr32.obj (.text:l_asr_const)
-                  0001493a    0000003e                            : lsl32.obj (.text:l_lsl_const)
-                  00014978    0000003e                            : lsr32.obj (.text:l_lsr_const)
-                  000149b6    0000003a     cs.obj (.text:CS_turnOnLFXT)
-                  000149f0    0000003a     rts430x_lc_rd_eabi.lib : lsl64.obj (.text:__mspabi_sllll)
-                  00014a2a    0000003a                            : lsr64.obj (.text:__mspabi_srlll)
-                  00014a64    00000032                            : subd.obj (.text:__mspabi_subd)
-                  00014a96    0000002e                            : negd.obj (.text:__mspabi_negd)
-                  00014ac4    0000002e                            : s_copysign.obj (.text:copysign)
-                  00014af2    0000002c     dft_test.obj (.text:fputs)
-                  00014b1e    00000028     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
-                  00014b46    00000028     rts430x_lc_rd_eabi.lib : fixdi.obj (.text:__mspabi_fixdi)
-                  00014b6e    00000024                            : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
-                  00014b92    00000024                            : mult32_f5hw.obj (.text)
-                  00014bb6    00000022     eusci_a_uart.obj (.text:EUSCI_A_UART_enableInterrupt)
-                  00014bd8    0000001e     rts430x_lc_rd_eabi.lib : memccpy.obj (.text:memccpy)
-                  00014bf6    0000001e     msp_iq31_to_q15.obj (.text:msp_iq31_to_q15)
-                  00014c14    0000001c     rts430x_lc_rd_eabi.lib : strchr.obj (.text:strchr)
-                  00014c30    00000018                            : mult16_f5hw.obj (.text)
-                  00014c48    00000016                            : memset.obj (.text:memset)
-                  00014c5e    00000016                            : div16u.obj (.text)
-                  00014c74    00000014                            : memcpy.obj (.text:memcpy)
-                  00014c88    00000012     cs.obj (.text:CS_setExternalClockSource)
-                  00014c9a    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  00014cac    00000012                            : toupper.obj (.text:toupper)
-                  00014cbe    00000010     dft_test.obj (.text:fputc)
-                  00014cce    00000010     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr)
-                  00014cde    00000010                            : lsl32.obj (.text:l_lsl)
-                  00014cee    00000010                            : lsr32.obj (.text:l_lsr)
-                  00014cfe    0000000e     eusci_a_uart.obj (.text:EUSCI_A_UART_clearInterrupt)
-                  00014d0c    0000000e     rts430x_lc_rd_eabi.lib : strlen.obj (.text:strlen)
-                  00014d1a    0000000c                            : fltid.obj (.text:__mspabi_fltid)
-                  00014d26    0000000a                            : abs.obj (.text:abs)
-                  00014d30    0000000a                            : fs_neg.obj (.text)
-                  00014d3a    00000006     eusci_a_uart.obj (.text:EUSCI_A_UART_enable)
-                  00014d40    00000006     rts430x_lc_rd_eabi.lib : fltud.obj (.text:__mspabi_fltud)
-                  00014d46    00000006                            : printf.obj (.text:_outc)
-                  00014d4c    00000006                            : exit.obj (.text:abort)
-                  00014d52    00000006     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_cos_sin.o (.text:cosf)
-                  00014d58    00000006                                                                       : msp430_cos_sin.o (.text:sinf)
-                  00014d5e    00000004     rts430x_lc_rd_eabi.lib : printf.obj (.text:_outs)
-                  00014d62    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  00014d66    00000002                            : _lock.obj (.text:_nop)
-                  00014d68    00000002                            : startup.obj (.text:_system_post_cinit)
+                  00010eb4    000002c8     dft_test.obj (.text:main)
+                  0001117c    00000286     rts430x_lc_rd_eabi.lib : frcmpyd.obj (.text:__TI_frcmpyd)
+                  00011402    00000282                            : mpyd.obj (.text:__mspabi_mpyd)
+                  00011684    00000260                            : _printfi.obj (.text:_pproc_fgea)
+                  000118e4    0000025e                            : _printfi.obj (.text:_setfield)
+                  00011b42    00000252                            : frcaddd.obj (.text:__TI_frcaddd)
+                  00011d94    0000023c                            : _printfi.obj (.text:__TI_printfi)
+                  00011fd0    00000224                            : _printfi.obj (.text:acvt)
+                  000121f4    00000222                            : divd.obj (.text:__mspabi_divd)
+                  00012416    00000210                            : _printfi.obj (.text:ecvt)
+                  00012626    00000202     msp_biquad_df1_q15.obj (.text:msp_biquad_df1_q15)
+                  00012828    000001fe     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:fcvt)
+                  00012a26    000001a4                            : _printfi.obj (.text:_pconv_e)
+                  00012bca    000001a2     msp_add_q15.obj (.text:msp_add_q15)
+                  00012d6c    000001a0     rts430x_lc_rd_eabi.lib : s_scalbn.obj (.text:scalbn)
+                  00012f0c    00000194     msp_mac_q15.obj (.text:msp_mac_q15)
+                  000130a0    00000188     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_getarg_diouxp)
+                  00013228    00000188     msp_deinterleave_q15.obj (.text:msp_deinterleave_q15)
+                  000133b0    00000170     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pconv_a)
+                  00013520    00000148                            : _printfi.obj (.text:_pproc_diouxp)
+                  00013668    0000012a                            : _printfi.obj (.text:_ltostr)
+                  00013792    00000106     msp_sinusoid_q15.obj (.text:msp_sinusoid_q15)
+                  00013898    000000fc     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_pconv_g)
+                  00013994    000000fa                            : _printfi.obj (.text:_pproc_fwp)
+                  00013a8e    000000f6     QmathLib_CCS_MPY32_5xx_6xx_CPUX_large_code_restricted_data.lib : _QNsqrt.o (.text:_Qmag)
+                  00013b84    000000d8     rts430x_lc_rd_eabi.lib : cmpd.obj (.text:__mspabi_cmpd)
+                  00013c5c    000000b8                            : fs_mpy.obj (.text)
+                  00013d14    000000b2                            : renormd.obj (.text:__TI_renormd)
+                  00013dc6    000000b2                            : s_frexp.obj (.text:frexp)
+                  00013e78    000000a6                            : _printfi.obj (.text:_pproc_str)
+                  00013f1e    0000009e                            : fltlid.obj (.text:__mspabi_fltlid)
+                  00013fbc    0000009a     eusci_a_uart.obj (.text:EUSCI_A_UART_init)
+                  00014056    00000090     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_ecpy)
+                  000140e6    00000090                            : _printfi.obj (.text:_mcpy)
+                  00014176    0000008c                            : cvtdf.obj (.text:__mspabi_cvtdf)
+                  00014202    00000082                            : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  00014284    00000080                            : fltuld.obj (.text:__mspabi_fltuld)
+                  00014304    00000080                            : ltoa.obj (.text:ltoa)
+                  00014384    00000078                            : _printfi.obj (.text:_pconv_f)
+                  000143fc    00000078                            : copy_decompress_lzss.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  00014474    00000074     util.obj (.text:UART_config)
+                  000144e8    00000068     rts430x_lc_rd_eabi.lib : fs_toi.obj (.text)
+                  00014550    00000066                            : fixdli.obj (.text:__mspabi_fixdli)
+                  000145b6    00000066                            : cpy_tbl.obj (.text:copy_in)
+                  0001461c    00000064     msp_scale_q15.obj (.text:msp_scale_q15)
+                  00014680    00000062     rts430x_lc_rd_eabi.lib : atoi.obj (.text:atoi)
+                  000146e2    00000058                            : div32u.obj (.text)
+                  0001473a    00000052     util.obj (.text:Clock_config)
+                  0001478c    0000004e     rts430x_lc_rd_eabi.lib : _printfi.obj (.text:_fcpy)
+                  000147da    0000004e     msp_lea_init.obj (.text:msp_lea_init)
+                  00014828    0000004a     rts430x_lc_rd_eabi.lib : printf.obj (.text:printf)
+                  00014872    00000044     msp_lea_patch.obj (.text:msp_lea_getRevision)
+                  000148b6    00000040     rts430x_lc_rd_eabi.lib : div32s.obj (.text)
+                  000148f6    0000003e                            : asr32.obj (.text:l_asr_const)
+                  00014934    0000003e                            : lsl32.obj (.text:l_lsl_const)
+                  00014972    0000003e                            : lsr32.obj (.text:l_lsr_const)
+                  000149b0    0000003a     cs.obj (.text:CS_turnOnLFXT)
+                  000149ea    0000003a     rts430x_lc_rd_eabi.lib : lsl64.obj (.text:__mspabi_sllll)
+                  00014a24    0000003a                            : lsr64.obj (.text:__mspabi_srlll)
+                  00014a5e    00000032                            : subd.obj (.text:__mspabi_subd)
+                  00014a90    0000002e                            : negd.obj (.text:__mspabi_negd)
+                  00014abe    0000002e                            : s_copysign.obj (.text:copysign)
+                  00014aec    0000002c     dft_test.obj (.text:fputs)
+                  00014b18    00000028     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
+                  00014b40    00000028     rts430x_lc_rd_eabi.lib : fixdi.obj (.text:__mspabi_fixdi)
+                  00014b68    00000024                            : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
+                  00014b8c    00000024                            : mult32_f5hw.obj (.text)
+                  00014bb0    00000022     eusci_a_uart.obj (.text:EUSCI_A_UART_enableInterrupt)
+                  00014bd2    0000001e     rts430x_lc_rd_eabi.lib : memccpy.obj (.text:memccpy)
+                  00014bf0    0000001e     msp_iq31_to_q15.obj (.text:msp_iq31_to_q15)
+                  00014c0e    0000001c     rts430x_lc_rd_eabi.lib : strchr.obj (.text:strchr)
+                  00014c2a    00000018                            : mult16_f5hw.obj (.text)
+                  00014c42    00000016                            : memset.obj (.text:memset)
+                  00014c58    00000016                            : div16u.obj (.text)
+                  00014c6e    00000014                            : memcpy.obj (.text:memcpy)
+                  00014c82    00000012     cs.obj (.text:CS_setExternalClockSource)
+                  00014c94    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  00014ca6    00000012                            : toupper.obj (.text:toupper)
+                  00014cb8    00000010     dft_test.obj (.text:fputc)
+                  00014cc8    00000010     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr)
+                  00014cd8    00000010                            : lsl32.obj (.text:l_lsl)
+                  00014ce8    00000010                            : lsr32.obj (.text:l_lsr)
+                  00014cf8    0000000e     eusci_a_uart.obj (.text:EUSCI_A_UART_clearInterrupt)
+                  00014d06    0000000e     rts430x_lc_rd_eabi.lib : strlen.obj (.text:strlen)
+                  00014d14    0000000c                            : fltid.obj (.text:__mspabi_fltid)
+                  00014d20    0000000a                            : abs.obj (.text:abs)
+                  00014d2a    0000000a                            : fs_neg.obj (.text)
+                  00014d34    00000006     eusci_a_uart.obj (.text:EUSCI_A_UART_enable)
+                  00014d3a    00000006     rts430x_lc_rd_eabi.lib : fltud.obj (.text:__mspabi_fltud)
+                  00014d40    00000006                            : printf.obj (.text:_outc)
+                  00014d46    00000006                            : exit.obj (.text:abort)
+                  00014d4c    00000006     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_cos_sin.o (.text:cosf)
+                  00014d52    00000006                                                                       : msp430_cos_sin.o (.text:sinf)
+                  00014d58    00000004     rts430x_lc_rd_eabi.lib : printf.obj (.text:_outs)
+                  00014d5c    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  00014d60    00000002     util.obj (.text:ADC_config)
+                  00014d62    00000002     rts430x_lc_rd_eabi.lib : _lock.obj (.text:_nop)
+                  00014d64    00000002                            : startup.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
@@ -431,10 +432,10 @@ MODULE SUMMARY
        Total:                     922     0         0      
                                                            
     ./src/
-       dft_test.obj               788     16        450    
-       util.obj                   198     16        0      
+       dft_test.obj               782     16        450    
+       util.obj                   200     16        0      
     +--+--------------------------+-------+---------+---------+
-       Total:                     986     32        450    
+       Total:                     982     32        450    
                                                            
     /Applications/ti/ccsv7/ccs_base/msp430/lib/5xx_6xx_FRxx/MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib
        msp430_cos_sin.o           1058    0         0      
@@ -555,7 +556,7 @@ MODULE SUMMARY
        Stack:                     0       0         160    
        Linker Generated:          0       81        0      
     +--+--------------------------+-------+---------+---------+
-       Grand Total:               19894   710       832    
+       Grand Total:               19890   710       832    
 
 
 LINKER GENERATED COPY TABLES
@@ -809,6 +810,7 @@ address   name
 00000872  ADC12MEM9                   
 00000873  ADC12MEM9_H                 
 00000872  ADC12MEM9_L                 
+00014d60  ADC_config                  
 000009c0  AESACTL0                    
 000009c1  AESACTL0_H                  
 000009c0  AESACTL0_L                  
@@ -839,7 +841,7 @@ address   name
 000004bc  BIN2BCD                     
 000004bd  BIN2BCD_H                   
 000004bc  BIN2BCD_L                   
-00014d4c  C$$EXIT                     
+00014d46  C$$EXIT                     
 0000043e  CAPTIO0CTL                  
 0000043f  CAPTIO0CTL_H                
 0000043e  CAPTIO0CTL_L                
@@ -933,9 +935,9 @@ address   name
 0000016c  CSCTL6                      
 0000016d  CSCTL6_H                    
 0000016c  CSCTL6_L                    
-00014c88  CS_setExternalClockSource   
-000149b6  CS_turnOnLFXT               
-00014740  Clock_config                
+00014c82  CS_setExternalClockSource   
+000149b0  CS_turnOnLFXT               
+0001473a  Clock_config                
 00000510  DMA0CTL                     
 00000511  DMA0CTL_H                   
 00000510  DMA0CTL_L                   
@@ -1023,10 +1025,10 @@ address   name
 0000050e  DMAIV                       
 0000050f  DMAIV_H                     
 0000050e  DMAIV_L                     
-00014cfe  EUSCI_A_UART_clearInterrupt 
-00014d3a  EUSCI_A_UART_enable         
-00014bb6  EUSCI_A_UART_enableInterrupt
-00013fc2  EUSCI_A_UART_init           
+00014cf8  EUSCI_A_UART_clearInterrupt 
+00014d34  EUSCI_A_UART_enable         
+00014bb0  EUSCI_A_UART_enableInterrupt
+00013fbc  EUSCI_A_UART_init           
 00000140  FRCTL0                      
 00000141  FRCTL0_H                    
 00000140  FRCTL0_L                    
@@ -1734,7 +1736,7 @@ address   name
 000003d0  TB0R                        
 000003d1  TB0R_H                      
 000003d0  TB0R_L                      
-0001447a  UART_config                 
+00014474  UART_config                 
 000005d0  UCA0ABCTL                   
 000005d1  UCA0ABCTL_H                 
 000005d0  UCA0ABCTL_L                 
@@ -2088,7 +2090,7 @@ address   name
 0000015d  WDTCTL_H                    
 0000015c  WDTCTL_L                    
 0000414e  _Q16sqrt_coeffs             
-00013a94  _Qmag                       
+00013a8e  _Qmag                       
 00002c00  __STACK_END                 
 000000a0  __STACK_SIZE                
 UNDEFED   __TI_BINIT_Base             
@@ -2100,11 +2102,11 @@ UNDEFED   __TI_BINIT_Limit
 UNDEFED   __TI_INITARRAY_Base         
 UNDEFED   __TI_INITARRAY_Limit        
 00004044  __TI_ISR_TRAP               
-00014402  __TI_decompress_lzss        
-00014c9a  __TI_decompress_none        
-00011b48  __TI_frcaddd                
+000143fc  __TI_decompress_lzss        
+00014c94  __TI_decompress_none        
+00011b42  __TI_frcaddd                
 00010000  __TI_frcdivd                
-00011182  __TI_frcmpyd                
+0001117c  __TI_frcmpyd                
 0000ffb4  __TI_int18                  
 0000ffb6  __TI_int19                  
 0000ffb8  __TI_int20                  
@@ -2143,124 +2145,124 @@ UNDEFED   __TI_INITARRAY_Limit
 0000fffa  __TI_int53                  
 0000fffc  __TI_int54                  
 ffffffff  __TI_pprof_out_hndl         
-00011d9a  __TI_printfi                
+00011d94  __TI_printfi                
 ffffffff  __TI_prof_data_size         
 ffffffff  __TI_prof_data_start        
-00013d1a  __TI_renormd                
-00014b6e  __TI_zero_init              
+00013d14  __TI_renormd                
+00014b68  __TI_zero_init              
 ffffffff  __c_args__                  
 00000001  __mpu_enable                
-00014b1e  __mpu_init                  
+00014b18  __mpu_init                  
 00010bdc  __mspabi_addd               
-00013b8a  __mspabi_cmpd               
-0001417c  __mspabi_cvtdf              
-000121fa  __mspabi_divd               
-000148bc  __mspabi_divli              
-00014c5e  __mspabi_divu               
-000146e8  __mspabi_divul              
+00013b84  __mspabi_cmpd               
+00014176  __mspabi_cvtdf              
+000121f4  __mspabi_divd               
+000148b6  __mspabi_divli              
+00014c58  __mspabi_divu               
+000146e2  __mspabi_divul              
 0001088e  __mspabi_divull             
-00014b46  __mspabi_fixdi              
-00014556  __mspabi_fixdli             
-000144ee  __mspabi_fixfi              
-00014d1a  __mspabi_fltid              
-00013f24  __mspabi_fltlid             
-00014d40  __mspabi_fltud              
-0001428a  __mspabi_fltuld             
-00011408  __mspabi_mpyd               
-00013c62  __mspabi_mpyf               
-00014c30  __mspabi_mpyi_f5hw          
-00014b92  __mspabi_mpyl_f5hw          
-00014a96  __mspabi_negd               
-00014d30  __mspabi_negf               
-000148bc  __mspabi_remli              
-00014c5e  __mspabi_remu               
-000146e8  __mspabi_remul              
-00014cde  __mspabi_slll               
-00014972  __mspabi_slll_1             
-0001494e  __mspabi_slll_10            
-0001494a  __mspabi_slll_11            
-00014946  __mspabi_slll_12            
-00014942  __mspabi_slll_13            
-0001493e  __mspabi_slll_14            
-0001493a  __mspabi_slll_15            
-0001496e  __mspabi_slll_2             
-0001496a  __mspabi_slll_3             
-00014966  __mspabi_slll_4             
-00014962  __mspabi_slll_5             
-0001495e  __mspabi_slll_6             
-0001495a  __mspabi_slll_7             
-00014956  __mspabi_slll_8             
-00014952  __mspabi_slll_9             
-000149f0  __mspabi_sllll              
-00014cce  __mspabi_sral               
-00014934  __mspabi_sral_1             
-00014910  __mspabi_sral_10            
-0001490c  __mspabi_sral_11            
-00014908  __mspabi_sral_12            
-00014904  __mspabi_sral_13            
-00014900  __mspabi_sral_14            
-000148fc  __mspabi_sral_15            
-00014930  __mspabi_sral_2             
-0001492c  __mspabi_sral_3             
-00014928  __mspabi_sral_4             
-00014924  __mspabi_sral_5             
-00014920  __mspabi_sral_6             
-0001491c  __mspabi_sral_7             
-00014918  __mspabi_sral_8             
-00014914  __mspabi_sral_9             
-00014cee  __mspabi_srll               
-000149b0  __mspabi_srll_1             
-0001498c  __mspabi_srll_10            
-00014988  __mspabi_srll_11            
-00014984  __mspabi_srll_12            
-00014980  __mspabi_srll_13            
-0001497c  __mspabi_srll_14            
-00014978  __mspabi_srll_15            
-000149ac  __mspabi_srll_2             
-000149a8  __mspabi_srll_3             
-000149a4  __mspabi_srll_4             
-000149a0  __mspabi_srll_5             
-0001499c  __mspabi_srll_6             
-00014998  __mspabi_srll_7             
-00014994  __mspabi_srll_8             
-00014990  __mspabi_srll_9             
-00014a2a  __mspabi_srlll              
-00014a64  __mspabi_subd               
-00014208  _auto_init_hold_wdt         
+00014b40  __mspabi_fixdi              
+00014550  __mspabi_fixdli             
+000144e8  __mspabi_fixfi              
+00014d14  __mspabi_fltid              
+00013f1e  __mspabi_fltlid             
+00014d3a  __mspabi_fltud              
+00014284  __mspabi_fltuld             
+00011402  __mspabi_mpyd               
+00013c5c  __mspabi_mpyf               
+00014c2a  __mspabi_mpyi_f5hw          
+00014b8c  __mspabi_mpyl_f5hw          
+00014a90  __mspabi_negd               
+00014d2a  __mspabi_negf               
+000148b6  __mspabi_remli              
+00014c58  __mspabi_remu               
+000146e2  __mspabi_remul              
+00014cd8  __mspabi_slll               
+0001496c  __mspabi_slll_1             
+00014948  __mspabi_slll_10            
+00014944  __mspabi_slll_11            
+00014940  __mspabi_slll_12            
+0001493c  __mspabi_slll_13            
+00014938  __mspabi_slll_14            
+00014934  __mspabi_slll_15            
+00014968  __mspabi_slll_2             
+00014964  __mspabi_slll_3             
+00014960  __mspabi_slll_4             
+0001495c  __mspabi_slll_5             
+00014958  __mspabi_slll_6             
+00014954  __mspabi_slll_7             
+00014950  __mspabi_slll_8             
+0001494c  __mspabi_slll_9             
+000149ea  __mspabi_sllll              
+00014cc8  __mspabi_sral               
+0001492e  __mspabi_sral_1             
+0001490a  __mspabi_sral_10            
+00014906  __mspabi_sral_11            
+00014902  __mspabi_sral_12            
+000148fe  __mspabi_sral_13            
+000148fa  __mspabi_sral_14            
+000148f6  __mspabi_sral_15            
+0001492a  __mspabi_sral_2             
+00014926  __mspabi_sral_3             
+00014922  __mspabi_sral_4             
+0001491e  __mspabi_sral_5             
+0001491a  __mspabi_sral_6             
+00014916  __mspabi_sral_7             
+00014912  __mspabi_sral_8             
+0001490e  __mspabi_sral_9             
+00014ce8  __mspabi_srll               
+000149aa  __mspabi_srll_1             
+00014986  __mspabi_srll_10            
+00014982  __mspabi_srll_11            
+0001497e  __mspabi_srll_12            
+0001497a  __mspabi_srll_13            
+00014976  __mspabi_srll_14            
+00014972  __mspabi_srll_15            
+000149a6  __mspabi_srll_2             
+000149a2  __mspabi_srll_3             
+0001499e  __mspabi_srll_4             
+0001499a  __mspabi_srll_5             
+00014996  __mspabi_srll_6             
+00014992  __mspabi_srll_7             
+0001498e  __mspabi_srll_8             
+0001498a  __mspabi_srll_9             
+00014a24  __mspabi_srlll              
+00014a5e  __mspabi_subd               
+00014202  _auto_init_hold_wdt         
 00004000  _c_int00_noargs_noexit_mpu  
 0000404c  _ctypes_                    
 00001c00  _ftable                     
 00001cd0  _lock                       
-00014d66  _nop                        
+00014d62  _nop                        
 0000fffe  _reset_vector               
 00002b60  _stack                      
-00014d68  _system_post_cinit          
-00014d62  _system_pre_init            
+00014d64  _system_post_cinit          
+00014d5c  _system_pre_init            
 00001cd4  _unlock                     
-00014d4c  abort                       
-00014d26  abs                         
-00014686  atoi                        
+00014d46  abort                       
+00014d20  abs                         
+00014680  atoi                        
 00002cc0  coeff                       
-000145bc  copy_in                     
-00014ac4  copysign                    
-00014ac4  copysignl                   
-00014d52  cosf                        
+000145b6  copy_in                     
+00014abe  copysign                    
+00014abe  copysignl                   
+00014d4c  cosf                        
 00001cd8  errno                       
-00014cbe  fputc                       
-00014af2  fputs                       
+00014cb8  fputc                       
+00014aec  fputs                       
 00004000  fram_ipe_end                
 00004000  fram_ipe_start              
 00004000  fram_rw_start               
 00004000  fram_rx_start               
-00013dcc  frexp                       
-00013dcc  frexpl                      
-00012d72  ldexp                       
-00012d72  ldexpl                      
-0001430a  ltoa                        
+00013dc6  frexp                       
+00013dc6  frexpl                      
+00012d6c  ldexp                       
+00012d6c  ldexpl                      
+00014304  ltoa                        
 00010eb4  main                        
-00014bd8  memccpy                     
-00014c74  memcpy                      
-00014c48  memset                      
+00014bd2  memccpy                     
+00014c6e  memcpy                      
+00014c42  memset                      
 0000a501  mpu_ctl0_value              
 00001513  mpu_sam_value               
 00000400  mpu_segment_border1         
@@ -2268,26 +2270,26 @@ ffffffff  __c_args__
 00004234  msp430_cos_coeffs           
 00010478  msp430_cos_sin              
 00004258  msp430_sin_coeffs           
-00012bd0  msp_add_q15                 
-0001262c  msp_biquad_df1_q15          
-0001322e  msp_deinterleave_q15        
-00014bf6  msp_iq31_to_q15             
-00014878  msp_lea_getRevision         
+00012bca  msp_add_q15                 
+00012626  msp_biquad_df1_q15          
+00013228  msp_deinterleave_q15        
+00014bf0  msp_iq31_to_q15             
+00014872  msp_lea_getRevision         
 00001cda  msp_lea_ifg                 
-000147e0  msp_lea_init                
+000147da  msp_lea_init                
 0000401e  msp_lea_isr                 
 00001cdc  msp_lea_locked              
-00012f12  msp_mac_q15                 
-00014622  msp_scale_q15               
-00013798  msp_sinusoid_q15            
-0001482e  printf                      
-00012d72  scalbn                      
-00012d72  scalbnl                     
-00014d58  sinf                        
+00012f0c  msp_mac_q15                 
+0001461c  msp_scale_q15               
+00013792  msp_sinusoid_q15            
+00014828  printf                      
+00012d6c  scalbn                      
+00012d6c  scalbnl                     
+00014d52  sinf                        
 00001cde  status                      
-00014c14  strchr                      
-00014d0c  strlen                      
-00014cac  toupper                     
+00014c0e  strchr                      
+00014d06  strlen                      
+00014ca6  toupper                     
 00002c80  x                           
 00002c00  x1                          
 00002c40  x2                          
@@ -3874,134 +3876,135 @@ address   name
 0001088e  __mspabi_divull             
 00010bdc  __mspabi_addd               
 00010eb4  main                        
-00011182  __TI_frcmpyd                
-00011408  __mspabi_mpyd               
-00011b48  __TI_frcaddd                
-00011d9a  __TI_printfi                
-000121fa  __mspabi_divd               
-0001262c  msp_biquad_df1_q15          
-00012bd0  msp_add_q15                 
-00012d72  ldexp                       
-00012d72  ldexpl                      
-00012d72  scalbn                      
-00012d72  scalbnl                     
-00012f12  msp_mac_q15                 
-0001322e  msp_deinterleave_q15        
-00013798  msp_sinusoid_q15            
-00013a94  _Qmag                       
-00013b8a  __mspabi_cmpd               
-00013c62  __mspabi_mpyf               
-00013d1a  __TI_renormd                
-00013dcc  frexp                       
-00013dcc  frexpl                      
-00013f24  __mspabi_fltlid             
-00013fc2  EUSCI_A_UART_init           
-0001417c  __mspabi_cvtdf              
-00014208  _auto_init_hold_wdt         
-0001428a  __mspabi_fltuld             
-0001430a  ltoa                        
-00014402  __TI_decompress_lzss        
-0001447a  UART_config                 
-000144ee  __mspabi_fixfi              
-00014556  __mspabi_fixdli             
-000145bc  copy_in                     
-00014622  msp_scale_q15               
-00014686  atoi                        
-000146e8  __mspabi_divul              
-000146e8  __mspabi_remul              
-00014740  Clock_config                
-000147e0  msp_lea_init                
-0001482e  printf                      
-00014878  msp_lea_getRevision         
-000148bc  __mspabi_divli              
-000148bc  __mspabi_remli              
-000148fc  __mspabi_sral_15            
-00014900  __mspabi_sral_14            
-00014904  __mspabi_sral_13            
-00014908  __mspabi_sral_12            
-0001490c  __mspabi_sral_11            
-00014910  __mspabi_sral_10            
-00014914  __mspabi_sral_9             
-00014918  __mspabi_sral_8             
-0001491c  __mspabi_sral_7             
-00014920  __mspabi_sral_6             
-00014924  __mspabi_sral_5             
-00014928  __mspabi_sral_4             
-0001492c  __mspabi_sral_3             
-00014930  __mspabi_sral_2             
-00014934  __mspabi_sral_1             
-0001493a  __mspabi_slll_15            
-0001493e  __mspabi_slll_14            
-00014942  __mspabi_slll_13            
-00014946  __mspabi_slll_12            
-0001494a  __mspabi_slll_11            
-0001494e  __mspabi_slll_10            
-00014952  __mspabi_slll_9             
-00014956  __mspabi_slll_8             
-0001495a  __mspabi_slll_7             
-0001495e  __mspabi_slll_6             
-00014962  __mspabi_slll_5             
-00014966  __mspabi_slll_4             
-0001496a  __mspabi_slll_3             
-0001496e  __mspabi_slll_2             
-00014972  __mspabi_slll_1             
-00014978  __mspabi_srll_15            
-0001497c  __mspabi_srll_14            
-00014980  __mspabi_srll_13            
-00014984  __mspabi_srll_12            
-00014988  __mspabi_srll_11            
-0001498c  __mspabi_srll_10            
-00014990  __mspabi_srll_9             
-00014994  __mspabi_srll_8             
-00014998  __mspabi_srll_7             
-0001499c  __mspabi_srll_6             
-000149a0  __mspabi_srll_5             
-000149a4  __mspabi_srll_4             
-000149a8  __mspabi_srll_3             
-000149ac  __mspabi_srll_2             
-000149b0  __mspabi_srll_1             
-000149b6  CS_turnOnLFXT               
-000149f0  __mspabi_sllll              
-00014a2a  __mspabi_srlll              
-00014a64  __mspabi_subd               
-00014a96  __mspabi_negd               
-00014ac4  copysign                    
-00014ac4  copysignl                   
-00014af2  fputs                       
-00014b1e  __mpu_init                  
-00014b46  __mspabi_fixdi              
-00014b6e  __TI_zero_init              
-00014b92  __mspabi_mpyl_f5hw          
-00014bb6  EUSCI_A_UART_enableInterrupt
-00014bd8  memccpy                     
-00014bf6  msp_iq31_to_q15             
-00014c14  strchr                      
-00014c30  __mspabi_mpyi_f5hw          
-00014c48  memset                      
-00014c5e  __mspabi_divu               
-00014c5e  __mspabi_remu               
-00014c74  memcpy                      
-00014c88  CS_setExternalClockSource   
-00014c9a  __TI_decompress_none        
-00014cac  toupper                     
-00014cbe  fputc                       
-00014cce  __mspabi_sral               
-00014cde  __mspabi_slll               
-00014cee  __mspabi_srll               
-00014cfe  EUSCI_A_UART_clearInterrupt 
-00014d0c  strlen                      
-00014d1a  __mspabi_fltid              
-00014d26  abs                         
-00014d30  __mspabi_negf               
-00014d3a  EUSCI_A_UART_enable         
-00014d40  __mspabi_fltud              
-00014d4c  C$$EXIT                     
-00014d4c  abort                       
-00014d52  cosf                        
-00014d58  sinf                        
-00014d62  _system_pre_init            
-00014d66  _nop                        
-00014d68  _system_post_cinit          
+0001117c  __TI_frcmpyd                
+00011402  __mspabi_mpyd               
+00011b42  __TI_frcaddd                
+00011d94  __TI_printfi                
+000121f4  __mspabi_divd               
+00012626  msp_biquad_df1_q15          
+00012bca  msp_add_q15                 
+00012d6c  ldexp                       
+00012d6c  ldexpl                      
+00012d6c  scalbn                      
+00012d6c  scalbnl                     
+00012f0c  msp_mac_q15                 
+00013228  msp_deinterleave_q15        
+00013792  msp_sinusoid_q15            
+00013a8e  _Qmag                       
+00013b84  __mspabi_cmpd               
+00013c5c  __mspabi_mpyf               
+00013d14  __TI_renormd                
+00013dc6  frexp                       
+00013dc6  frexpl                      
+00013f1e  __mspabi_fltlid             
+00013fbc  EUSCI_A_UART_init           
+00014176  __mspabi_cvtdf              
+00014202  _auto_init_hold_wdt         
+00014284  __mspabi_fltuld             
+00014304  ltoa                        
+000143fc  __TI_decompress_lzss        
+00014474  UART_config                 
+000144e8  __mspabi_fixfi              
+00014550  __mspabi_fixdli             
+000145b6  copy_in                     
+0001461c  msp_scale_q15               
+00014680  atoi                        
+000146e2  __mspabi_divul              
+000146e2  __mspabi_remul              
+0001473a  Clock_config                
+000147da  msp_lea_init                
+00014828  printf                      
+00014872  msp_lea_getRevision         
+000148b6  __mspabi_divli              
+000148b6  __mspabi_remli              
+000148f6  __mspabi_sral_15            
+000148fa  __mspabi_sral_14            
+000148fe  __mspabi_sral_13            
+00014902  __mspabi_sral_12            
+00014906  __mspabi_sral_11            
+0001490a  __mspabi_sral_10            
+0001490e  __mspabi_sral_9             
+00014912  __mspabi_sral_8             
+00014916  __mspabi_sral_7             
+0001491a  __mspabi_sral_6             
+0001491e  __mspabi_sral_5             
+00014922  __mspabi_sral_4             
+00014926  __mspabi_sral_3             
+0001492a  __mspabi_sral_2             
+0001492e  __mspabi_sral_1             
+00014934  __mspabi_slll_15            
+00014938  __mspabi_slll_14            
+0001493c  __mspabi_slll_13            
+00014940  __mspabi_slll_12            
+00014944  __mspabi_slll_11            
+00014948  __mspabi_slll_10            
+0001494c  __mspabi_slll_9             
+00014950  __mspabi_slll_8             
+00014954  __mspabi_slll_7             
+00014958  __mspabi_slll_6             
+0001495c  __mspabi_slll_5             
+00014960  __mspabi_slll_4             
+00014964  __mspabi_slll_3             
+00014968  __mspabi_slll_2             
+0001496c  __mspabi_slll_1             
+00014972  __mspabi_srll_15            
+00014976  __mspabi_srll_14            
+0001497a  __mspabi_srll_13            
+0001497e  __mspabi_srll_12            
+00014982  __mspabi_srll_11            
+00014986  __mspabi_srll_10            
+0001498a  __mspabi_srll_9             
+0001498e  __mspabi_srll_8             
+00014992  __mspabi_srll_7             
+00014996  __mspabi_srll_6             
+0001499a  __mspabi_srll_5             
+0001499e  __mspabi_srll_4             
+000149a2  __mspabi_srll_3             
+000149a6  __mspabi_srll_2             
+000149aa  __mspabi_srll_1             
+000149b0  CS_turnOnLFXT               
+000149ea  __mspabi_sllll              
+00014a24  __mspabi_srlll              
+00014a5e  __mspabi_subd               
+00014a90  __mspabi_negd               
+00014abe  copysign                    
+00014abe  copysignl                   
+00014aec  fputs                       
+00014b18  __mpu_init                  
+00014b40  __mspabi_fixdi              
+00014b68  __TI_zero_init              
+00014b8c  __mspabi_mpyl_f5hw          
+00014bb0  EUSCI_A_UART_enableInterrupt
+00014bd2  memccpy                     
+00014bf0  msp_iq31_to_q15             
+00014c0e  strchr                      
+00014c2a  __mspabi_mpyi_f5hw          
+00014c42  memset                      
+00014c58  __mspabi_divu               
+00014c58  __mspabi_remu               
+00014c6e  memcpy                      
+00014c82  CS_setExternalClockSource   
+00014c94  __TI_decompress_none        
+00014ca6  toupper                     
+00014cb8  fputc                       
+00014cc8  __mspabi_sral               
+00014cd8  __mspabi_slll               
+00014ce8  __mspabi_srll               
+00014cf8  EUSCI_A_UART_clearInterrupt 
+00014d06  strlen                      
+00014d14  __mspabi_fltid              
+00014d20  abs                         
+00014d2a  __mspabi_negf               
+00014d34  EUSCI_A_UART_enable         
+00014d3a  __mspabi_fltud              
+00014d46  C$$EXIT                     
+00014d46  abort                       
+00014d4c  cosf                        
+00014d52  sinf                        
+00014d5c  _system_pre_init            
+00014d60  ADC_config                  
+00014d62  _nop                        
+00014d64  _system_post_cinit          
 ffffffff  __TI_pprof_out_hndl         
 ffffffff  __TI_prof_data_size         
 ffffffff  __TI_prof_data_start        
@@ -4011,4 +4014,4 @@ UNDEFED   __TI_BINIT_Limit
 UNDEFED   __TI_INITARRAY_Base         
 UNDEFED   __TI_INITARRAY_Limit        
 
-[1713 symbols]
+[1714 symbols]

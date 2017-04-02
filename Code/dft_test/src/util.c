@@ -39,6 +39,12 @@ void Clock_config()
 }
 
 
+void ADC_config()
+{
+
+}
+
+
 bool UART_config()
 {
     bool retVal;

@@ -43,6 +43,7 @@
 #define N_SAMPLES       32
 #define SAMPL_FREQ      N_SAMPLES
 #define SCALE_FACTOR    1.0/N_SAMPLES
+#define MAX_AMPLITUDE   0x7FFF          // sinusoid max amplitude
 
 #define PI              3.1415926536
 
@@ -72,12 +73,16 @@ _iq31 coeff[2*N_SAMPLES];               // Complex DFT coefficients
 
 msp_status status;
 
+uint32_t p_count = 0;
+
 
 void main(void)
 {
     WDTCTL = WDTPW + WDTHOLD;       // Stop WDT
 
     Clock_config();
+
+    ADC_config();
 
     if (UART_config() == STATUS_FAIL)
         return;
@@ -136,16 +141,22 @@ void main(void)
     msp_mac_q15_params macParams;
     macParams.length = N_SAMPLES;
 
+//    sinParams.amplitude = _Q15(1.0);
+//    sinParams.amplitude = _Q15(0.999970);
+    sinParams.amplitude = MAX_AMPLITUDE;
+
     for (k=0; k<N_SAMPLES; k++) {
 
         // TODO: try to replace the following for-loops with msp_sinusoid_q15
         // (but first compare execution cycles to check whether it is worth)
 
-        for (n=0; n<N_SAMPLES; n++)                     // x1 will contain a
-            x1[n] = _Q15(cosf(n*k*2*PI/N_SAMPLES));     // cos wave at f = k
+        for (n=0; n<N_SAMPLES; n++) {
+            x1[n] = _Q15(cosf(n*k*2*PI/N_SAMPLES));
+            x2[n] = _Q15(-sinf(n*k*2*PI/N_SAMPLES));
+        }
 
-        for (n=0; n<N_SAMPLES; n++)                     // x2 will contain a
-            x2[n] = _Q15(-sinf(n*k*2*PI/N_SAMPLES));    // sin wave at f = k
+        // sinParams.cosOmega = _Q15(cosf(2*PI*k/SAMPL_FREQ));
+        // sinParams.sinOmega = _Q15(sinf(2*PI*k/SAMPL_FREQ));
 
         /*
          * The following snippet is replaced by the two msp_mac_q15 functions,
