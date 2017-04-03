@@ -1,12 +1,9 @@
 /*
  *
- * Transiently-powered devices library
+ * InterPow: library for operation under intermittent power.
  *
  *
  * TODO:
- *
- * - [M] Free the user from the explicit declaration of #pragma (try with 
- *       _Pragma inside macros like NewTask, NewField...)
  *
  * - [L] Return error codes for Read/Write operations?
  *
@@ -93,12 +90,12 @@
  * \defgroup FIELD_TYPES
  * @{
  */
-#define INT8                        int16_t
-#define UINT8                       uint16_t
+#define INT8                        int8_t
+#define UINT8                       uint8_t
 #define INT16                       int16_t
 #define UINT16                      uint16_t
-#define INT32                       int16_t
-#define UINT32                      uint16_t
+#define INT32                       int32_t
+#define UINT32                      uint32_t
 /**
  * @}
  */

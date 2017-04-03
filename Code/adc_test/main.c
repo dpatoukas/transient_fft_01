@@ -19,12 +19,16 @@ int main(void) {
 
     WDTCTL = WDTPW | WDTHOLD;	// Stop watchdog timer
 
+    // Clock configuration
     Clock_config();
 
+    // UART configuration
     UART_config();
 
+    //ADC configuration
     ADC_config();
 
+    // LED1 reset
     P1DIR |= 0x01;
     P1OUT  = 0x00;
 

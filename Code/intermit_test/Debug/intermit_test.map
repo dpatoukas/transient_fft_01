@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker Unix v16.9.1                   
 ******************************************************************************
->> Linked Mon Apr  3 15:06:16 2017
+>> Linked Mon Apr  3 21:18:33 2017
 
 OUTPUT FILE NAME:   <intermit_test.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit_mpu"  address: 00004400
@@ -17,10 +17,10 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00001000  000000f4  00000f0c  RWIX
+  RAM                   00001c00   00001000  0000010c  00000ef4  RWIX
   LEARAM                00002c00   00000ec8  000001c0  00000d08  RWIX
   LEASTACK              00003ac8   00000138  00000000  00000138  RWIX
-  FRAM                  00004000   0000bf80  00000598  0000b9e8  RWIX
+  FRAM                  00004000   0000bf80  000005d0  0000b9b0  RWIX
   JTAGSIGNATURE         0000ff80   00000004  00000004  00000000  RWIX  ffff 
   BSLSIGNATURE          0000ff84   00000004  00000004  00000000  RWIX  ffff 
   IPESIGNATURE          0000ff88   00000008  00000008  00000000  RWIX  ffff 
@@ -80,7 +80,7 @@ MEMORY CONFIGURATION
   INT53                 0000fffa   00000002  00000002  00000000  RWIX
   INT54                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FRAM2                 00010000   00034000  00001fd6  0003202a  RWIX
+  FRAM2                 00010000   00034000  00001a04  000325fc  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -88,48 +88,55 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.data      0    00001c00    0000004e     UNINITIALIZED
-                  00001c00    0000000c     main.obj (.data:__T_controlT_controlinside_index__)
-                  00001c0c    0000000c     main.obj (.data:__T_magT_maginside_index__)
-                  00001c18    00000006     main.obj (.data:__T_controlT_cosindex__)
-                  00001c1e    00000006     main.obj (.data:__T_controlT_macindex__)
-                  00001c24    00000006     main.obj (.data:__T_controlT_sinindex__)
-                  00001c2a    00000006     main.obj (.data:__T_convT_magoutput_img__)
-                  00001c30    00000006     main.obj (.data:__T_convT_magoutput_real__)
-                  00001c36    00000006     main.obj (.data:__T_cosT_macoutput_cos__)
-                  00001c3c    00000006     main.obj (.data:__T_initT_macinput__)
-                  00001c42    00000006     main.obj (.data:__T_macT_convoutput_coeff__)
-                  00001c48    00000006     main.obj (.data:__T_sinT_macoutput_sin__)
+.data      0    00001c00    00000066     UNINITIALIZED
+                  00001c00    0000000c     main.obj (.data:__T_controlT_controlsf_index__)
+                  00001c0c    0000000c     main.obj (.data:__T_cosineT_cosinesf_index__)
+                  00001c18    0000000c     main.obj (.data:__T_magnitudeT_magnitudesf_index__)
+                  00001c24    0000000c     main.obj (.data:__T_sineT_sinesf_index__)
+                  00001c30    00000006     main.obj (.data:__T_controlT_cosinef_index__)
+                  00001c36    00000006     main.obj (.data:__T_controlT_macf_index__)
+                  00001c3c    00000006     main.obj (.data:__T_controlT_sinef_index__)
+                  00001c42    00000006     main.obj (.data:__T_convertT_magnitudef_imag__)
+                  00001c48    00000006     main.obj (.data:__T_convertT_magnitudef_real__)
+                  00001c4e    00000006     main.obj (.data:__T_cosineT_macf_output_cos__)
+                  00001c54    00000006     main.obj (.data:__T_initT_macf_input__)
+                  00001c5a    00000006     main.obj (.data:__T_macT_convertf_output_coeff__)
+                  00001c60    00000006     main.obj (.data:__T_sineT_macf_output_sin__)
 
 .TI.persistent 
-*          0    00004000    0000020a     
-                  00004000    00000080     main.obj (.TI.persistent:__T_macT_convoutput_coeff)
-                  00004080    00000040     main.obj (.TI.persistent:__T_convT_magoutput_img)
-                  000040c0    00000040     main.obj (.TI.persistent:__T_convT_magoutput_real)
-                  00004100    00000040     main.obj (.TI.persistent:__T_cosT_macoutput_cos)
-                  00004140    00000040     main.obj (.TI.persistent:__T_initT_macinput)
-                  00004180    00000040     main.obj (.TI.persistent:__T_sinT_macoutput_sin)
-                  000041c0    00000008     main.obj (.TI.persistent:T_control)
-                  000041c8    00000008     main.obj (.TI.persistent:T_conv)
-                  000041d0    00000008     main.obj (.TI.persistent:T_cos)
-                  000041d8    00000008     main.obj (.TI.persistent:T_init)
-                  000041e0    00000008     main.obj (.TI.persistent:T_mac)
-                  000041e8    00000008     main.obj (.TI.persistent:T_mag)
-                  000041f0    00000008     main.obj (.TI.persistent:T_sin)
-                  000041f8    00000004     main.obj (.TI.persistent:__prog_state)
-                  000041fc    00000002     main.obj (.TI.persistent:__T_controlT_controlinside_index_0)
-                  000041fe    00000002     main.obj (.TI.persistent:__T_controlT_controlinside_index_1)
-                  00004200    00000002     main.obj (.TI.persistent:__T_controlT_cosindex)
-                  00004202    00000002     main.obj (.TI.persistent:__T_controlT_macindex)
-                  00004204    00000002     main.obj (.TI.persistent:__T_controlT_sinindex)
-                  00004206    00000002     main.obj (.TI.persistent:__T_magT_maginside_index_0)
-                  00004208    00000002     main.obj (.TI.persistent:__T_magT_maginside_index_1)
+*          0    00004000    000002d2     
+                  00004000    00000100     main.obj (.TI.persistent:__T_macT_convertf_output_coeff)
+                  00004100    00000040     main.obj (.TI.persistent:__T_convertT_magnitudef_imag)
+                  00004140    00000040     main.obj (.TI.persistent:__T_convertT_magnitudef_real)
+                  00004180    00000040     main.obj (.TI.persistent:__T_cosineT_macf_output_cos)
+                  000041c0    00000040     main.obj (.TI.persistent:__T_initT_macf_input)
+                  00004200    00000040     main.obj (.TI.persistent:__T_sineT_macf_output_sin)
+                  00004240    00000040     main.obj (.TI.persistent:final_out)
+                  00004280    00000008     main.obj (.TI.persistent:T_control)
+                  00004288    00000008     main.obj (.TI.persistent:T_convert)
+                  00004290    00000008     main.obj (.TI.persistent:T_cosine)
+                  00004298    00000008     main.obj (.TI.persistent:T_init)
+                  000042a0    00000008     main.obj (.TI.persistent:T_mac)
+                  000042a8    00000008     main.obj (.TI.persistent:T_magnitude)
+                  000042b0    00000008     main.obj (.TI.persistent:T_sine)
+                  000042b8    00000004     main.obj (.TI.persistent:__prog_state)
+                  000042bc    00000002     main.obj (.TI.persistent:__T_controlT_controlsf_index_0)
+                  000042be    00000002     main.obj (.TI.persistent:__T_controlT_controlsf_index_1)
+                  000042c0    00000002     main.obj (.TI.persistent:__T_controlT_cosinef_index)
+                  000042c2    00000002     main.obj (.TI.persistent:__T_controlT_macf_index)
+                  000042c4    00000002     main.obj (.TI.persistent:__T_controlT_sinef_index)
+                  000042c6    00000002     main.obj (.TI.persistent:__T_cosineT_cosinesf_index_0)
+                  000042c8    00000002     main.obj (.TI.persistent:__T_cosineT_cosinesf_index_1)
+                  000042ca    00000002     main.obj (.TI.persistent:__T_magnitudeT_magnitudesf_index_0)
+                  000042cc    00000002     main.obj (.TI.persistent:__T_magnitudeT_magnitudesf_index_1)
+                  000042ce    00000002     main.obj (.TI.persistent:__T_sineT_sinesf_index_0)
+                  000042d0    00000002     main.obj (.TI.persistent:__T_sineT_sinesf_index_1)
 
 .binit     0    00004000    00000000     
 
-.cio       0    0000420a    00000000     UNINITIALIZED
+.cio       0    000042d2    00000000     UNINITIALIZED
 
-.sysmem    0    0000420a    00000000     UNINITIALIZED
+.sysmem    0    000042d2    00000000     UNINITIALIZED
 
 .ipestruct 
 *          0    00004400    00000000     UNINITIALIZED
@@ -142,13 +149,12 @@ section   page    origin      length       input sections
 .ipe:_isr 
 *          0    00004400    00000000     UNINITIALIZED
 
-.cinit     0    00004526    00000072     
-                  00004526    00000041     (.cinit..data.load) [load image, compression = lzss]
-                  00004567    00000001     --HOLE-- [fill = 0]
-                  00004568    0000000c     (__TI_handler_table)
-                  00004574    00000006     (.cinit..bss.load) [load image, compression = zero_init]
-                  0000457a    00000006     (.cinit..leaRAM.load) [load image, compression = zero_init]
-                  00004580    00000018     (__TI_cinit_table)
+.cinit     0    00004526    000000aa     
+                  00004526    00000047     (.cinit..data.load) [load image, compression = lzss]
+                  0000456d    00000039     (.cinit..leaRAM.load) [load image, compression = lzss]
+                  000045a6    0000000c     (__TI_handler_table)
+                  000045b2    00000006     (.cinit..bss.load) [load image, compression = zero_init]
+                  000045b8    00000018     (__TI_cinit_table)
 
 .init_array 
 *          0    00004000    00000000     UNINITIALIZED
@@ -159,17 +165,18 @@ section   page    origin      length       input sections
                   0000441e    0000001c     msp_lea_isr.obj (.text:_isr:msp_lea_isr)
                   0000443a    00000008     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
 
-.bss       0    00001c4e    00000006     UNINITIALIZED
-                  00001c4e    00000002     (.common:msp_lea_ifg)
-                  00001c50    00000002     (.common:msp_lea_locked)
-                  00001c52    00000002     (.common:status)
+.bss       0    00001c66    00000006     UNINITIALIZED
+                  00001c66    00000002     (.common:msp_lea_ifg)
+                  00001c68    00000002     (.common:msp_lea_locked)
+                  00001c6a    00000002     (.common:status)
 
 .stack     0    00002b60    000000a0     UNINITIALIZED
                   00002b60    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
                   00002b64    0000009c     --HOLE--
 
 .leaRAM    0    00002c00    000001c0     UNINITIALIZED
-                  00002c00    000001c0     main.obj (.leaRAM)
+                  00002c00    00000180     main.obj (.leaRAM:uninit)
+                  00002d80    00000040     main.obj (.leaRAM:init)
 
 $fill000   0    0000ff80    00000004     
                   0000ff80    00000004     --HOLE-- [fill = ffff]
@@ -311,96 +318,83 @@ SYSNMI     0    0000fffc    00000002
                   00004502    00000014     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_tables.o (.const:msp430_cos_coeffs)
                   00004516    00000010                                                                       : msp430_tables.o (.const:msp430_sin_coeffs)
 
-.text      0    00010000    00001fd6     
+.text      0    00010000    00001a04     
                   00010000    00000416     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_cos_sin.o (.text:msp430_cos_sin)
                   00010416    00000286     rts430x_lc_rd_eabi.lib : frcmpyd.obj (.text:__TI_frcmpyd)
                   0001069c    00000282                            : mpyd.obj (.text:__mspabi_mpyd)
-                  0001091e    00000202     msp_biquad_df1_q15.obj (.text:msp_biquad_df1_q15)
-                  00010b20    000001a2     msp_add_q15.obj (.text:msp_add_q15)
-                  00010cc2    00000194     msp_mac_q15.obj (.text:msp_mac_q15)
-                  00010e56    00000188     msp_deinterleave_q15.obj (.text:msp_deinterleave_q15)
-                  00010fde    00000112     main.obj (.text:Task_initialize)
-                  000110f0    00000106     msp_sinusoid_q15.obj (.text:msp_sinusoid_q15)
-                  000111f6    000000f6     QmathLib_CCS_MPY32_5xx_6xx_CPUX_large_code_restricted_data.lib : _QNsqrt.o (.text:_Qmag)
-                  000112ec    000000b8     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
-                  000113a4    000000b2     main.obj (.text:Task_mac)
-                  00011456    000000ae     main.obj (.text:Task_dft_sine)
-                  00011504    000000aa     main.obj (.text:Task_dft_cosine)
-                  000115ae    0000008c     main.obj (.text:Task_magnitude)
-                  0001163a    0000008c     rts430x_lc_rd_eabi.lib : cvtdf.obj (.text:__mspabi_cvtdf)
-                  000116c6    0000008a     interpow.obj (.text:write_field_32)
-                  00011750    00000082     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  000117d2    00000080                            : fltuld.obj (.text:__mspabi_fltuld)
-                  00011852    0000007e     interpow.obj (.text:read_field_32)
-                  000118d0    0000007e     interpow.obj (.text:write_field_16)
-                  0001194e    0000007e     interpow.obj (.text:write_field_u16)
-                  000119cc    0000007c     main.obj (.text:Task_control_dft)
-                  00011a48    00000078     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  00011ac0    00000072     main.obj (.text:Task_convert)
-                  00011b32    00000072     interpow.obj (.text:read_field_16)
-                  00011ba4    00000072     interpow.obj (.text:read_field_u16)
-                  00011c16    00000068     rts430x_lc_rd_eabi.lib : fs_toi.obj (.text)
-                  00011c7e    00000066                            : cpy_tbl.obj (.text:copy_in)
-                  00011ce4    00000064     msp_scale_q15.obj (.text:msp_scale_q15)
-                  00011d48    0000004e     msp_lea_init.obj (.text:msp_lea_init)
-                  00011d96    00000044     msp_lea_patch.obj (.text:msp_lea_getRevision)
-                  00011dda    0000003e     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr_const)
-                  00011e18    0000003e                            : lsl32.obj (.text:l_lsl_const)
-                  00011e56    0000003e                            : lsr32.obj (.text:l_lsr_const)
-                  00011e94    00000028     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
-                  00011ebc    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
-                  00011ee0    00000024     interpow.obj (.text:resume_program)
-                  00011f04    00000024     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
-                  00011f28    0000001e     main.obj (.text:main)
-                  00011f46    0000001e     msp_iq31_to_q15.obj (.text:msp_iq31_to_q15)
-                  00011f64    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.obj (.text)
-                  00011f7c    00000014                            : memcpy.obj (.text:memcpy)
-                  00011f90    00000012                            : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  00011fa2    0000000c     interpow.obj (.text:start_task)
-                  00011fae    0000000a     rts430x_lc_rd_eabi.lib : fs_neg.obj (.text)
-                  00011fb8    00000006                            : fltud.obj (.text:__mspabi_fltud)
-                  00011fbe    00000006                            : exit.obj (.text:abort)
-                  00011fc4    00000006     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_cos_sin.o (.text:cosf)
-                  00011fca    00000006                                                                       : msp430_cos_sin.o (.text:sinf)
-                  00011fd0    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
-                  00011fd4    00000002                            : startup.obj (.text:_system_post_cinit)
+                  0001091e    00000194     msp_mac_q15.obj (.text:msp_mac_q15)
+                  00010ab2    00000188     msp_deinterleave_q15.obj (.text:msp_deinterleave_q15)
+                  00010c3a    000000fc     main.obj (.text:T_sine_function)
+                  00010d36    000000f8     main.obj (.text:T_cosine_function)
+                  00010e2e    000000f6     QmathLib_CCS_MPY32_5xx_6xx_CPUX_large_code_restricted_data.lib : _QNsqrt.o (.text:_Qmag)
+                  00010f24    000000ce     main.obj (.text:T_mac_function)
+                  00010ff2    000000b8     rts430x_lc_rd_eabi.lib : fs_mpy.obj (.text)
+                  000110aa    000000aa     main.obj (.text:T_magnitude_function)
+                  00011154    0000008c     rts430x_lc_rd_eabi.lib : cvtdf.obj (.text:__mspabi_cvtdf)
+                  000111e0    00000082                            : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  00011262    00000080                            : fltuld.obj (.text:__mspabi_fltuld)
+                  000112e2    0000007e     interpow.obj (.text:read_field_32)
+                  00011360    0000007e     interpow.obj (.text:write_field_16)
+                  000113de    0000007e     interpow.obj (.text:write_field_u16)
+                  0001145c    0000007c     main.obj (.text:T_control_function)
+                  000114d8    00000078     rts430x_lc_rd_eabi.lib : copy_decompress_lzss.obj (.text:decompress:lzss:__TI_decompress_lzss)
+                  00011550    00000072     main.obj (.text:T_convert_function)
+                  000115c2    00000072     interpow.obj (.text:read_field_16)
+                  00011634    00000072     interpow.obj (.text:read_field_u16)
+                  000116a6    00000068     rts430x_lc_rd_eabi.lib : fs_toi.obj (.text)
+                  0001170e    00000066                            : cpy_tbl.obj (.text:copy_in)
+                  00011774    0000004e     msp_lea_init.obj (.text:msp_lea_init)
+                  000117c2    0000003e     rts430x_lc_rd_eabi.lib : asr32.obj (.text:l_asr_const)
+                  00011800    0000003e                            : lsl32.obj (.text:l_lsl_const)
+                  0001183e    0000003e                            : lsr32.obj (.text:l_lsr_const)
+                  0001187c    00000028     MSPMPU_INIT_LIB_CCS_msp430_large_code_restricted_data.lib : mpu_init.o (.text:__mpu_init)
+                  000118a4    00000024     rts430x_lc_rd_eabi.lib : copy_zero_init.obj (.text:decompress:ZI:__TI_zero_init)
+                  000118c8    00000024     interpow.obj (.text:resume_program)
+                  000118ec    00000024     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
+                  00011910    00000022     main.obj (.text:main)
+                  00011932    00000020     main.obj (.text:T_init_function)
+                  00011952    0000001e     msp_iq31_to_q15.obj (.text:msp_iq31_to_q15)
+                  00011970    00000018     rts430x_lc_rd_eabi.lib : mult16_f5hw.obj (.text)
+                  00011988    00000014                            : memcpy.obj (.text:memcpy)
+                  0001199c    00000014     interpow.obj (.text:write_field_element_32)
+                  000119b0    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  000119c2    0000000e     interpow.obj (.text:write_field_element_16)
+                  000119d0    0000000c     interpow.obj (.text:start_task)
+                  000119dc    0000000a     rts430x_lc_rd_eabi.lib : fs_neg.obj (.text)
+                  000119e6    00000006                            : fltud.obj (.text:__mspabi_fltud)
+                  000119ec    00000006                            : exit.obj (.text:abort)
+                  000119f2    00000006     MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib : msp430_cos_sin.o (.text:cosf)
+                  000119f8    00000006                                                                       : msp430_cos_sin.o (.text:sinf)
+                  000119fe    00000004     rts430x_lc_rd_eabi.lib : pre_init.obj (.text:_system_pre_init)
+                  00011a02    00000002                            : startup.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
        Module                     code   ro data   rw data
        ------                     ----   -------   -------
     ./
-       main.obj                   1204   0         1050   
-       interpow.obj               792    0         0      
+       main.obj                   1180   0         1274   
+       interpow.obj               688    0         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     1996   0         1050   
-                                                          
-    ./dsplib/source/filter/
-       msp_biquad_df1_q15.obj     514    0         0      
-    +--+--------------------------+------+---------+---------+
-       Total:                     514    0         0      
+       Total:                     1868   0         1274   
                                                           
     ./dsplib/source/lea/
        msp_lea_init.obj           78     0         0      
-       msp_lea_patch.obj          68     0         0      
        msp_lea_isr.obj            28     2         0      
        msp_lea_flags.obj          0      0         4      
     +--+--------------------------+------+---------+---------+
-       Total:                     174    2         4      
+       Total:                     106    2         4      
                                                           
     ./dsplib/source/utility/
        msp_deinterleave_q15.obj   392    0         0      
-       msp_sinusoid_q15.obj       262    0         0      
        msp_iq31_to_q15.obj        30     0         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     684    0         0      
+       Total:                     422    0         0      
                                                           
     ./dsplib/source/vector/
-       msp_add_q15.obj            418    0         0      
        msp_mac_q15.obj            404    0         0      
-       msp_scale_q15.obj          100    0         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     922    0         0      
+       Total:                     404    0         0      
                                                           
     /Applications/ti/ccsv7/ccs_base/msp430/lib/5xx_6xx_FRxx/MSPMATHLIB_CCS_msp430_5xx_6xx_FRxx_large_code_restricted_data.lib
        msp430_cos_sin.o           1058   0         0      
@@ -485,22 +479,22 @@ MODULE SUMMARY
        Total:                     246    192       0      
                                                           
        Stack:                     0      0         160    
-       Linker Generated:          0      113       0      
+       Linker Generated:          0      170       0      
     +--+--------------------------+------+---------+---------+
-       Grand Total:               8216   417       1214   
+       Grand Total:               6726   474       1438   
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00004580 records: 3, size/record: 8, table size: 24
-	.data: load addr=00004526, load size=00000041 bytes, run addr=00001c00, run size=0000004e bytes, compression=lzss
-	.bss: load addr=00004574, load size=00000006 bytes, run addr=00001c4e, run size=00000006 bytes, compression=zero_init
-	.leaRAM: load addr=0000457a, load size=00000006 bytes, run addr=00002c00, run size=000001c0 bytes, compression=zero_init
+__TI_cinit_table @ 000045b8 records: 3, size/record: 8, table size: 24
+	.data: load addr=00004526, load size=00000047 bytes, run addr=00001c00, run size=00000066 bytes, compression=lzss
+	.leaRAM: load addr=0000456d, load size=00000039 bytes, run addr=00002c00, run size=000001c0 bytes, compression=lzss
+	.bss: load addr=000045b2, load size=00000006 bytes, run addr=00001c66, run size=00000006 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00004568 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 000045a6 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_zero_init
 	index: 1, handler: __TI_decompress_lzss
 	index: 2, handler: __TI_decompress_none
@@ -771,7 +765,7 @@ address   name
 000004bc  BIN2BCD                           
 000004bd  BIN2BCD_H                         
 000004bc  BIN2BCD_L                         
-00011fbe  C$$EXIT                           
+000119ec  C$$EXIT                           
 0000043e  CAPTIO0CTL                        
 0000043f  CAPTIO0CTL_H                      
 0000043e  CAPTIO0CTL_L                      
@@ -1659,20 +1653,20 @@ address   name
 000003d0  TB0R                              
 000003d1  TB0R_H                            
 000003d0  TB0R_L                            
-000041c0  T_control                         
-000041c8  T_conv                            
-000041d0  T_cos                             
-000041d8  T_init                            
-000041e0  T_mac                             
-000041e8  T_mag                             
-000041f0  T_sin                             
-000119cc  Task_control_dft                  
-00011ac0  Task_convert                      
-00011504  Task_dft_cosine                   
-00011456  Task_dft_sine                     
-00010fde  Task_initialize                   
-000113a4  Task_mac                          
-000115ae  Task_magnitude                    
+00004280  T_control                         
+0001145c  T_control_function                
+00004288  T_convert                         
+00011550  T_convert_function                
+00004290  T_cosine                          
+00010d36  T_cosine_function                 
+00004298  T_init                            
+00011932  T_init_function                   
+000042a0  T_mac                             
+00010f24  T_mac_function                    
+000042a8  T_magnitude                       
+000110aa  T_magnitude_function              
+000042b0  T_sine                            
+00010c3a  T_sine_function                   
 000005d0  UCA0ABCTL                         
 000005d1  UCA0ABCTL_H                       
 000005d0  UCA0ABCTL_L                       
@@ -2025,20 +2019,20 @@ address   name
 0000015d  WDTCTL_H                          
 0000015c  WDTCTL_L                          
 00004442  _Q16sqrt_coeffs                   
-000111f6  _Qmag                             
+00010e2e  _Qmag                             
 00002c00  __STACK_END                       
 000000a0  __STACK_SIZE                      
 UNDEFED   __TI_BINIT_Base                   
 UNDEFED   __TI_BINIT_Limit                  
-00004580  __TI_CINIT_Base                   
-00004598  __TI_CINIT_Limit                  
-00004568  __TI_Handler_Table_Base           
-00004574  __TI_Handler_Table_Limit          
+000045b8  __TI_CINIT_Base                   
+000045d0  __TI_CINIT_Limit                  
+000045a6  __TI_Handler_Table_Base           
+000045b2  __TI_Handler_Table_Limit          
 UNDEFED   __TI_INITARRAY_Base               
 UNDEFED   __TI_INITARRAY_Limit              
 0000443a  __TI_ISR_TRAP                     
-00011a48  __TI_decompress_lzss              
-00011f90  __TI_decompress_none              
+000114d8  __TI_decompress_lzss              
+000119b0  __TI_decompress_none              
 00010416  __TI_frcmpyd                      
 0000ffb4  __TI_int18                        
 0000ffb6  __TI_int19                        
@@ -2080,104 +2074,111 @@ UNDEFED   __TI_INITARRAY_Limit
 ffffffff  __TI_pprof_out_hndl               
 ffffffff  __TI_prof_data_size               
 ffffffff  __TI_prof_data_start              
-00011ebc  __TI_zero_init                    
-000041fc  __T_controlT_controlinside_index_0
-000041fe  __T_controlT_controlinside_index_1
-00001c00  __T_controlT_controlinside_index__
-00004200  __T_controlT_cosindex             
-00001c18  __T_controlT_cosindex__           
-00004202  __T_controlT_macindex             
-00001c1e  __T_controlT_macindex__           
-00004204  __T_controlT_sinindex             
-00001c24  __T_controlT_sinindex__           
-00004080  __T_convT_magoutput_img           
-00001c2a  __T_convT_magoutput_img__         
-000040c0  __T_convT_magoutput_real          
-00001c30  __T_convT_magoutput_real__        
-00004100  __T_cosT_macoutput_cos            
-00001c36  __T_cosT_macoutput_cos__          
-00004140  __T_initT_macinput                
-00001c3c  __T_initT_macinput__              
-00004000  __T_macT_convoutput_coeff         
-00001c42  __T_macT_convoutput_coeff__       
-00004206  __T_magT_maginside_index_0        
-00004208  __T_magT_maginside_index_1        
-00001c0c  __T_magT_maginside_index__        
-00004180  __T_sinT_macoutput_sin            
-00001c48  __T_sinT_macoutput_sin__          
+000118a4  __TI_zero_init                    
+000042bc  __T_controlT_controlsf_index_0    
+000042be  __T_controlT_controlsf_index_1    
+00001c00  __T_controlT_controlsf_index__    
+000042c0  __T_controlT_cosinef_index        
+00001c30  __T_controlT_cosinef_index__      
+000042c2  __T_controlT_macf_index           
+00001c36  __T_controlT_macf_index__         
+000042c4  __T_controlT_sinef_index          
+00001c3c  __T_controlT_sinef_index__        
+00004100  __T_convertT_magnitudef_imag      
+00001c42  __T_convertT_magnitudef_imag__    
+00004140  __T_convertT_magnitudef_real      
+00001c48  __T_convertT_magnitudef_real__    
+000042c6  __T_cosineT_cosinesf_index_0      
+000042c8  __T_cosineT_cosinesf_index_1      
+00001c0c  __T_cosineT_cosinesf_index__      
+00004180  __T_cosineT_macf_output_cos       
+00001c4e  __T_cosineT_macf_output_cos__     
+000041c0  __T_initT_macf_input              
+00001c54  __T_initT_macf_input__            
+00004000  __T_macT_convertf_output_coeff    
+00001c5a  __T_macT_convertf_output_coeff__  
+000042ca  __T_magnitudeT_magnitudesf_index_0
+000042cc  __T_magnitudeT_magnitudesf_index_1
+00001c18  __T_magnitudeT_magnitudesf_index__
+00004200  __T_sineT_macf_output_sin         
+00001c60  __T_sineT_macf_output_sin__       
+000042ce  __T_sineT_sinesf_index_0          
+000042d0  __T_sineT_sinesf_index_1          
+00001c24  __T_sineT_sinesf_index__          
 ffffffff  __c_args__                        
 00000001  __mpu_enable                      
-00011e94  __mpu_init                        
-0001163a  __mspabi_cvtdf                    
-00011c16  __mspabi_fixfi                    
-00011fb8  __mspabi_fltud                    
-000117d2  __mspabi_fltuld                   
+0001187c  __mpu_init                        
+00011154  __mspabi_cvtdf                    
+000116a6  __mspabi_fixfi                    
+000119e6  __mspabi_fltud                    
+00011262  __mspabi_fltuld                   
 0001069c  __mspabi_mpyd                     
-000112ec  __mspabi_mpyf                     
-00011f64  __mspabi_mpyi_f5hw                
-00011f04  __mspabi_mpyl_f5hw                
-00011fae  __mspabi_negf                     
-00011e50  __mspabi_slll_1                   
-00011e2c  __mspabi_slll_10                  
-00011e28  __mspabi_slll_11                  
-00011e24  __mspabi_slll_12                  
-00011e20  __mspabi_slll_13                  
-00011e1c  __mspabi_slll_14                  
-00011e18  __mspabi_slll_15                  
-00011e4c  __mspabi_slll_2                   
-00011e48  __mspabi_slll_3                   
-00011e44  __mspabi_slll_4                   
-00011e40  __mspabi_slll_5                   
-00011e3c  __mspabi_slll_6                   
-00011e38  __mspabi_slll_7                   
-00011e34  __mspabi_slll_8                   
-00011e30  __mspabi_slll_9                   
-00011e12  __mspabi_sral_1                   
-00011dee  __mspabi_sral_10                  
-00011dea  __mspabi_sral_11                  
-00011de6  __mspabi_sral_12                  
-00011de2  __mspabi_sral_13                  
-00011dde  __mspabi_sral_14                  
-00011dda  __mspabi_sral_15                  
-00011e0e  __mspabi_sral_2                   
-00011e0a  __mspabi_sral_3                   
-00011e06  __mspabi_sral_4                   
-00011e02  __mspabi_sral_5                   
-00011dfe  __mspabi_sral_6                   
-00011dfa  __mspabi_sral_7                   
-00011df6  __mspabi_sral_8                   
-00011df2  __mspabi_sral_9                   
-00011e8e  __mspabi_srll_1                   
-00011e6a  __mspabi_srll_10                  
-00011e66  __mspabi_srll_11                  
-00011e62  __mspabi_srll_12                  
-00011e5e  __mspabi_srll_13                  
-00011e5a  __mspabi_srll_14                  
-00011e56  __mspabi_srll_15                  
-00011e8a  __mspabi_srll_2                   
-00011e86  __mspabi_srll_3                   
-00011e82  __mspabi_srll_4                   
-00011e7e  __mspabi_srll_5                   
-00011e7a  __mspabi_srll_6                   
-00011e76  __mspabi_srll_7                   
-00011e72  __mspabi_srll_8                   
-00011e6e  __mspabi_srll_9                   
-00011750  _auto_init_hold_wdt               
+00010ff2  __mspabi_mpyf                     
+00011970  __mspabi_mpyi_f5hw                
+000118ec  __mspabi_mpyl_f5hw                
+000119dc  __mspabi_negf                     
+00011838  __mspabi_slll_1                   
+00011814  __mspabi_slll_10                  
+00011810  __mspabi_slll_11                  
+0001180c  __mspabi_slll_12                  
+00011808  __mspabi_slll_13                  
+00011804  __mspabi_slll_14                  
+00011800  __mspabi_slll_15                  
+00011834  __mspabi_slll_2                   
+00011830  __mspabi_slll_3                   
+0001182c  __mspabi_slll_4                   
+00011828  __mspabi_slll_5                   
+00011824  __mspabi_slll_6                   
+00011820  __mspabi_slll_7                   
+0001181c  __mspabi_slll_8                   
+00011818  __mspabi_slll_9                   
+000117fa  __mspabi_sral_1                   
+000117d6  __mspabi_sral_10                  
+000117d2  __mspabi_sral_11                  
+000117ce  __mspabi_sral_12                  
+000117ca  __mspabi_sral_13                  
+000117c6  __mspabi_sral_14                  
+000117c2  __mspabi_sral_15                  
+000117f6  __mspabi_sral_2                   
+000117f2  __mspabi_sral_3                   
+000117ee  __mspabi_sral_4                   
+000117ea  __mspabi_sral_5                   
+000117e6  __mspabi_sral_6                   
+000117e2  __mspabi_sral_7                   
+000117de  __mspabi_sral_8                   
+000117da  __mspabi_sral_9                   
+00011876  __mspabi_srll_1                   
+00011852  __mspabi_srll_10                  
+0001184e  __mspabi_srll_11                  
+0001184a  __mspabi_srll_12                  
+00011846  __mspabi_srll_13                  
+00011842  __mspabi_srll_14                  
+0001183e  __mspabi_srll_15                  
+00011872  __mspabi_srll_2                   
+0001186e  __mspabi_srll_3                   
+0001186a  __mspabi_srll_4                   
+00011866  __mspabi_srll_5                   
+00011862  __mspabi_srll_6                   
+0001185e  __mspabi_srll_7                   
+0001185a  __mspabi_srll_8                   
+00011856  __mspabi_srll_9                   
+000111e0  _auto_init_hold_wdt               
 00004400  _c_int00_noargs_noexit_mpu        
 0000fffe  _reset_vector                     
 00002b60  _stack                            
-00011fd4  _system_post_cinit                
-00011fd0  _system_pre_init                  
-00011fbe  abort                             
-00002cc0  coeff                             
-00011c7e  copy_in                           
-00011fc4  cosf                              
+00011a02  _system_post_cinit                
+000119fe  _system_pre_init                  
+000119ec  abort                             
+00002c80  coeff                             
+0001170e  copy_in                           
+000119f2  cosf                              
+00004240  final_out                         
 00004400  fram_ipe_end                      
 00004400  fram_ipe_start                    
 00004000  fram_rw_start                     
 00004400  fram_rx_start                     
-00011f28  main                              
-00011f7c  memcpy                            
+00011910  main                              
+00011988  memcpy                            
 0000a501  mpu_ctl0_value                    
 00001513  mpu_sam_value                     
 00000440  mpu_segment_border1               
@@ -2185,29 +2186,25 @@ ffffffff  __c_args__
 00004502  msp430_cos_coeffs                 
 00010000  msp430_cos_sin                    
 00004516  msp430_sin_coeffs                 
-00010b20  msp_add_q15                       
-0001091e  msp_biquad_df1_q15                
-00010e56  msp_deinterleave_q15              
-00011f46  msp_iq31_to_q15                   
-00011d96  msp_lea_getRevision               
-00001c4e  msp_lea_ifg                       
-00011d48  msp_lea_init                      
+00010ab2  msp_deinterleave_q15              
+00011952  msp_iq31_to_q15                   
+00001c66  msp_lea_ifg                       
+00011774  msp_lea_init                      
 0000441e  msp_lea_isr                       
-00001c50  msp_lea_locked                    
-00010cc2  msp_mac_q15                       
-00011ce4  msp_scale_q15                     
-000110f0  msp_sinusoid_q15                  
-00011b32  read_field_16                     
-00011852  read_field_32                     
-00011ba4  read_field_u16                    
-00011ee0  resume_program                    
-00011fca  sinf                              
-00011fa2  start_task                        
-00001c52  status                            
-000118d0  write_field_16                    
-000116c6  write_field_32                    
-0001194e  write_field_u16                   
-00002c80  x                                 
+00001c68  msp_lea_locked                    
+0001091e  msp_mac_q15                       
+000115c2  read_field_16                     
+000112e2  read_field_32                     
+00011634  read_field_u16                    
+000118c8  resume_program                    
+000119f8  sinf                              
+000119d0  start_task                        
+00001c6a  status                            
+00011360  write_field_16                    
+000119c2  write_field_element_16            
+0001199c  write_field_element_32            
+000113de  write_field_u16                   
+00002d80  x                                 
 00002c00  x1                                
 00002c40  x2                                
 
@@ -3720,47 +3717,54 @@ address   name
 00000afc  LEAIVL                            
 00000afe  LEAIVH                            
 00001513  mpu_sam_value                     
-00001c00  __T_controlT_controlinside_index__
-00001c0c  __T_magT_maginside_index__        
-00001c18  __T_controlT_cosindex__           
-00001c1e  __T_controlT_macindex__           
-00001c24  __T_controlT_sinindex__           
-00001c2a  __T_convT_magoutput_img__         
-00001c30  __T_convT_magoutput_real__        
-00001c36  __T_cosT_macoutput_cos__          
-00001c3c  __T_initT_macinput__              
-00001c42  __T_macT_convoutput_coeff__       
-00001c48  __T_sinT_macoutput_sin__          
-00001c4e  msp_lea_ifg                       
-00001c50  msp_lea_locked                    
-00001c52  status                            
+00001c00  __T_controlT_controlsf_index__    
+00001c0c  __T_cosineT_cosinesf_index__      
+00001c18  __T_magnitudeT_magnitudesf_index__
+00001c24  __T_sineT_sinesf_index__          
+00001c30  __T_controlT_cosinef_index__      
+00001c36  __T_controlT_macf_index__         
+00001c3c  __T_controlT_sinef_index__        
+00001c42  __T_convertT_magnitudef_imag__    
+00001c48  __T_convertT_magnitudef_real__    
+00001c4e  __T_cosineT_macf_output_cos__     
+00001c54  __T_initT_macf_input__            
+00001c5a  __T_macT_convertf_output_coeff__  
+00001c60  __T_sineT_macf_output_sin__       
+00001c66  msp_lea_ifg                       
+00001c68  msp_lea_locked                    
+00001c6a  status                            
 00002b60  _stack                            
 00002c00  __STACK_END                       
 00002c00  x1                                
 00002c40  x2                                
-00002c80  x                                 
-00002cc0  coeff                             
-00004000  __T_macT_convoutput_coeff         
+00002c80  coeff                             
+00002d80  x                                 
+00004000  __T_macT_convertf_output_coeff    
 00004000  fram_rw_start                     
-00004080  __T_convT_magoutput_img           
-000040c0  __T_convT_magoutput_real          
-00004100  __T_cosT_macoutput_cos            
-00004140  __T_initT_macinput                
-00004180  __T_sinT_macoutput_sin            
-000041c0  T_control                         
-000041c8  T_conv                            
-000041d0  T_cos                             
-000041d8  T_init                            
-000041e0  T_mac                             
-000041e8  T_mag                             
-000041f0  T_sin                             
-000041fc  __T_controlT_controlinside_index_0
-000041fe  __T_controlT_controlinside_index_1
-00004200  __T_controlT_cosindex             
-00004202  __T_controlT_macindex             
-00004204  __T_controlT_sinindex             
-00004206  __T_magT_maginside_index_0        
-00004208  __T_magT_maginside_index_1        
+00004100  __T_convertT_magnitudef_imag      
+00004140  __T_convertT_magnitudef_real      
+00004180  __T_cosineT_macf_output_cos       
+000041c0  __T_initT_macf_input              
+00004200  __T_sineT_macf_output_sin         
+00004240  final_out                         
+00004280  T_control                         
+00004288  T_convert                         
+00004290  T_cosine                          
+00004298  T_init                            
+000042a0  T_mac                             
+000042a8  T_magnitude                       
+000042b0  T_sine                            
+000042bc  __T_controlT_controlsf_index_0    
+000042be  __T_controlT_controlsf_index_1    
+000042c0  __T_controlT_cosinef_index        
+000042c2  __T_controlT_macf_index           
+000042c4  __T_controlT_sinef_index          
+000042c6  __T_cosineT_cosinesf_index_0      
+000042c8  __T_cosineT_cosinesf_index_1      
+000042ca  __T_magnitudeT_magnitudesf_index_0
+000042cc  __T_magnitudeT_magnitudesf_index_1
+000042ce  __T_sineT_sinesf_index_0          
+000042d0  __T_sineT_sinesf_index_1          
 00004400  _c_int00_noargs_noexit_mpu        
 00004400  fram_ipe_end                      
 00004400  fram_ipe_start                    
@@ -3770,10 +3774,10 @@ address   name
 00004442  _Q16sqrt_coeffs                   
 00004502  msp430_cos_coeffs                 
 00004516  msp430_sin_coeffs                 
-00004568  __TI_Handler_Table_Base           
-00004574  __TI_Handler_Table_Limit          
-00004580  __TI_CINIT_Base                   
-00004598  __TI_CINIT_Limit                  
+000045a6  __TI_Handler_Table_Base           
+000045b2  __TI_Handler_Table_Limit          
+000045b8  __TI_CINIT_Base                   
+000045d0  __TI_CINIT_Limit                  
 0000a501  mpu_ctl0_value                    
 0000ffb4  __TI_int18                        
 0000ffb6  __TI_int19                        
@@ -3816,98 +3820,94 @@ address   name
 00010000  msp430_cos_sin                    
 00010416  __TI_frcmpyd                      
 0001069c  __mspabi_mpyd                     
-0001091e  msp_biquad_df1_q15                
-00010b20  msp_add_q15                       
-00010cc2  msp_mac_q15                       
-00010e56  msp_deinterleave_q15              
-00010fde  Task_initialize                   
-000110f0  msp_sinusoid_q15                  
-000111f6  _Qmag                             
-000112ec  __mspabi_mpyf                     
-000113a4  Task_mac                          
-00011456  Task_dft_sine                     
-00011504  Task_dft_cosine                   
-000115ae  Task_magnitude                    
-0001163a  __mspabi_cvtdf                    
-000116c6  write_field_32                    
-00011750  _auto_init_hold_wdt               
-000117d2  __mspabi_fltuld                   
-00011852  read_field_32                     
-000118d0  write_field_16                    
-0001194e  write_field_u16                   
-000119cc  Task_control_dft                  
-00011a48  __TI_decompress_lzss              
-00011ac0  Task_convert                      
-00011b32  read_field_16                     
-00011ba4  read_field_u16                    
-00011c16  __mspabi_fixfi                    
-00011c7e  copy_in                           
-00011ce4  msp_scale_q15                     
-00011d48  msp_lea_init                      
-00011d96  msp_lea_getRevision               
-00011dda  __mspabi_sral_15                  
-00011dde  __mspabi_sral_14                  
-00011de2  __mspabi_sral_13                  
-00011de6  __mspabi_sral_12                  
-00011dea  __mspabi_sral_11                  
-00011dee  __mspabi_sral_10                  
-00011df2  __mspabi_sral_9                   
-00011df6  __mspabi_sral_8                   
-00011dfa  __mspabi_sral_7                   
-00011dfe  __mspabi_sral_6                   
-00011e02  __mspabi_sral_5                   
-00011e06  __mspabi_sral_4                   
-00011e0a  __mspabi_sral_3                   
-00011e0e  __mspabi_sral_2                   
-00011e12  __mspabi_sral_1                   
-00011e18  __mspabi_slll_15                  
-00011e1c  __mspabi_slll_14                  
-00011e20  __mspabi_slll_13                  
-00011e24  __mspabi_slll_12                  
-00011e28  __mspabi_slll_11                  
-00011e2c  __mspabi_slll_10                  
-00011e30  __mspabi_slll_9                   
-00011e34  __mspabi_slll_8                   
-00011e38  __mspabi_slll_7                   
-00011e3c  __mspabi_slll_6                   
-00011e40  __mspabi_slll_5                   
-00011e44  __mspabi_slll_4                   
-00011e48  __mspabi_slll_3                   
-00011e4c  __mspabi_slll_2                   
-00011e50  __mspabi_slll_1                   
-00011e56  __mspabi_srll_15                  
-00011e5a  __mspabi_srll_14                  
-00011e5e  __mspabi_srll_13                  
-00011e62  __mspabi_srll_12                  
-00011e66  __mspabi_srll_11                  
-00011e6a  __mspabi_srll_10                  
-00011e6e  __mspabi_srll_9                   
-00011e72  __mspabi_srll_8                   
-00011e76  __mspabi_srll_7                   
-00011e7a  __mspabi_srll_6                   
-00011e7e  __mspabi_srll_5                   
-00011e82  __mspabi_srll_4                   
-00011e86  __mspabi_srll_3                   
-00011e8a  __mspabi_srll_2                   
-00011e8e  __mspabi_srll_1                   
-00011e94  __mpu_init                        
-00011ebc  __TI_zero_init                    
-00011ee0  resume_program                    
-00011f04  __mspabi_mpyl_f5hw                
-00011f28  main                              
-00011f46  msp_iq31_to_q15                   
-00011f64  __mspabi_mpyi_f5hw                
-00011f7c  memcpy                            
-00011f90  __TI_decompress_none              
-00011fa2  start_task                        
-00011fae  __mspabi_negf                     
-00011fb8  __mspabi_fltud                    
-00011fbe  C$$EXIT                           
-00011fbe  abort                             
-00011fc4  cosf                              
-00011fca  sinf                              
-00011fd0  _system_pre_init                  
-00011fd4  _system_post_cinit                
+0001091e  msp_mac_q15                       
+00010ab2  msp_deinterleave_q15              
+00010c3a  T_sine_function                   
+00010d36  T_cosine_function                 
+00010e2e  _Qmag                             
+00010f24  T_mac_function                    
+00010ff2  __mspabi_mpyf                     
+000110aa  T_magnitude_function              
+00011154  __mspabi_cvtdf                    
+000111e0  _auto_init_hold_wdt               
+00011262  __mspabi_fltuld                   
+000112e2  read_field_32                     
+00011360  write_field_16                    
+000113de  write_field_u16                   
+0001145c  T_control_function                
+000114d8  __TI_decompress_lzss              
+00011550  T_convert_function                
+000115c2  read_field_16                     
+00011634  read_field_u16                    
+000116a6  __mspabi_fixfi                    
+0001170e  copy_in                           
+00011774  msp_lea_init                      
+000117c2  __mspabi_sral_15                  
+000117c6  __mspabi_sral_14                  
+000117ca  __mspabi_sral_13                  
+000117ce  __mspabi_sral_12                  
+000117d2  __mspabi_sral_11                  
+000117d6  __mspabi_sral_10                  
+000117da  __mspabi_sral_9                   
+000117de  __mspabi_sral_8                   
+000117e2  __mspabi_sral_7                   
+000117e6  __mspabi_sral_6                   
+000117ea  __mspabi_sral_5                   
+000117ee  __mspabi_sral_4                   
+000117f2  __mspabi_sral_3                   
+000117f6  __mspabi_sral_2                   
+000117fa  __mspabi_sral_1                   
+00011800  __mspabi_slll_15                  
+00011804  __mspabi_slll_14                  
+00011808  __mspabi_slll_13                  
+0001180c  __mspabi_slll_12                  
+00011810  __mspabi_slll_11                  
+00011814  __mspabi_slll_10                  
+00011818  __mspabi_slll_9                   
+0001181c  __mspabi_slll_8                   
+00011820  __mspabi_slll_7                   
+00011824  __mspabi_slll_6                   
+00011828  __mspabi_slll_5                   
+0001182c  __mspabi_slll_4                   
+00011830  __mspabi_slll_3                   
+00011834  __mspabi_slll_2                   
+00011838  __mspabi_slll_1                   
+0001183e  __mspabi_srll_15                  
+00011842  __mspabi_srll_14                  
+00011846  __mspabi_srll_13                  
+0001184a  __mspabi_srll_12                  
+0001184e  __mspabi_srll_11                  
+00011852  __mspabi_srll_10                  
+00011856  __mspabi_srll_9                   
+0001185a  __mspabi_srll_8                   
+0001185e  __mspabi_srll_7                   
+00011862  __mspabi_srll_6                   
+00011866  __mspabi_srll_5                   
+0001186a  __mspabi_srll_4                   
+0001186e  __mspabi_srll_3                   
+00011872  __mspabi_srll_2                   
+00011876  __mspabi_srll_1                   
+0001187c  __mpu_init                        
+000118a4  __TI_zero_init                    
+000118c8  resume_program                    
+000118ec  __mspabi_mpyl_f5hw                
+00011910  main                              
+00011932  T_init_function                   
+00011952  msp_iq31_to_q15                   
+00011970  __mspabi_mpyi_f5hw                
+00011988  memcpy                            
+0001199c  write_field_element_32            
+000119b0  __TI_decompress_none              
+000119c2  write_field_element_16            
+000119d0  start_task                        
+000119dc  __mspabi_negf                     
+000119e6  __mspabi_fltud                    
+000119ec  C$$EXIT                           
+000119ec  abort                             
+000119f2  cosf                              
+000119f8  sinf                              
+000119fe  _system_pre_init                  
+00011a02  _system_post_cinit                
 ffffffff  __TI_pprof_out_hndl               
 ffffffff  __TI_prof_data_size               
 ffffffff  __TI_prof_data_start              
@@ -3917,4 +3917,4 @@ UNDEFED   __TI_BINIT_Limit
 UNDEFED   __TI_INITARRAY_Base               
 UNDEFED   __TI_INITARRAY_Limit              
 
-[1700 symbols]
+[1703 symbols]

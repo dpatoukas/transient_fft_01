@@ -1,3 +1,22 @@
+/**
+ * DISCRETE FOURIER TRANSFORM UNDER INTERMITTENT POWER OPERATION
+ *
+ *
+ * This DFT is an application of the InterPow library.
+ *
+ * A dummy periodical input signal is generated and transformed using a DFT
+ * algorithm which makes use of the MSP430 DSPLibrary.
+ *
+ *
+ * TODO:
+ *
+ * - Make the cosine/sine tasks parametric
+ *
+ * - Measure the execution cycles of each task using msp_benchmarkStart() and
+ *   msp_benchmarkStop()
+ */
+
+
 #include <msp430.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -17,6 +36,10 @@
 
 #define PI              3.1415926536
 
+
+/******************************************************************************/
+// Fixed-point variables declaration
+
 DSPLIB_DATA(x1,4)
 _q15 x1[N_SAMPLES];
 
@@ -24,17 +47,18 @@ DSPLIB_DATA(x2,4)
 _q15 x2[N_SAMPLES];
 
 DSPLIB_DATA(x,4)
-_q15 x[N_SAMPLES];                      // Input signal x = x1 + x2
+_q15 x[N_SAMPLES] = {
+    0x0000, 0x029C, 0xFFFF, 0x0115, 0x03FF, 0x0114, 0xFFFF, 0x029C,
+    0xFFFF, 0xFD62, 0xFFFF, 0xFEEA, 0xFC00, 0xFEEA, 0x0000, 0xFD63,
+    0x0000, 0x029D, 0x0000, 0x0115, 0x03FF, 0x0114, 0xFFFF, 0x029B,
+    0xFFFF, 0xFD62, 0xFFFF, 0xFEEA, 0xFC00, 0xFEEB, 0x0000, 0xFD64
+};
 
 DSPLIB_DATA(coeff,4)
-_iq31 coeff[2*N_SAMPLES];               // Complex DFT coefficients
+_iq31 coeff[2*N_SAMPLES];
 
-// DSPLIB_DATA(temp,4)
-// _q315 temp[2*N_SAMPLES];             // Not used anymore
-
-// float X[N_SAMPLES];                  // Not used anymore
-
-// volatile uint32_t cycleCount;
+#pragma PERSISTENT(final_out)
+int16_t final_out[N_SAMPLES] = {0};     // Test variable
 
 msp_status status;
 
@@ -43,49 +67,49 @@ msp_status status;
 // Tasks' functions declaration
 
 // Initialise the parameters used by the program
-void Task_initialize(void);
+void T_init_function(void);
 
 // Main DFT task that controls the execution of the DFT
-void Task_control_dft(void);
+void T_control_function(void);
 
 // Cosine calculation task
-void Task_dft_cosine(void);
+void T_cosine_function(void);
 
 // Sine calculation task
-void Task_dft_sine(void);
+void T_sine_function(void);
 
 // Multiply and accumulate task
-void Task_mac(void);
+void T_mac_function(void);
 
 // Conversion task
-void Task_convert(void);
+void T_convert_function(void);
 
 // Magnitude task
-void Task_magnitude(void);
+void T_magnitude_function(void);
 
 /******************************************************************************/
 // Definition of tasks, preceded by the PERSISTENT declaration
 
 #pragma PERSISTENT(T_init)
-NewTask(T_init,Task_initialize,0)
+NewTask(T_init, T_init_function, 0)
 
 #pragma PERSISTENT(T_control)
-NewTask(T_control,Task_control_dft,1)
+NewTask(T_control, T_control_function, 1)
 
-#pragma PERSISTENT(T_cos)
-NewTask(T_cos,Task_dft_cosine,1)
+#pragma PERSISTENT(T_cosine)
+NewTask(T_cosine, T_cosine_function, 1)
 
-#pragma PERSISTENT(T_sin)
-NewTask(T_sin,Task_dft_sine,1)
+#pragma PERSISTENT(T_sine)
+NewTask(T_sine, T_sine_function, 1)
 
 #pragma PERSISTENT(T_mac)
-NewTask(T_mac,Task_mac,0)
+NewTask(T_mac, T_mac_function, 0)
 
-#pragma PERSISTENT(T_conv)
-NewTask(T_conv,Task_convert,0)
+#pragma PERSISTENT(T_convert)
+NewTask(T_convert, T_convert_function, 0)
 
-#pragma PERSISTENT(T_mag)
-NewTask(T_mag,Task_magnitude,1)
+#pragma PERSISTENT(T_magnitude)
+NewTask(T_magnitude, T_magnitude_function, 1)
 
 /******************************************************************************/
 // Inform the program about the task to execute on the first start of the
@@ -100,60 +124,64 @@ InitialTask(T_init)
 // Order of declaration: All fields per origin task
 
 // T_init Fields
-#pragma PERSISTENT(PersField(T_init, T_mac, input))
-NewField(T_init, T_mac, input, INT16, N_SAMPLES)
+#pragma PERSISTENT(PersField(T_init, T_mac, f_input))
+NewField(T_init, T_mac, f_input, INT16, N_SAMPLES)
 
 // T_control Fields
 /*self-field*/
-#pragma PERSISTENT(PersSField0(T_control, inside_index))
-#pragma PERSISTENT(PersSField1(T_control, inside_index))
-NewSelfField(T_control, inside_index, UINT16, 1, SELF_FIELD_CODE_1)
+#pragma PERSISTENT(PersSField0(T_control, sf_index))
+#pragma PERSISTENT(PersSField1(T_control, sf_index))
+NewSelfField(T_control, sf_index, UINT16, 1, SELF_FIELD_CODE_1)
 
-#pragma PERSISTENT(PersField(T_control, T_cos, index))
-NewField(T_control, T_cos, index, UINT16, 1)
+#pragma PERSISTENT(PersField(T_control, T_cosine, f_index))
+NewField(T_control, T_cosine, f_index, UINT16, 1)
 
-#pragma PERSISTENT(PersField(T_control, T_sin, index))
-NewField(T_control, T_sin, index, UINT16, 1)
+#pragma PERSISTENT(PersField(T_control, T_sine, f_index))
+NewField(T_control, T_sine, f_index, UINT16, 1)
 
-#pragma PERSISTENT(PersField(T_control, T_mac, index))
-NewField(T_control, T_mac, index, UINT16, 1)
+#pragma PERSISTENT(PersField(T_control, T_mac, f_index))
+NewField(T_control, T_mac, f_index, UINT16, 1)
 
-//T_cos
+//T_cosine
 /*self-field*/
-#pragma PERSISTENT(PersSField0(T_cos, inside_index))
-#pragma PERSISTENT(PersSField1(T_cos, inside_index))
-NewSelfField(T_cos, inside_index, UINT16, 1, SELF_FIELD_CODE_2)
+#pragma PERSISTENT(PersSField0(T_cosine, sf_index))
+#pragma PERSISTENT(PersSField1(T_cosine, sf_index))
+NewSelfField(T_cosine, sf_index, UINT16, 1, SELF_FIELD_CODE_1)
 
-#pragma PERSISTENT(PersField(T_cos, T_mac, output_cos))
-NewField(T_cos, T_mac, output_cos, INT16, N_SAMPLES)
+#pragma PERSISTENT(PersField(T_cosine, T_mac, f_output_cos))
+NewField(T_cosine, T_mac, f_output_cos, INT16, N_SAMPLES)
 
-//T_sin
+//T_sine
 /*self-field*/
-#pragma PERSISTENT(PersSField0(T_sin, inside_index))
-#pragma PERSISTENT(PersSField1(T_sin, inside_index))
-NewSelfField(T_sin, inside_index, UINT16, 1, SELF_FIELD_CODE_3)
+#pragma PERSISTENT(PersSField0(T_sine, sf_index))
+#pragma PERSISTENT(PersSField1(T_sine, sf_index))
+NewSelfField(T_sine, sf_index, UINT16, 1, SELF_FIELD_CODE_1)
 
-#pragma PERSISTENT(PersField(T_sin, T_mac, output_sin))
-NewField(T_sin, T_mac, output_sin, INT16, N_SAMPLES)
+#pragma PERSISTENT(PersField(T_sine, T_mac, f_output_sin))
+NewField(T_sine, T_mac, f_output_sin, INT16, N_SAMPLES)
 
 //T_mac
-#pragma PERSISTENT(PersField(T_mac, T_conv, output_coeff))
-NewField(T_mac, T_conv, output_coeff, INT32, 2*N_SAMPLES)
+#pragma PERSISTENT(PersField(T_mac, T_convert, f_output_coeff))
+NewField(T_mac, T_convert, f_output_coeff, INT32, 2*N_SAMPLES)
 
-//T_conv
-#pragma PERSISTENT(PersField(T_conv, T_mag, output_real))
-NewField(T_conv, T_mag, output_real, INT16, N_SAMPLES)
+//T_convert
+#pragma PERSISTENT(PersField(T_convert, T_magnitude, f_real))
+NewField(T_convert, T_magnitude, f_real, INT16, N_SAMPLES)
 
-#pragma PERSISTENT(PersField(T_conv, T_mag, output_img))
-NewField(T_conv, T_mag, output_img, INT16, N_SAMPLES)
+#pragma PERSISTENT(PersField(T_convert, T_magnitude, f_imag))
+NewField(T_convert, T_magnitude, f_imag, INT16, N_SAMPLES)
 
-//T_mag
+//T_magnitude
 /*self-field*/
-#pragma PERSISTENT(PersSField0(T_mag, inside_index))
-#pragma PERSISTENT(PersSField1(T_mag, inside_index))
-NewSelfField(T_mag, inside_index, UINT16, 1, SELF_FIELD_CODE_4)
+#pragma PERSISTENT(PersSField0(T_magnitude, sf_index))
+#pragma PERSISTENT(PersSField1(T_magnitude, sf_index))
+NewSelfField(T_magnitude, sf_index, UINT16, 1, SELF_FIELD_CODE_1)
 
-// NOTE: self-fields belonging to the same self-channel must have progressive
+#pragma PERSISTENT(PersSField0(T_magnitude, sf_final_out))
+#pragma PERSISTENT(PersSField1(T_magnitude, sf_final_out))
+NewSelfField(T_magnitude, sf_final_out, INT16, N_SAMPLES, SELF_FIELD_CODE_2)
+
+// NOTE: self-fields belonging to the same self-channel must have different
 //       self-field codes, e.g.
 //       - first self-field: SELF_FIELD_CODE_1
 //       - second self-field: SELF_FIELD_CODE_2
@@ -168,9 +196,9 @@ int main(void)
 
 	PM5CTL0 &= ~LOCKLPM5;
 
-	P1DIR |= 0x01;
-	P1DIR |= 0x02;
-    // P1OUT = 0x00;
+    P1DIR |= 0x01;  // prepare LED1
+    P1DIR |= 0x02;  // prepare LED2
+    P1OUT  = 0x00;  // turn LEDs off
 
 	while(1) {
 	    Resume();
@@ -179,14 +207,11 @@ int main(void)
 }
 
 
-void Task_initialize()
+void T_init_function()
 {
-
-    P1OUT = 0x00;
-
     // Generate two sine waves and store them into x1 and x2
-
-	msp_sinusoid_q15_params sinParams;
+/*
+    msp_sinusoid_q15_params sinParams;
     sinParams.length = N_SAMPLES;
     sinParams.amplitude = _Q15(0.5);
 
@@ -209,71 +234,97 @@ void Task_initialize()
     scaleParams.scale = _Q15(SCALE_FACTOR);
     scaleParams.shift = 0;
     status = msp_scale_q15(&scaleParams, x, x);
+*/
+    WriteField_16(T_init, T_mac, f_input, x);
 
-    WriteField_16(T_init, T_mac, input, x)
+    // P1OUT = 0x02;   // turn on GREEN
 
     StartTask(T_control)
 }
 
-void Task_control_dft()
+void T_control_function()
 {
 	uint16_t k;
-	ReadSelfField_U16(T_control, inside_index, &k)
+	ReadSelfField_U16(T_control, sf_index, &k)
 
-	k++;
+	if (k < N_SAMPLES) { /* Compute complex coefficients */
+		WriteField_U16(T_control, T_cosine, f_index, &k)
+		WriteField_U16(T_control, T_sine, f_index, &k)
+		WriteField_U16(T_control, T_mac, f_index, &k)
 
-	if (k <= N_SAMPLES) {
-		WriteSelfField_U16(T_control, inside_index, &k)
-		WriteField_U16(T_control, T_cos, index, &k)
-		WriteField_U16(T_control, T_sin, index, &k)
-		WriteField_U16(T_control, T_mac, index, &k)
-		//Inside Loop Execution
-		StartTask(T_cos)
+		k++;
+		WriteSelfField_U16(T_control, sf_index, &k)
+		StartTask(T_cosine)
 	}
-	else
-		//The Loop Calculation has finished
-		StartTask(T_conv)
+	else /* Complex coefficients computed */
+		StartTask(T_convert)
 }
 
-void Task_dft_cosine()
+void T_cosine_function()
 {
-	uint16_t n;
-	uint16_t i;
-	ReadField_U16(T_control, T_cos, index, &n)
-	//ReadSelfField_U16(T_cos,inside_index,&in_index)
-	n--;
-	for (i=0; i<N_SAMPLES; i++)
-		x1[i] = _Q15(cosf(i*n*2*PI/N_SAMPLES));
+	uint16_t k; // external index, coming from T_control
+	uint16_t i; // internal loop index
 
-	//WriteSelfField_U16(T_cos,inside_index,&n)
-	WriteField_16(T_cos, T_mac, output_cos, x1)
-	StartTask(T_sin)
+	ReadField_U16(T_control, T_cosine, f_index, &k)
+	ReadSelfField_U16(T_cosine, sf_index, &i)
+
+	//for (i=0; i<N_SAMPLES; i++)
+		x1[i] = _Q15(cosf(i*k*2*PI/N_SAMPLES));
+
+	if (i < N_SAMPLES) {
+	    WriteFieldElement_16(T_cosine, T_mac, f_output_cos, &x1[i], i);
+
+	    i++;
+	    WriteSelfField_U16(T_cosine, sf_index, &i);
+	    StartTask(T_cosine);
+	}
+	else {
+	    i = 0;
+	    WriteSelfField_U16(T_cosine, sf_index, &i);
+	    StartTask(T_sine);
+	}
+	//WriteSelfField_U16(T_cosine,sf_index,&n)
+	//WriteField_16(T_cosine, T_mac, f_output_cos, x1)
+	//StartTask(T_sine)
 }
 
-void Task_dft_sine()
+void T_sine_function()
 {
-	uint16_t n;
-	uint16_t i;
-	ReadField_U16(T_control, T_sin, index, &n)
-	//ReadSelfField_U16(T_cos,inside_index,&in_index)
-	n--;
-	for (i=0; i<N_SAMPLES; i++)
-        x2[i] = _Q15(-sinf(i*n*2*PI/N_SAMPLES));
+	uint16_t k; // external index, coming from T_control
+	uint16_t i; // internal loop index
 
-	//WriteSelfField_U16(T_sin,inside_index,&n)
-	WriteField_16(T_sin, T_mac, output_sin, x2)
-	StartTask(T_mac)
+	ReadField_U16(T_control, T_sine, f_index, &k);
+	ReadSelfField_U16(T_sine, sf_index, &i);
+
+	//for (i=0; i<N_SAMPLES; i++)
+        x2[i] = _Q15(-sinf(i*k*2*PI/N_SAMPLES));
+
+    if (i < N_SAMPLES) {
+        WriteFieldElement_16(T_sine, T_mac, f_output_sin, &x2[i], i);
+
+        i++;
+        WriteSelfField_U16(T_sine, sf_index, &i);
+        StartTask(T_sine);
+    }
+    else {
+        i = 0;
+        WriteSelfField_U16(T_sine, sf_index, &i);
+        StartTask(T_mac);
+    }
+
+	//WriteSelfField_U16(T_sine,sf_index,&n)
+	//WriteField_16(T_sine, T_mac, f_output_sin, x2)
+	//StartTask(T_mac)
 }
 
-void Task_mac()
+void T_mac_function()
 {
-	 uint16_t k;
-	 ReadField_16(T_init, T_mac, input, x)
-	 ReadField_U16(T_control, T_mac, index, &k)
-	 k--;
+	 uint16_t k; // external index, coming from T_control
 
-	 ReadField_16(T_cos, T_mac, output_cos, x1)
-	 ReadField_16(T_sin, T_mac, output_sin, x2)
+	 ReadField_16(T_init, T_mac, f_input, x)
+	 ReadField_U16(T_control, T_mac, f_index, &k)
+	 ReadField_16(T_cosine, T_mac, f_output_cos, x1)
+	 ReadField_16(T_sine, T_mac, f_output_sin, x2)
 
 	 msp_mac_q15_params macParams;
      macParams.length = N_SAMPLES;
@@ -281,14 +332,16 @@ void Task_mac()
 	 msp_mac_q15(&macParams, x, x1, &coeff[k]);
      msp_mac_q15(&macParams, x, x2, &coeff[k+N_SAMPLES]);
 
-     WriteField_32(T_mac, T_conv, output_coeff, coeff)
-     StartTask(T_control)
+     // WriteField_32(T_mac, T_convert, f_output_coeff, coeff);
+     WriteFieldElement_32(T_mac, T_convert, f_output_coeff, &coeff[k], k);
+     WriteFieldElement_32(T_mac, T_convert, f_output_coeff, &coeff[k+N_SAMPLES], k+N_SAMPLES);
+     StartTask(T_control);
 }
 
 
- void Task_convert()
+ void T_convert_function()
  {
- 	ReadField_32(T_mac, T_conv, output_coeff, coeff)
+ 	ReadField_32(T_mac, T_convert, f_output_coeff, coeff)
 
  	msp_iq31_to_q15_params convParams;
     convParams.length = N_SAMPLES;
@@ -296,27 +349,34 @@ void Task_mac()
     status = msp_iq31_to_q15(&convParams, &coeff[0], x1);
     status = msp_iq31_to_q15(&convParams, &coeff[N_SAMPLES], x2);
 
-    WriteField_16(T_conv, T_mag, output_img, x2)
-    WriteField_16(T_conv, T_mag, output_real, x1)
-    StartTask(T_mag)
+    WriteField_16(T_convert, T_magnitude, f_real, x1)
+    WriteField_16(T_convert, T_magnitude, f_imag, x2)
+    StartTask(T_magnitude)
  }
 
- void Task_magnitude()
+ void T_magnitude_function()
  {
- 	uint16_t k;
- 	ReadSelfField_U16(T_mag, inside_index, &k)
- 	k++;
- 	ReadField_16(T_conv, T_mag, output_real, x1)
- 	ReadField_16(T_conv, T_mag, output_img, x2)
+ 	uint16_t i; // internal loop index
 
- 	x[k-1] = _Q15mag(x1[k-1], x2[k-1]);
+ 	ReadSelfField_U16(T_magnitude, sf_index, &i)
 
- 	WriteSelfField_U16(T_mag, inside_index, &k)
+ 	if (i<N_SAMPLES) {
 
- 	if ((k-1)==N_SAMPLES) {
- 	   P1OUT |= 0x01;
- 	   // StartTask(T_init)
+ 	    ReadField_16(T_convert, T_magnitude, f_real, x1)
+ 	    ReadField_16(T_convert, T_magnitude, f_imag, x2)
+
+ 	    x[i] = _Q15mag(x1[i], x2[i]);
+ 	    final_out[i] = x[i];
+
+ 	    i++;
+ 	    WriteSelfField_U16(T_magnitude, sf_index, &i)
+ 	    StartTask(T_magnitude)
  	}
- 	else
- 		StartTask(T_mag)
+ 	else {
+ 	    if ( (final_out[2] > 100) && (final_out[10] > 100) )    // dummy check
+ 	        P1OUT = 0x01;   // correct, turn on RED (weird?)
+ 	    else
+ 	        P1OUT = 0x02;   // wrong, turn on GREEN (more weird?)
+        while (1);
+ 	}
  }

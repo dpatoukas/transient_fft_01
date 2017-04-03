@@ -14,3 +14,7 @@ The project is implemented on a MSP430FR5994 from Texas Instruments (information
 
 ## Library Documentation
 An extensive documentation can be found at `/html/index.html` (clone/download the repo and open the file in your browser).
+
+## TODOs
+- Make the cosine/sine tasks parametric
+- Measure the execution cycles of each task using `msp_benchmarkStart()` and `msp_benchmarkStop()` functions from DSPLib

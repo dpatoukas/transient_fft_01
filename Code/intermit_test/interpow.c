@@ -415,19 +415,8 @@ void write_field_element_u32(__field *f, uint32_t *src, uint16_t pos)
 
 void start_task(__task *t, __program_state *ps)
 {
-    // TODO: [APPARENTLY FIXED] make the following two instructions atomic,
-    //       maybe by double-buffering tasks that have self-channels, so that
-    //       the current buffer is not spoiled during this operation and the
-    //       other buffer is updated adequately, then the address of the updated
-    //       buffer is assigned to curr_task
-
-    // ps->curr_task->dirty_in &= 0xFF; // clear "dirty" of current task
-    // ps->curr_task = t;
-
     t->dirty_in &= 0xFF;
     ps->curr_task = t;
-
-    // t->task_function();
 }
 
 
