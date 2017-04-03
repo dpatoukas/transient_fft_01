@@ -18,3 +18,4 @@ An extensive documentation can be found at `/html/index.html` (clone/download th
 ## TODOs
 - Make the cosine/sine tasks parametric
 - Measure the execution cycles of each task using `msp_benchmarkStart()` and `msp_benchmarkStop()` functions from DSPLib
+- Fix the documentation
