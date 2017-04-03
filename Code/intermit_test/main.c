@@ -172,9 +172,10 @@ int main(void)
 	P1DIR |= 0x02;
     // P1OUT = 0x00;
 
-	Resume();
+	while(1) {
+	    Resume();
+	}
 
-	while(1);
 }
 
 

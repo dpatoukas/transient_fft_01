@@ -427,7 +427,7 @@ void start_task(__task *t, __program_state *ps)
     t->dirty_in &= 0xFF;
     ps->curr_task = t;
 
-    t->task_function();
+    // t->task_function();
 }
 
 

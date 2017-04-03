@@ -14,6 +14,6 @@ bool UART_config(void);
 
 void Clock_config(void);
 
-void ADC_config(void);
+// void ADC_config(void);
 
 #endif /* INC_UTIL_H_ */
