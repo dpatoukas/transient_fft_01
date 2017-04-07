@@ -1,7 +1,7 @@
 ![logo](https://github.com/thijmenketel/transient_fft_01/blob/master/html/ip_2.png "logo")
 
-# Fast-Fourier Transform with intermittent power-source
-Effort in making a solution for FFT analysis with an intermittent power source. Implementation is done on a MSP430 microcontroller development kit and will later be tested on real prototypes at Delft University of Technology.
+# Discrete Fourier Transform for transiently powered devices
+Solution for DFT analysis with an intermittent power source. Implementation is done on a MSP430 microcontroller development kit and will later be tested on real prototypes at Delft University of Technology. A library for generic operation with transiently powered devices is also developed.
 
 ## Team members
 The team consists of three students from the master Embedded Systems at TU Delft:
@@ -18,3 +18,4 @@ An extensive documentation can be found at `/html/index.html` (clone/download th
 ## TODOs
 - Make the cosine/sine tasks parametric
 - Measure the execution cycles of each task using `msp_benchmarkStart()` and `msp_benchmarkStop()` functions from DSPLib
+- Fix the documentation
