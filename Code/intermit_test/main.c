@@ -77,9 +77,6 @@ msp_status status;
 // Set ADC and sample
 void T_sampling_function(void);
 
-// Initialise the parameters used by the program
-void T_init_function(void);
-
 // Main DFT task that controls the execution of the DFT
 void T_control_function(void);
 
@@ -103,9 +100,6 @@ void T_magnitude_function(void);
 
 #pragma PERSISTENT(T_sampling)
 NewTask(T_sampling, T_sampling_function, 0)
-
-#pragma PERSISTENT(T_init)
-NewTask(T_init, T_init_function, 0)
 
 #pragma PERSISTENT(T_control)
 NewTask(T_control, T_control_function, 1)
@@ -140,10 +134,6 @@ InitialTask(T_sampling)
 // T_sampling Fields
 #pragma PERSISTENT(PersField(T_sampling, T_mac, f_input))
 NewField(T_sampling, T_mac, f_input, INT16, N_SAMPLES)
-
-// T_init Fields
-#pragma PERSISTENT(PersField(T_init, T_mac, f_input))
-NewField(T_init, T_mac, f_input, INT16, N_SAMPLES)
 
 // T_control Fields
 /*self-field*/
@@ -297,41 +287,11 @@ void T_sampling_function()
     ADC12CTL0 &= ~ADC12ENC;
     ADC12CTL0 &= ~ADC12ON;
 
+    // Dummy input
+    // WriteField_16(T_init, T_mac, f_input, x);
+
+    // Real sampled input
     WriteField_16(T_sampling, T_mac, f_input, input);
-    StartTask(T_control);
-}
-
-void T_init_function()
-{
-    // Generate two sine waves and store them into x1 and x2
-/*
-    msp_sinusoid_q15_params sinParams;
-    sinParams.length = N_SAMPLES;
-    sinParams.amplitude = _Q15(0.5);
-
-    sinParams.cosOmega = _Q15(cosf(2*PI*F1/SAMPL_FREQ));
-    sinParams.sinOmega = _Q15(sinf(2*PI*F1/SAMPL_FREQ));
-    status = msp_sinusoid_q15(&sinParams, x1);
-
-    sinParams.cosOmega = _Q15(cosf(2*PI*F2/SAMPL_FREQ));
-    sinParams.sinOmega = _Q15(sinf(2*PI*F2/SAMPL_FREQ));
-    status = msp_sinusoid_q15(&sinParams, x2);
-
-    // Input signal x is the sum of two sine waves
-    msp_add_q15_params addParams;
-    addParams.length = N_SAMPLES;
-    status = msp_add_q15(&addParams, x1, x2, x);
-
-    // Scale down signal x to avoid saturation/overflow
-    msp_scale_q15_params scaleParams;
-    scaleParams.length = N_SAMPLES;
-    scaleParams.scale = _Q15(SCALE_FACTOR);
-    scaleParams.shift = 0;
-    status = msp_scale_q15(&scaleParams, x, x);
-*/
-    WriteField_16(T_init, T_mac, f_input, x);
-
-    // P1OUT = 0x02;   // turn on GREEN
 
     StartTask(T_control);
 }
