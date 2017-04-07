@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker Unix v16.9.1                   
 ******************************************************************************
->> Linked Wed Apr  5 13:19:14 2017
+>> Linked Fri Apr  7 18:47:22 2017
 
 OUTPUT FILE NAME:   <adc_test.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 00004060
+ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 0000402e
 
 
 MEMORY CONFIGURATION
@@ -17,10 +17,10 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00001000  000001ba  00000e46  RWIX
+  RAM                   00001c00   00001000  0000017a  00000e86  RWIX
   LEARAM                00002c00   00000ec8  00000000  00000ec8  RWIX
   LEASTACK              00003ac8   00000138  00000000  00000138  RWIX
-  FRAM                  00004000   0000bf80  000000de  0000bea2  RWIX
+  FRAM                  00004000   0000bf80  000000aa  0000bed6  RWIX
   JTAGSIGNATURE         0000ff80   00000004  00000004  00000000  RWIX  ffff 
   BSLSIGNATURE          0000ff84   00000004  00000004  00000000  RWIX  ffff 
   IPESIGNATURE          0000ff88   00000008  00000008  00000000  RWIX  ffff 
@@ -108,27 +108,27 @@ section   page    origin      length       input sections
 
 .binit     0    00004000    00000000     
 
-.cinit     0    000040ac    00000032     
-                  000040ac    00000022     (.cinit..data.load) [load image, compression = lzss]
-                  000040ce    00000008     (__TI_handler_table)
-                  000040d6    00000008     (__TI_cinit_table)
+.cinit     0    00004078    00000032     
+                  00004078    00000021     (.cinit..data.load) [load image, compression = lzss]
+                  00004099    00000001     --HOLE-- [fill = 0]
+                  0000409a    00000008     (__TI_handler_table)
+                  000040a2    00000008     (__TI_cinit_table)
 
 .init_array 
 *          0    00004000    00000000     UNINITIALIZED
 
 .text:_isr 
-*          0    00004000    00000082     
-                  00004000    00000060     main.obj (.text:_isr:ADC12_ISR)
-                  00004060    0000001a     rts430x_lc_rd_eabi.lib : boot_special.obj (.text:_isr:_c_int00_noargs_noexit)
-                  0000407a    00000008                            : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
+*          0    00004000    00000050     
+                  00004000    0000002e     main.obj (.text:_isr:ADC12_ISR)
+                  0000402e    0000001a     rts430x_lc_rd_eabi.lib : boot_special.obj (.text:_isr:_c_int00_noargs_noexit)
+                  00004048    00000008                            : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
 
-.data      0    00001c00    0000011a     UNINITIALIZED
+.data      0    00001c00    000000da     UNINITIALIZED
                   00001c00    000000c8     rts430x_lc_rd_eabi.lib : defs.obj (.data:_ftable)
-                  00001cc8    00000040     main.obj (.data:ADC_value)
-                  00001d08    00000008     cs.obj (.data)
-                  00001d10    00000004     rts430x_lc_rd_eabi.lib : _lock.obj (.data:_lock)
-                  00001d14    00000004                            : _lock.obj (.data:_unlock)
-                  00001d18    00000002     main.obj (.data)
+                  00001cc8    00000008     cs.obj (.data)
+                  00001cd0    00000004     rts430x_lc_rd_eabi.lib : _lock.obj (.data:_lock)
+                  00001cd4    00000004                            : _lock.obj (.data:_unlock)
+                  00001cd8    00000002     main.obj (.data)
 
 .stack     0    00002b60    000000a0     UNINITIALIZED
                   00002b60    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
@@ -269,10 +269,10 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.const     0    00004082    0000002a     
-                  00004082    00000014     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.const:.string)
-                  00004096    00000010     util.obj (.const:$P$T0$1)
-                  000040a6    00000006     main.obj (.const:.string)
+.const     0    00004050    00000028     
+                  00004050    00000014     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.const:.string)
+                  00004064    00000010     util.obj (.const:$P$T0$1)
+                  00004074    00000004     main.obj (.const:.string)
 
 .text      0    00010000    00000800     
                   00010000    00000132     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.text:_setfield)
@@ -281,12 +281,12 @@ SYSNMI     0    0000fffc    00000002
                   000102e0    0000009a     eusci_a_uart.obj (.text:EUSCI_A_UART_init)
                   0001037a    00000082     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
                   000103fc    00000078                            : copy_decompress_lzss.obj (.text:decompress:lzss:__TI_decompress_lzss)
-                  00010474    0000006e     util.obj (.text:UART_config)
-                  000104e2    00000066     rts430x_lc_rd_eabi.lib : cpy_tbl.obj (.text:copy_in)
-                  00010548    00000052     util.obj (.text:Clock_config)
-                  0001059a    0000004a     rts430x_lc_rd_eabi.lib : printf.obj (.text:printf)
-                  000105e4    00000048                            : _printfi_min.obj (.text:_pproc_str)
-                  0001062c    0000003e     util.obj (.text:ADC_config)
+                  00010474    0000006c     util.obj (.text:UART_config)
+                  000104e0    00000066     rts430x_lc_rd_eabi.lib : cpy_tbl.obj (.text:copy_in)
+                  00010546    00000052     util.obj (.text:Clock_config)
+                  00010598    0000004a     rts430x_lc_rd_eabi.lib : printf.obj (.text:printf)
+                  000105e2    00000048                            : _printfi_min.obj (.text:_pproc_str)
+                  0001062a    00000040     util.obj (.text:ADC_config)
                   0001066a    0000003a     cs.obj (.text:CS_turnOnLFXT)
                   000106a4    0000002c     main.obj (.text:fputs)
                   000106d0    0000002a     main.obj (.text:main)
@@ -314,10 +314,10 @@ MODULE SUMMARY
        Module                     code   ro data   rw data
        ------                     ----   -------   -------
     ./
-       main.obj                   198    8         66     
        util.obj                   254    16        0      
+       main.obj                   148    6         2      
     +--+--------------------------+------+---------+---------+
-       Total:                     452    24        66     
+       Total:                     402    22        2      
                                                           
     ./driverlib/MSP430FR5xx_6xx/
        eusci_a_uart.obj           208    0         0      
@@ -386,20 +386,20 @@ MODULE SUMMARY
        Total:                     1442   94        208    
                                                           
        Stack:                     0      0         160    
-       Linker Generated:          0      50        0      
+       Linker Generated:          0      49        0      
     +--+--------------------------+------+---------+---------+
-       Grand Total:               2178   168       442    
+       Grand Total:               2128   165       378    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 000040d6 records: 1, size/record: 8, table size: 8
-	.data: load addr=000040ac, load size=00000022 bytes, run addr=00001c00, run size=0000011a bytes, compression=lzss
+__TI_cinit_table @ 000040a2 records: 1, size/record: 8, table size: 8
+	.data: load addr=00004078, load size=00000021 bytes, run addr=00001c00, run size=000000da bytes, compression=lzss
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 000040ce records: 2, size/record: 4, table size: 8
+__TI_handler_table @ 0000409a records: 2, size/record: 4, table size: 8
 	index: 0, handler: __TI_decompress_lzss
 	index: 1, handler: __TI_decompress_none
 
@@ -640,8 +640,8 @@ address   name
 00000873  ADC12MEM9_H                 
 00000872  ADC12MEM9_L                 
 00004000  ADC12_ISR                   
-0001062c  ADC_config                  
-00001cc8  ADC_value                   
+0001062a  ADC_config                  
+00001cd8  ADC_value                   
 000009c0  AESACTL0                    
 000009c1  AESACTL0_H                  
 000009c0  AESACTL0_L                  
@@ -768,7 +768,7 @@ address   name
 0000016c  CSCTL6_L                    
 00010792  CS_setExternalClockSource   
 0001066a  CS_turnOnLFXT               
-00010548  Clock_config                
+00010546  Clock_config                
 00000510  DMA0CTL                     
 00000511  DMA0CTL_H                   
 00000510  DMA0CTL_L                   
@@ -1923,13 +1923,13 @@ address   name
 000000a0  __STACK_SIZE                
 UNDEFED   __TI_BINIT_Base             
 UNDEFED   __TI_BINIT_Limit            
-000040d6  __TI_CINIT_Base             
-000040de  __TI_CINIT_Limit            
-000040ce  __TI_Handler_Table_Base     
-000040d6  __TI_Handler_Table_Limit    
+000040a2  __TI_CINIT_Base             
+000040aa  __TI_CINIT_Limit            
+0000409a  __TI_Handler_Table_Base     
+000040a2  __TI_Handler_Table_Limit    
 UNDEFED   __TI_INITARRAY_Base         
 UNDEFED   __TI_INITARRAY_Limit        
-0000407a  __TI_ISR_TRAP               
+00004048  __TI_ISR_TRAP               
 000103fc  __TI_decompress_lzss        
 000107a4  __TI_decompress_none        
 0000ffb4  __TI_int18                  
@@ -1978,17 +1978,17 @@ ffffffff  __c_args__
 0001073a  __mspabi_mpyi_f5hw          
 00010768  __mspabi_remu               
 0001037a  _auto_init_hold_wdt         
-00004060  _c_int00_noargs_noexit      
+0000402e  _c_int00_noargs_noexit      
 00001c00  _ftable                     
-00001d10  _lock                       
+00001cd0  _lock                       
 000107fc  _nop                        
 0000fffe  _reset_vector               
 00002b60  _stack                      
 000107fe  _system_post_cinit          
 000107f8  _system_pre_init            
-00001d14  _unlock                     
+00001cd4  _unlock                     
 000107ee  abort                       
-000104e2  copy_in                     
+000104e0  copy_in                     
 000107b6  fputc                       
 000106a4  fputs                       
 00004000  fram_ipe_end                
@@ -1999,7 +1999,7 @@ ffffffff  __c_args__
 0001071c  memccpy                     
 0001077e  memcpy                      
 00010752  memset                      
-0001059a  printf                      
+00010598  printf                      
 000107d4  strlen                      
 
 
@@ -3508,9 +3508,9 @@ address   name
 00000afc  LEAIVL                      
 00000afe  LEAIVH                      
 00001c00  _ftable                     
-00001cc8  ADC_value                   
-00001d10  _lock                       
-00001d14  _unlock                     
+00001cd0  _lock                       
+00001cd4  _unlock                     
+00001cd8  ADC_value                   
 00002b60  _stack                      
 00002c00  __STACK_END                 
 00004000  ADC12_ISR                   
@@ -3518,12 +3518,12 @@ address   name
 00004000  fram_ipe_start              
 00004000  fram_rw_start               
 00004000  fram_rx_start               
-00004060  _c_int00_noargs_noexit      
-0000407a  __TI_ISR_TRAP               
-000040ce  __TI_Handler_Table_Base     
-000040d6  __TI_CINIT_Base             
-000040d6  __TI_Handler_Table_Limit    
-000040de  __TI_CINIT_Limit            
+0000402e  _c_int00_noargs_noexit      
+00004048  __TI_ISR_TRAP               
+0000409a  __TI_Handler_Table_Base     
+000040a2  __TI_CINIT_Base             
+000040a2  __TI_Handler_Table_Limit    
+000040aa  __TI_CINIT_Limit            
 0000ffb4  __TI_int18                  
 0000ffb6  __TI_int19                  
 0000ffb8  __TI_int20                  
@@ -3567,10 +3567,10 @@ address   name
 0001037a  _auto_init_hold_wdt         
 000103fc  __TI_decompress_lzss        
 00010474  UART_config                 
-000104e2  copy_in                     
-00010548  Clock_config                
-0001059a  printf                      
-0001062c  ADC_config                  
+000104e0  copy_in                     
+00010546  Clock_config                
+00010598  printf                      
+0001062a  ADC_config                  
 0001066a  CS_turnOnLFXT               
 000106a4  fputs                       
 000106d0  main                        

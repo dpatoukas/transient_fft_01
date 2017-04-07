@@ -127,7 +127,7 @@ typedef struct __self_field {
 typedef struct __task {
     void            (*task_function) (void);
     uint8_t         has_self_channel;
-    uint16_t        dirty_in;
+    uint16_t        sf_state;
 } __task;
 
 // probably channel is not needed
@@ -146,7 +146,7 @@ typedef struct self_channel {
     __task            *src;
     __field           *flds;
     uint8_t         num_fields;
-    uint16_t        dirty_in;
+    uint16_t        sf_state;
 } self_channel;
 */
 
@@ -251,7 +251,7 @@ void resume_program(__program_state*);
         __task NAME = {                                                         \
             .task_function = FN,                                                \
             .has_self_channel = HAS_SELF_CHANNEL,                               \
-            .dirty_in = 0                                                       \
+            .sf_state = 0                                                       \
         };
 
 
@@ -302,7 +302,7 @@ void resume_program(__program_state*);
         self_channel TASK##TASK = {                                             \
             .src = &TASK,                                                       \
             .num_fields = 0,                                                    \
-            .dirty_in = 0                                                       \
+            .sf_state = 0                                                       \
         };
 */
 

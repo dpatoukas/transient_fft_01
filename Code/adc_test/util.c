@@ -43,10 +43,10 @@ void UART_config()
 {
     // Configure UART for Tx/Rx with a BaudRate of 9600
     EUSCI_A_UART_initParam param = {0};
-    param.selectClockSource = EUSCI_A_UART_CLOCKSOURCE_ACLK;
-    param.clockPrescalar = 3;
+    param.selectClockSource = EUSCI_A_UART_CLOCKSOURCE_SMCLK;
+    param.clockPrescalar = 8;
     param.firstModReg = 0;
-    param.secondModReg = 146;
+    param.secondModReg = 214;
     param.parity = EUSCI_A_UART_NO_PARITY;
     param.msborLsbFirst = EUSCI_A_UART_LSB_FIRST;
     param.numberofStopBits = EUSCI_A_UART_ONE_STOP_BIT;
@@ -92,15 +92,15 @@ void ADC_config()
     // source: ACLK
     // pre-divider: 1
     // divider: 1
-    ADC12CTL1 |= ADC12SSEL_1 | ADC12PDIV_0 | ADC12DIV_0;
+    ADC12CTL1 |= ADC12SSEL_0 | ADC12PDIV_1 | ADC12DIV_3;
 
-    // sampling period select for MEM0: 256 clock cycles (*)
+    // sampling period select for MEM0: 16 clock cycles (*)
     // multiple sample and conversion: enabled
     // ADC module ON
-    ADC12CTL0 |= ADC12SHT0_4 | ADC12MSC | ADC12ON;
+    ADC12CTL0 |= ADC12SHT0_3 | ADC12MSC | ADC12ON;
     // (*) freq = ACLK / (ADC12PDIV_0 * ADC12DIV_0 * ADC12SHT0_4)
-    //          = 32768 / (1 * 1 * 64)
-    //          = 4 Hz
+    //          = 1000000 / (32 * 4 * 4)
+    //          = 1953 Hz
 
     // conversion sequence mode: repeat-single-channel
     // pulse-mode select: SAMPCON signal is sourced from the sampling timer
