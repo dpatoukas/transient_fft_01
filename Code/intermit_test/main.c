@@ -47,11 +47,19 @@ DSPLIB_DATA(x2,4)
 _q15 x2[N_SAMPLES];
 
 DSPLIB_DATA(x,4)
+/*
 _q15 x[N_SAMPLES] = {
     0x0000, 0x029C, 0xFFFF, 0x0115, 0x03FF, 0x0114, 0xFFFF, 0x029C,
     0xFFFF, 0xFD62, 0xFFFF, 0xFEEA, 0xFC00, 0xFEEA, 0x0000, 0xFD63,
     0x0000, 0x029D, 0x0000, 0x0115, 0x03FF, 0x0114, 0xFFFF, 0x029B,
     0xFFFF, 0xFD62, 0xFFFF, 0xFEEA, 0xFC00, 0xFEEB, 0x0000, 0xFD64
+};
+*/
+_q15 x[N_SAMPLES] = {
+    871, 873, 868, 873, 873, 868, 870, 874,
+    871, 868, 875, 875, 867, 872, 873, 867,
+    871, 875, 869, 870, 875, 869, 869, 874,
+    875, 870, 877, 875, 869, 869, 870, 867
 };
 
 DSPLIB_DATA(coeff,4)
@@ -196,9 +204,8 @@ int main(void)
 
 	PM5CTL0 &= ~LOCKLPM5;
 
-    P1DIR |= 0x01;  // prepare LED1
-    P1DIR |= 0x02;  // prepare LED2
-    P1OUT  = 0x00;  // turn LEDs off
+	P1OUT  = 0x00;                  // turn LEDs off
+    P1DIR |= BIT0 | BIT1 | BIT2;    // prepare LED1, LED2 and P1.2 for output
 
 	while(1) {
 	    Resume();
@@ -239,25 +246,25 @@ void T_init_function()
 
     // P1OUT = 0x02;   // turn on GREEN
 
-    StartTask(T_control)
+    StartTask(T_control);
 }
 
 void T_control_function()
 {
 	uint16_t k;
-	ReadSelfField_U16(T_control, sf_index, &k)
+	ReadSelfField_U16(T_control, sf_index, &k);
 
 	if (k < N_SAMPLES) { /* Compute complex coefficients */
-		WriteField_U16(T_control, T_cosine, f_index, &k)
-		WriteField_U16(T_control, T_sine, f_index, &k)
-		WriteField_U16(T_control, T_mac, f_index, &k)
+		WriteField_U16(T_control, T_cosine, f_index, &k);
+		WriteField_U16(T_control, T_sine, f_index, &k);
+		WriteField_U16(T_control, T_mac, f_index, &k);
 
 		k++;
-		WriteSelfField_U16(T_control, sf_index, &k)
-		StartTask(T_cosine)
+		WriteSelfField_U16(T_control, sf_index, &k);
+		StartTask(T_cosine);
 	}
 	else /* Complex coefficients computed */
-		StartTask(T_convert)
+		StartTask(T_convert);
 }
 
 void T_cosine_function()
@@ -265,8 +272,8 @@ void T_cosine_function()
 	uint16_t k; // external index, coming from T_control
 	uint16_t i; // internal loop index
 
-	ReadField_U16(T_control, T_cosine, f_index, &k)
-	ReadSelfField_U16(T_cosine, sf_index, &i)
+	ReadField_U16(T_control, T_cosine, f_index, &k);
+	ReadSelfField_U16(T_cosine, sf_index, &i);
 
 	//for (i=0; i<N_SAMPLES; i++)
 		x1[i] = _Q15(cosf(i*k*2*PI/N_SAMPLES));
@@ -321,10 +328,10 @@ void T_mac_function()
 {
 	 uint16_t k; // external index, coming from T_control
 
-	 ReadField_16(T_init, T_mac, f_input, x)
-	 ReadField_U16(T_control, T_mac, f_index, &k)
-	 ReadField_16(T_cosine, T_mac, f_output_cos, x1)
-	 ReadField_16(T_sine, T_mac, f_output_sin, x2)
+	 ReadField_16(T_init, T_mac, f_input, x);
+	 ReadField_U16(T_control, T_mac, f_index, &k);
+	 ReadField_16(T_cosine, T_mac, f_output_cos, x1);
+	 ReadField_16(T_sine, T_mac, f_output_sin, x2);
 
 	 msp_mac_q15_params macParams;
      macParams.length = N_SAMPLES;
@@ -341,7 +348,7 @@ void T_mac_function()
 
  void T_convert_function()
  {
- 	ReadField_32(T_mac, T_convert, f_output_coeff, coeff)
+ 	ReadField_32(T_mac, T_convert, f_output_coeff, coeff);
 
  	msp_iq31_to_q15_params convParams;
     convParams.length = N_SAMPLES;
@@ -349,34 +356,34 @@ void T_mac_function()
     status = msp_iq31_to_q15(&convParams, &coeff[0], x1);
     status = msp_iq31_to_q15(&convParams, &coeff[N_SAMPLES], x2);
 
-    WriteField_16(T_convert, T_magnitude, f_real, x1)
-    WriteField_16(T_convert, T_magnitude, f_imag, x2)
-    StartTask(T_magnitude)
+    WriteField_16(T_convert, T_magnitude, f_real, x1);
+    WriteField_16(T_convert, T_magnitude, f_imag, x2);
+    StartTask(T_magnitude);
  }
 
  void T_magnitude_function()
  {
  	uint16_t i; // internal loop index
 
- 	ReadSelfField_U16(T_magnitude, sf_index, &i)
+ 	ReadSelfField_U16(T_magnitude, sf_index, &i);
 
  	if (i<N_SAMPLES) {
 
- 	    ReadField_16(T_convert, T_magnitude, f_real, x1)
- 	    ReadField_16(T_convert, T_magnitude, f_imag, x2)
+ 	    ReadField_16(T_convert, T_magnitude, f_real, x1);
+ 	    ReadField_16(T_convert, T_magnitude, f_imag, x2);
 
  	    x[i] = _Q15mag(x1[i], x2[i]);
  	    final_out[i] = x[i];
 
  	    i++;
- 	    WriteSelfField_U16(T_magnitude, sf_index, &i)
- 	    StartTask(T_magnitude)
+ 	    WriteSelfField_U16(T_magnitude, sf_index, &i);
+ 	    StartTask(T_magnitude);
  	}
  	else {
  	    if ( (final_out[2] > 100) && (final_out[10] > 100) )    // dummy check
- 	        P1OUT = 0x01;   // correct, turn on RED (weird?)
+ 	        P1OUT = BIT1 | BIT2;    // correct, turn on GREEN and assert P1.2
  	    else
- 	        P1OUT = 0x02;   // wrong, turn on GREEN (more weird?)
+ 	        P1OUT = BIT0;           // wrong, turn on RED
         while (1);
  	}
  }

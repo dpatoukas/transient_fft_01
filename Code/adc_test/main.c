@@ -10,7 +10,7 @@ int fputc(int _c, register FILE *_fp);
 int fputs(const char *_ptr, register FILE *_fp);
 
 
-uint16_t ADC_value = 0;
+uint16_t ADC_value[32] = {0};
 
 /*
  * main.c
@@ -55,6 +55,7 @@ __attribute__((interrupt(ADC12_VECTOR)))
 #endif
 void ADC12_ISR(void)
 {
+    static uint16_t i = 0;
     switch(__even_in_range(ADC12IV,12))
     {
     case  0: break;                         // Vector  0:  No interrupt
@@ -65,9 +66,14 @@ void ADC12_ISR(void)
     case 10: break;                         // Vector 10:  ADC12BIN
     case 12:                                // Vector 12:  ADC12BMEM0 Interrupt
         // Read MEM0 value
-        ADC_value = ADC12MEM0;
-        // printf("value: %d\n", ADC_value);
-        P1OUT ^= 0x01;
+        if (i<32)
+            ADC_value[i] = ADC12MEM0;
+            // printf("value: %d\n", ADC_value);
+        //P1OUT ^= 0x01;
+        else
+            for (i=0; i<32; i++)
+                printf("%d, ", ADC_value[i]);
+        i++;
         break;                              // Clear CPUOFF bit from 0(SR)
     case 14: break;                         // Vector 14:  ADC12BMEM1
     case 16: break;                         // Vector 16:  ADC12BMEM2

@@ -5,7 +5,8 @@
  *
  * TODO:
  *
- * - [L] Return error codes for Read/Write operations?
+ * - [M] Return errors for Read/Write operations in case of reading/writing
+ *       a field from another channel
  *
  * - [L] Implement support for Memory Protection Unit
  *

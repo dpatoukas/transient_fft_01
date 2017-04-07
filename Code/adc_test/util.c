@@ -90,17 +90,17 @@ void ADC_config()
     // Clock source select
     //
     // source: ACLK
-    // pre-divider: 64
-    // divider: 2
-    ADC12CTL1 |= ADC12SSEL_1 | ADC12PDIV_3 | ADC12DIV_1;
+    // pre-divider: 1
+    // divider: 1
+    ADC12CTL1 |= ADC12SSEL_1 | ADC12PDIV_0 | ADC12DIV_0;
 
     // sampling period select for MEM0: 256 clock cycles (*)
     // multiple sample and conversion: enabled
     // ADC module ON
-    ADC12CTL0 |= ADC12SHT0_8 | ADC12MSC | ADC12ON;
-    // (*) freq = ACLK / (ADC12PDIV_3 * ADC12DIV_1 * ADC12SHT0_8)
-    //          = 32768 / (64 * 2 * 256)
-    //          = 1 Hz
+    ADC12CTL0 |= ADC12SHT0_4 | ADC12MSC | ADC12ON;
+    // (*) freq = ACLK / (ADC12PDIV_0 * ADC12DIV_0 * ADC12SHT0_4)
+    //          = 32768 / (1 * 1 * 64)
+    //          = 4 Hz
 
     // conversion sequence mode: repeat-single-channel
     // pulse-mode select: SAMPCON signal is sourced from the sampling timer
