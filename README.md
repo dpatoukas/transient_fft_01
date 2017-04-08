@@ -14,7 +14,7 @@ The project is implemented on a MSP430FR5994 from Texas Instruments (information
 
 ## Library
 A library for intermittent operation is available in the form of a *header* file and a *source* file. These can be found at [`/Code/intermit_test/inc/interpow.h`](https://github.com/thijmenketel/transient_fft_01/blob/master/Code/intermit_test/inc/interpow.h) and [`/Code/intermit_test/interpow.c`](https://github.com/thijmenketel/transient_fft_01/blob/master/Code/intermit_test/interpow.c), simply use them in your project.
-An extensive documentation can be found at `/html/index.html` (clone/download the repo and open the file in your browser).
+An extensive documentation can be found at `/Documentation/index.html` (clone/download the repo and open the file in your browser).
 
 An example of an intermittent DFT implementation can be found at [`/Code/intermit_test/main.c`](https://github.com/thijmenketel/transient_fft_01/blob/master/Code/intermit_test/main.c).
 
