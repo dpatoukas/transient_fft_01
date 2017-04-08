@@ -240,33 +240,33 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-intermit_test.out \
+intermit_dft.out \
 
 EXE_OUTPUTS__QUOTED += \
-"intermit_test.out" \
+"intermit_dft.out" \
 
 BIN_OUTPUTS += \
-intermit_test.hex \
+intermit_dft.hex \
 
 BIN_OUTPUTS__QUOTED += \
-"intermit_test.hex" \
+"intermit_dft.hex" \
 
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "intermit_test.out"
+	@$(MAKE) --no-print-directory -Onone "intermit_dft.out"
 
 # Tool invocations
-intermit_test.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+intermit_dft.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: MSP430 Linker'
-	"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/bin/cl430" -vmspx --data_model=restricted --use_hw_mpy=F5 --advice:power="all" --advice:hw_config=all --define=__MSP430FR5994__ --define=_MPU_ENABLE -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"intermit_test.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/Applications/ti/ccsv7/ccs_base/msp430/include" -i"/Applications/ti/ccsv7/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"/Applications/ti/ccsv7/ccs_base/msp430/lib/FR59xx" -i"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/lib" -i"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include" --priority --reread_libs --define=_MPU_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="intermit_test_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "intermit_test.out" $(ORDERED_OBJS)
+	"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/bin/cl430" -vmspx --data_model=restricted --use_hw_mpy=F5 --advice:power="all" --advice:hw_config=all --define=__MSP430FR5994__ --define=_MPU_ENABLE -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"intermit_dft.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"/Applications/ti/ccsv7/ccs_base/msp430/include" -i"/Applications/ti/ccsv7/ccs_base/msp430/lib/5xx_6xx_FRxx" -i"/Applications/ti/ccsv7/ccs_base/msp430/lib/FR59xx" -i"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/lib" -i"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/include" --priority --reread_libs --define=_MPU_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="intermit_dft_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "intermit_dft.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-intermit_test.hex: $(EXE_OUTPUTS)
+intermit_dft.hex: $(EXE_OUTPUTS)
 	@echo 'Invoking: MSP430 Hex Utility'
-	"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/bin/hex430" --memwidth=8 --romwidth=8 -o "intermit_test.hex" $(EXE_OUTPUTS__QUOTED)
+	"/Applications/ti/ccsv7/tools/compiler/ti-cgt-msp430_16.9.1.LTS/bin/hex430" --memwidth=8 --romwidth=8 -o "intermit_dft.hex" $(EXE_OUTPUTS__QUOTED)
 	@echo 'Finished building: $@'
 	@echo ' '
 

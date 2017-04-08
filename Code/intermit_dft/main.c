@@ -4,11 +4,10 @@
  *
  * This DFT is an application of the InterPow library.
  *
- * A dummy periodical input signal is generated and transformed using a DFT
- * algorithm which makes use of the MSP430 DSPLibrary.
- *
  *
  * TODO:
+ *
+ * - Fix SAMPL_FREQ and co.
  *
  * - Make the cosine/sine tasks parametric
  *
@@ -23,7 +22,7 @@
 #include <string.h>
 #include <math.h>
 #include "QmathLib.h"
-#include "DSPLib.h"
+#include "DSPLib.h"                     // include DSPLib.h after QmathLib.h
 #include "interpow.h"
 
 #define F1              2               // must be less than SAMPL_FREQ/2
