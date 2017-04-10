@@ -1,4 +1,4 @@
-![logo](https://github.com/thijmenketel/transient_fft_01/blob/master/html/ip_2.png "logo")
+![logo](https://github.com/thijmenketel/transient_fft_01/blob/master/Documentation/ip_2.png "logo")
 
 # Discrete Fourier Transform for transiently powered devices
 Solution for DFT analysis with an intermittent power source. Implementation is done on a MSP430 microcontroller development kit and will later be tested on real prototypes at Delft University of Technology. A library for generic operation with transiently powered devices is also developed.
