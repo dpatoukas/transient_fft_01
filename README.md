@@ -20,6 +20,6 @@ An extensive documentation can be found at `/Documentation/index.html` (clone/do
 An example of an intermittent DFT implementation can be found at [`/Code/intermit_dft/main.c`](https://github.com/thijmenketel/transient_fft_01/blob/master/Code/intermit_dft/main.c).
 
 ## TODOs
+- Add an execution path from T_magnitude to T_sampling
 - Make the cosine/sine tasks parametric
-- Measure the execution cycles of each task using `msp_benchmarkStart()` and `msp_benchmarkStop()` functions from DSPLib
 - Rename the repo to transient_dft_01
