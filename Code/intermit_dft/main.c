@@ -4,15 +4,6 @@
  *
  * This DFT is an application of the InterPow library.
  *
- *
- * TODO:
- *
- * - Fix SAMPL_FREQ and co.
- *
- * - Make the cosine/sine tasks parametric
- *
- * - Measure the execution cycles of each task using msp_benchmarkStart() and
- *   msp_benchmarkStop()
  */
 
 
@@ -25,13 +16,9 @@
 #include "DSPLib.h"                     // include DSPLib.h after QmathLib.h
 #include "interpow.h"
 
-#define F1              2               // must be less than SAMPL_FREQ/2
-#define F2              10              // otherwise Nyquist might get angry
 #define N_SAMPLES       32
-#define SAMPL_FREQ      N_SAMPLES
 #define SCALE_FACTOR    1.0/N_SAMPLES
 #define MAX_AMPLITUDE   0x7FFF          // sinusoid max amplitude
-#define LOOP_BURST      2
 
 #define PI              3.1415926536
 
@@ -46,28 +33,33 @@ DSPLIB_DATA(x2,4)
 _q15 x2[N_SAMPLES];
 
 DSPLIB_DATA(x,4)
-/*
+
 _q15 x[N_SAMPLES] = {
     0x0000, 0x029C, 0xFFFF, 0x0115, 0x03FF, 0x0114, 0xFFFF, 0x029C,
     0xFFFF, 0xFD62, 0xFFFF, 0xFEEA, 0xFC00, 0xFEEA, 0x0000, 0xFD63,
     0x0000, 0x029D, 0x0000, 0x0115, 0x03FF, 0x0114, 0xFFFF, 0x029B,
     0xFFFF, 0xFD62, 0xFFFF, 0xFEEA, 0xFC00, 0xFEEB, 0x0000, 0xFD64
 };
-*/
+/*
 _q15 x[N_SAMPLES] = {
     871, 873, 868, 873, 873, 868, 870, 874,
     871, 868, 875, 875, 867, 872, 873, 867,
     871, 875, 869, 870, 875, 869, 869, 874,
     875, 870, 877, 875, 869, 869, 870, 867
 };
-
+*/
 DSPLIB_DATA(coeff,4)
 _iq31 coeff[2*N_SAMPLES];
 
+
+/******************************************************************************/
+// Debug variables declaration
+
 #pragma PERSISTENT(final_out)
-int16_t final_out[N_SAMPLES] = {0};     // Test variable
+int16_t final_out[N_SAMPLES] = {0};
 
 msp_status status;
+uint32_t cyc_count = 0;
 
 
 /******************************************************************************/
@@ -204,7 +196,7 @@ int main(void)
 	PM5CTL0 &= ~LOCKLPM5;
 
 	P1OUT  = 0x00;                  // turn LEDs off
-    P1DIR |= BIT0 | BIT1 | BIT2;    // prepare LED1, LED2 and P1.2 for output
+    P1DIR |= BIT0 | BIT1;           // prepare LED1, LED2 and P1.2 for output
 
 	while(1) {
 	    Resume();
@@ -232,15 +224,15 @@ void ADC_config()
     // source: ADC12OSC (MODOSC), 1 MHz
     // pre-divider: 1
     // divider: 1
-    ADC12CTL1 |= ADC12SSEL_0 | ADC12PDIV_0 | ADC12DIV_0;
+    ADC12CTL1 |= ADC12SSEL_0 | ADC12PDIV_1 | ADC12DIV_0;
 
     // sampling period select for MEM0: 64 clock cycles (*)
     // multiple sample and conversion: enabled
     // ADC module ON
     ADC12CTL0 |= ADC12SHT0_4 | ADC12MSC | ADC12ON;
     // (*) freq = MODOSC / (ADC12PDIV_0 * ADC12DIV_0 * ADC12SHT0_4)
-    //          = 1000000 / (1 * 1 * 64)
-    //          = 15625 Hz
+    //          = 1000000 / (4 * 1 * 64)
+    //          = 3906.25 Hz
 
     // conversion sequence mode: repeat-single-channel
     // pulse-mode select: SAMPCON signal is sourced from the sampling timer
@@ -272,6 +264,8 @@ uint8_t counter;
 int16_t input[N_SAMPLES];
 void T_sampling_function()
 {
+    // save interrupt state and then disable interrupts
+    uint16_t is = __get_interrupt_state();
     __disable_interrupt();
 
     // configure ADC
@@ -280,14 +274,16 @@ void T_sampling_function()
     counter = 0;
     __enable_interrupt();
 
-    while(__get_SR_register() & GIE);
+    while(counter < N_SAMPLES);
 
-    // disable and turn off the ADC to save energy
-    ADC12CTL0 &= ~ADC12ENC;
+    // turn off the ADC to save energy
     ADC12CTL0 &= ~ADC12ON;
 
-    // Dummy input
-    // WriteField_16(T_init, T_mac, f_input, x);
+    // restore interrupt state
+    __set_interrupt_state(is);
+
+    // Predefined input (sum of two sine waves at 2 Hz and 10 Hz)
+    // WriteField_16(T_sampling, T_mac, f_input, x);
 
     // Real sampled input
     WriteField_16(T_sampling, T_mac, f_input, input);
@@ -309,8 +305,11 @@ void T_control_function()
 		WriteSelfField_U16(T_control, sf_index, &k);
 		StartTask(T_cosine);
 	}
-	else /* Complex coefficients computed */
-		StartTask(T_convert);
+	else {/* Complex coefficients computed */
+	    k = 0;
+	    WriteSelfField_U16(T_control, sf_index, &k);
+	    StartTask(T_convert);
+	}
 }
 
 void T_cosine_function()
@@ -321,8 +320,7 @@ void T_cosine_function()
 	ReadField_U16(T_control, T_cosine, f_index, &k);
 	ReadSelfField_U16(T_cosine, sf_index, &i);
 
-	//for (i=0; i<N_SAMPLES; i++)
-		x1[i] = _Q15(cosf(i*k*2*PI/N_SAMPLES));
+	x1[i] = _Q15(cosf(i*k*2*PI/N_SAMPLES));
 
 	if (i < N_SAMPLES) {
 	    WriteFieldElement_16(T_cosine, T_mac, f_output_cos, &x1[i], i);
@@ -336,9 +334,6 @@ void T_cosine_function()
 	    WriteSelfField_U16(T_cosine, sf_index, &i);
 	    StartTask(T_sine);
 	}
-	//WriteSelfField_U16(T_cosine,sf_index,&n)
-	//WriteField_16(T_cosine, T_mac, f_output_cos, x1)
-	//StartTask(T_sine)
 }
 
 void T_sine_function()
@@ -349,8 +344,7 @@ void T_sine_function()
 	ReadField_U16(T_control, T_sine, f_index, &k);
 	ReadSelfField_U16(T_sine, sf_index, &i);
 
-	//for (i=0; i<N_SAMPLES; i++)
-        x2[i] = _Q15(-sinf(i*k*2*PI/N_SAMPLES));
+    x2[i] = _Q15(-sinf(i*k*2*PI/N_SAMPLES));
 
     if (i < N_SAMPLES) {
         WriteFieldElement_16(T_sine, T_mac, f_output_sin, &x2[i], i);
@@ -364,34 +358,29 @@ void T_sine_function()
         WriteSelfField_U16(T_sine, sf_index, &i);
         StartTask(T_mac);
     }
-
-	//WriteSelfField_U16(T_sine,sf_index,&n)
-	//WriteField_16(T_sine, T_mac, f_output_sin, x2)
-	//StartTask(T_mac)
 }
 
 void T_mac_function()
 {
-	 uint16_t k; // external index, coming from T_control
+    uint16_t k; // external index, coming from T_control
 
-	 //ReadField_16(T_init, T_mac, f_input, x);
-	 ReadField_16(T_sampling, T_mac, f_input, x);
-	 ReadField_U16(T_control, T_mac, f_index, &k);
-	 ReadField_16(T_cosine, T_mac, f_output_cos, x1);
-	 ReadField_16(T_sine, T_mac, f_output_sin, x2);
+	//ReadField_16(T_init, T_mac, f_input, x);
+	ReadField_16(T_sampling, T_mac, f_input, x);
+	ReadField_U16(T_control, T_mac, f_index, &k);
+	ReadField_16(T_cosine, T_mac, f_output_cos, x1);
+	ReadField_16(T_sine, T_mac, f_output_sin, x2);
 
-	 msp_mac_q15_params macParams;
-     macParams.length = N_SAMPLES;
+	msp_mac_q15_params macParams;
+    macParams.length = N_SAMPLES;
 
-	 msp_mac_q15(&macParams, x, x1, &coeff[k]);
-     msp_mac_q15(&macParams, x, x2, &coeff[k+N_SAMPLES]);
+	msp_mac_q15(&macParams, x, x1, &coeff[k]);
+    msp_mac_q15(&macParams, x, x2, &coeff[k+N_SAMPLES]);
 
-     // WriteField_32(T_mac, T_convert, f_output_coeff, coeff);
-     WriteFieldElement_32(T_mac, T_convert, f_output_coeff, &coeff[k], k);
-     WriteFieldElement_32(T_mac, T_convert, f_output_coeff, &coeff[k+N_SAMPLES], k+N_SAMPLES);
-     StartTask(T_control);
+    // WriteField_32(T_mac, T_convert, f_output_coeff, coeff);
+    WriteFieldElement_32(T_mac, T_convert, f_output_coeff, &coeff[k], k);
+    WriteFieldElement_32(T_mac, T_convert, f_output_coeff, &coeff[k+N_SAMPLES], k+N_SAMPLES);
+    StartTask(T_control);
 }
-
 
 void T_convert_function()
 {
@@ -415,23 +404,32 @@ void T_magnitude_function()
  	ReadSelfField_U16(T_magnitude, sf_index, &i);
 
  	if (i<N_SAMPLES) {
+        if (i==0)
+            x[i] = 0;               // cut DC from spectrum
+        else {
+     	    ReadField_16(T_convert, T_magnitude, f_real, x1);
+     	    ReadField_16(T_convert, T_magnitude, f_imag, x2);
+     	    x[i] = _Q15mag(x1[i], x2[i]);
+        }
 
- 	    ReadField_16(T_convert, T_magnitude, f_real, x1);
- 	    ReadField_16(T_convert, T_magnitude, f_imag, x2);
-
- 	    x[i] = _Q15mag(x1[i], x2[i]);
  	    final_out[i] = x[i];
 
  	    i++;
  	    WriteSelfField_U16(T_magnitude, sf_index, &i);
+
  	    StartTask(T_magnitude);
  	}
  	else {
- 	    if ( (final_out[2] > 100) && (final_out[10] > 100) )    // dummy check
- 	        P1OUT = BIT1 | BIT2;    // correct, turn on GREEN and assert P1.2
- 	    else
- 	        P1OUT = BIT0;           // wrong, turn on RED
-        while (1);
+        P1OUT = BIT1;   // turn on GREEN
+
+        // do something with final_out
+        // HERE HERE HERE HERE HERE HERE HERE
+        // HERE HERE HERE HERE HERE HERE HERE
+
+        // restart whole program
+        i = 0;
+        WriteSelfField_U16(T_magnitude, sf_index, &i);
+        StartTask(T_sampling);
  	}
 }
 
@@ -457,12 +455,15 @@ void ADC12_ISR(void)
     case  8: break;                         // Vector  8:  ADC12BLO
     case 10: break;                         // Vector 10:  ADC12BIN
     case 12:                                // Vector 12:  ADC12BMEM0 Interrupt
-        // Read ADC12MEM0 value
         if (counter < N_SAMPLES)
+            // Read ADC12MEM0 value
             input[counter++] = ADC12MEM0;
-        else
-            __bic_SR_register_on_exit(GIE);
-        break;                              // Clear CPUOFF bit from 0(SR)
+        else {
+            // disable ADC conversion and disable interrupt request for MEM0
+            ADC12CTL0 &= ~ADC12ENC;
+            ADC12IER0 &= ~ADC12IE0;
+        }
+        break;
     case 14: break;                         // Vector 14:  ADC12BMEM1
     case 16: break;                         // Vector 16:  ADC12BMEM2
     case 18: break;                         // Vector 18:  ADC12BMEM3

@@ -1,7 +1,7 @@
 ******************************************************************************
                   MSP430 Linker Unix v16.9.1                   
 ******************************************************************************
->> Linked Fri Apr  7 18:47:22 2017
+>> Linked Thu Apr 13 19:01:13 2017
 
 OUTPUT FILE NAME:   <adc_test.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 0000402e

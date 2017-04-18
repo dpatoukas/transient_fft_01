@@ -6,11 +6,9 @@
  * TODO:
  *
  * - [M] Return errors for Read/Write operations in case of reading/writing
- *       a field from another channel
+ *       a field from another channel or any other invalid option
  *
  * - [L] Implement support for Memory Protection Unit
- *
- * - [L] Consider Low-Power Advice
  *
  */
 
