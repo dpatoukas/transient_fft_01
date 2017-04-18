@@ -18,8 +18,3 @@ A library for intermittent operation is available in the form of a *header* file
 An extensive documentation can be found at `/Documentation/index.html` (clone/download the repo and open the file in your browser).
 
 An example of an intermittent DFT implementation can be found at [`/Code/intermit_dft/main.c`](https://github.com/thijmenketel/transient_fft_01/blob/master/Code/intermit_dft/main.c).
-
-## TODOs
-- Add an execution path from T_magnitude to T_sampling
-- Make the cosine/sine tasks parametric
-- Rename the repo to transient_dft_01
